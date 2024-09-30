@@ -36,9 +36,5 @@
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
 </owl:Class>
 
-<owl:NamedIndividual rdf:about="#Hammer">
-  <rdf:type rdf:resource="#Tool"/>
-</owl:NamedIndividual>
-
 
 </rdf:RDF>

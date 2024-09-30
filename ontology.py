@@ -10,13 +10,12 @@ def parse_json_to_graph(file_path: str, graph: Graph):
     try:
         with open(file_path, 'r') as file:
             for line in file:
-                graph.add((URIRef("http://ifixit.org/mac.owl"), URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), URIRef("http://www.w3.org/2002/07/owl#Ontology")))
                 try:
                     entry = json.loads(line)
-                    for key, value in entry.items():
-                        # Add triples to the graph based on the JSON entry
-                        graph.add((URIRef(f"http://ifixit.org/mac.owl#{key}"), URIRef("http://www.w3.org/2000/01/rdf-schema#label"), URIRef(Literal(value))))
-                    input("Press spacebar to view the next entry...")
+                    uri = URIRef("http://ifixit.org/" + entry["Title"].replace(" ", "_").replace('"', ""))
+                    graph.add((uri, RDF.type, URIRef("http://ifixit.org/Procedure")))
+                    for key,value in entry.items():
+                        print()
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
     except FileNotFoundError:
@@ -61,6 +60,7 @@ with mac:
     parse_json_to_graph(
         "data.json", graph
     )
+
     print(graph.serialize(format="turtle"))
 
 

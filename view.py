@@ -13,3 +13,6 @@ def parse_json_to_graph(file_path):
                     print(f"Error decoding JSON from line: {line.strip()}")
     except FileNotFoundError:
         print(f"The file {file_path} does not exist.")
+
+
+parse_json_to_graph("temp.json")
