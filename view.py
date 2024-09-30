@@ -1,6 +1,6 @@
 import json
 
-def view_entries(file_path):
+def parse_json_to_graph(file_path):
     try:
         with open(file_path, 'r') as file:
             for line in file:
@@ -14,5 +14,5 @@ def view_entries(file_path):
     except FileNotFoundError:
         print(f"The file {file_path} does not exist.")
 
-if __name__ == "__main__":
-    view_entries('data.json')
+
+parse_json_to_graph("temp.json")
