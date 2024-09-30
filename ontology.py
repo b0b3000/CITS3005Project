@@ -2,12 +2,12 @@ from owlready2 import *
 from rdflib import *
 import json
 
-n = Namespace("http://ifixit.org/")
+fix = Namespace("http://ifixit.org/")
 
 mac = get_ontology("http://ifixit.org/mac.owl")
 
 def parse_json_to_graph(file_path: str, graph: Graph):
-    print(type(graph))
+    graph.bind("fix", fix)
     try:
         with open(file_path, 'r') as file:
             for line in file:
@@ -18,29 +18,30 @@ def parse_json_to_graph(file_path: str, graph: Graph):
 
                     # Add tool to graph
                     for tool in entry["Toolbox"]:
-                        print(tool)
+                        print(tool["Url"])
                         if tool['Url'] is not None:
-                            graph.add((URIRef(tool['Url']), RDF.type, URIRef("http://ifixit.org/Tools")))
+                            tool_type = "Tools"
+                            tool_uri = tool["Url"]
+                            if "Item" in tool["Url"]:
+                                tool_type = "Items"
+                                tool_uri = "http://ifixit.org" + tool["Url"]
+                            graph.add((URIRef(tool_uri), RDF.type, URIRef(f"http://ifixit.org/{tool_type}")))
                         else:
                             graph.add((URIRef("http://ifixit.org/Tools/" + tool['Name'].replace(" ", "_").replace('"', "").capitalize()), RDF.type, URIRef("http://ifixit.org/Tools")))
+                    
                     # Add step to procedure
                     for step in entry["Steps"]:
                         i = step["Order"]
                         step_uri = uri + "/" + f"{i}".replace(" ", "_").replace('"', "")
-                        graph.add((step_uri, n.partof , uri))
-                        print(step["Tools_extracted"])
-
+                        graph.add((step_uri, fix.is_step , uri))
                         # Add the tools used in the step to the graph
                         for tool in step["Tools_extracted"]:
-                            print(tool)
                             if tool is dict:
                                 if tool['Url'] is not None:
-                                    graph.add((URIRef(tool["Url"]), RDF.type, step_uri))
-                                else:
-                                    print()
+                                    graph.add((URIRef(tool["Url"]), fix.used_in, step_uri))
                             else:
                                 # Add bare bones 
-                                graph.add((URIRef("http://ifixit.org/Tools/" + tool.replace(" ", "_").replace('"', "").capitalize()), RDF.type, URIRef("http://ifixit.org/Tools")))
+                                graph.add((URIRef("http://ifixit.org/Tools/" + tool.replace(" ", "_").replace('"', "").capitalize()), fix.used_in, URIRef("http://ifixit.org/Tools")))
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
     except FileNotFoundError:
