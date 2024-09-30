@@ -18,7 +18,6 @@ def parse_json_to_graph(file_path: str, graph: Graph):
 
                     # Add tool to graph
                     for tool in entry["Toolbox"]:
-                        print(tool["Url"])
                         if tool['Url'] is not None:
                             tool_type = "Tools"
                             tool_uri = tool["Url"]
@@ -32,7 +31,7 @@ def parse_json_to_graph(file_path: str, graph: Graph):
                     # Add step to procedure
                     for step in entry["Steps"]:
                         i = step["Order"]
-                        step_uri = uri + "/" + f"{i}".replace(" ", "_").replace('"', "")
+                        step_uri = uri + "/" + f"step{i}".replace(" ", "_").replace('"', "")
                         graph.add((step_uri, fix.is_step , uri))
                         # Add the tools used in the step to the graph
                         for tool in step["Tools_extracted"]:
@@ -40,8 +39,12 @@ def parse_json_to_graph(file_path: str, graph: Graph):
                                 if tool['Url'] is not None:
                                     graph.add((URIRef(tool["Url"]), fix.used_in, step_uri))
                             else:
-                                # Add bare bones 
+                                # Add proper uri for tool
                                 graph.add((URIRef("http://ifixit.org/Tools/" + tool.replace(" ", "_").replace('"', "").capitalize()), fix.used_in, URIRef("http://ifixit.org/Tools")))
+
+                        # Add the images used in the step to the graph
+                        for image in step["Images"]:
+                            graph.add((URIRef(image), fix.refImage, step_uri))
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
     except FileNotFoundError:
