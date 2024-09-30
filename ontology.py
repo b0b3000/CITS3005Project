@@ -33,6 +33,12 @@ def parse_json_to_graph(file_path: str, graph: Graph):
                         i = step["Order"]
                         step_uri = uri + "/" + f"step{i}".replace(" ", "_").replace('"', "")
                         graph.add((step_uri, fix.is_step , uri))
+                        if "Word_level_parts_clean" in step.keys():
+                            print(step["Word_level_parts_clean"])
+                            input()
+                        if "Word_level_parts_raw" in step.keys():
+                            print(step["Word_level_parts_raw"])
+                            input()
                         # Add the tools used in the step to the graph
                         for tool in step["Tools_extracted"]:
                             if tool is dict:
