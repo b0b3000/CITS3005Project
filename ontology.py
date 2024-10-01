@@ -13,44 +13,70 @@ def parse_json_to_graph(file_path: str, graph: Graph):
             for line in file:
                 try:
                     entry = json.loads(line)
-                    uri = URIRef("http://ifixit.org/" + entry["Title"].replace(" ", "_").replace('"', ""))
-                    graph.add((uri, RDF.type, URIRef("http://ifixit.org/Procedure")))
+                    uri = fix + entry["Title"].replace(" ", "_").replace('"', "")
+                    graph.add((URIRef(uri), RDF.type, URIRef(fix + "Procedure")))
 
-                    # Add tool to graph
+                    # Add tool/item/part to graph
                     for tool in entry["Toolbox"]:
+
                         if tool['Url'] is not None:
-                            tool_type = "Tools"
-                            tool_uri = tool["Url"]
-                            if "Item" in tool["Url"]:
-                                tool_type = "Items"
-                                tool_uri = "http://ifixit.org" + tool["Url"]
-                            graph.add((URIRef(tool_uri), RDF.type, URIRef(f"http://ifixit.org/{tool_type}")))
+
+                            tool_uri = tool['Url']
+
+                            if "Item" in tool_uri:
+                                tool_type = "Item"
+                                print(tool_uri)
+                                tool_uri = fix[:17] + tool_uri
+                                print(tool_uri)
+                            
+                            elif "Parts" in tool_uri:
+                                tool_type = "Part"
+                            
+                            elif "Tools" in tool_uri:
+                                tool_type = "Tool"
+                            
+                            else:
+                                print(tool_uri)
+                                tool_type = "Unknown" #PLACEHOLDER
+                                #What to do here?
+                                #I suggest just deleting these from test set lmao.
+              
                         else:
-                            graph.add((URIRef("http://ifixit.org/Tools/" + tool['Name'].replace(" ", "_").replace('"', "").capitalize()), RDF.type, URIRef("http://ifixit.org/Tools")))
-                    
+                            tool_type = "Unknown" #PLACEHOLDER
+                            tool_uri = fix + "Tools/" + tool['Name'].replace(" ", "_").replace('"', "").capitalize()
+
+                        graph.add((URIRef(tool_uri), RDF.type, URIRef(fix + tool_type)))
+
                     # Add step to procedure
                     for step in entry["Steps"]:
                         i = step["Order"]
                         step_uri = uri + "/" + f"step{i}".replace(" ", "_").replace('"', "")
-                        graph.add((step_uri, fix.is_step , uri))
-                        if "Word_level_parts_clean" in step.keys():
+                        graph.add((URIRef(step_uri), fix.is_step , URIRef(uri)))
+
+                        '''if "Word_level_parts_clean" in step.keys():
                             print(step["Word_level_parts_clean"])
                             input()
                         if "Word_level_parts_raw" in step.keys():
                             print(step["Word_level_parts_raw"])
-                            input()
+                            input()'''
+                        
                         # Add the tools used in the step to the graph
                         for tool in step["Tools_extracted"]:
                             if tool is dict:
                                 if tool['Url'] is not None:
-                                    graph.add((URIRef(tool["Url"]), fix.used_in, step_uri))
+
+                                    if "Item" in tool_uri:
+                                        tool_uri = fix[:17] + tool_uri
+
+                                    graph.add((URIRef(tool["Url"]), fix.used_in, URIRef(step_uri)))
                             else:
-                                # Add proper uri for tool
-                                graph.add((URIRef("http://ifixit.org/Tools/" + tool.replace(" ", "_").replace('"', "").capitalize()), fix.used_in, URIRef("http://ifixit.org/Tools")))
+                                # Add proper uri for tool 
+                                #WHAT IS THIS?????
+                                graph.add((URIRef(fix + "Tools/" + tool.replace(" ", "_").replace('"', "").capitalize()), fix.used_in, URIRef(step_uri)))
 
                         # Add the images used in the step to the graph
                         for image in step["Images"]:
-                            graph.add((URIRef(image), fix.refImage, step_uri))
+                            graph.add((URIRef(image), fix.refImage, URIRef(step_uri)))
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
     except FileNotFoundError:
