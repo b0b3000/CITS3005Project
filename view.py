@@ -6,7 +6,7 @@ def parse_json_to_graph(file_path):
             for line in file:
                 try:
                     entry = json.loads(line)
-                    for key in entry.keys():
+                    for key, value in entry.items():
                         print(f"{key}")
                     input("press any button...")
                 except json.JSONDecodeError:
