@@ -7,12 +7,65 @@ fix = Namespace("http://ifixit.org/mac.owl#")
 
 mac = get_ontology("http://ifixit.org/mac.owl")
 
+with mac:
+    class Procedure(Thing):
+        pass
+
+    class Step(Thing):
+        pass
+
+    class Toolbox(Thing):
+        pass
+
+    class Tool(Thing):
+        pass
+
+    class Item(Thing):
+        pass
+
+    class Part(Item):
+        pass
+
+    class Image(Thing):
+        pass
+
+    class Procedure(Thing):
+        pass
+
+    class has_steps(ObjectProperty):
+        domain = [Procedure]
+        range = [Step]
+
+    class in_toolbox(ObjectProperty):
+        domain = [Toolbox]
+        range = [Tool]
+
+    class has_tools(ObjectProperty):
+        domain = [Tool]
+        range = [Toolbox]
+
+    class has_images(ObjectProperty):
+        domain = [Step]
+        range = [Image]
+
+    class part_of(ObjectProperty):
+        domain = [Item]
+        range = [Item]
+        is_transitive = True
+
+    #SUB PROCEDURE ???
+
+    mac.save("mac.owl")
+
+    
+
 def parse_json_to_graph(file_path: str, graph: Graph):
     graph.bind("fix", fix)
-    try:
+    with mac:
         with open(file_path, 'r') as file:
             for line in file:
                 try:
+                    
                     entry = json.loads(line)
                     procedure_uri = fix +"Procedure/"+ entry["Title"].replace(" ", "_").replace('"', "")
 
@@ -26,9 +79,8 @@ def parse_json_to_graph(file_path: str, graph: Graph):
                     for item_ancestor in entry["Ancestors"]:
                         item_ancestor_uri = fix + "Item/" + item_ancestor.replace(" ", "_").replace('"', "")
                         graph.add((URIRef(item_ancestor_uri), RDF.type, URIRef(fix + "Item")))
-                        graph.add((URIRef(current_ancestor_uri), RDFS.subClassOf , URIRef(item_ancestor_uri)))
+                        graph.add((URIRef(current_ancestor_uri), fix.part_of, URIRef(item_ancestor_uri)))
                         current_ancestor_uri = item_ancestor_uri
-                        
 
                     # Add part to graph
                     part_uri = fix + "Part/" + entry["Category"].replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace(" ", "_").replace('"', "")
@@ -62,60 +114,56 @@ def parse_json_to_graph(file_path: str, graph: Graph):
                         # Add the images used in the step to the graph
                         for image in step["Images"]:
                             graph.add((URIRef(image), fix.refImage, URIRef(step_uri)))
+            
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-    except FileNotFoundError:
-        print(f"The file {file_path} does not exist.")
 
-with mac:
-    class Procedure(Thing):
-        pass
+            file = open("output.xml", mode="w")
+            file.write(graph.serialize(format='turtle'))
 
-    class Step(Thing):
-        pass
+            return graph
+                    
+graph = default_world.as_rdflib_graph()
+print(graph)
 
-    class Toolbox(Thing):
-        pass
-
-    class Tool(Thing):
-        pass
-
-    class Item(Thing):
-        pass
-
-    class Part(Thing):
-        pass
-
-    class Image(Thing):
-        pass
-
-    class Procedure(Thing):
-        has_steps = [Step]
-        has_toolbox = Toolbox
-
-    class Toolbox(Thing):
-        has_tools = [Tool]
-
-    class Step(Thing):
-        has_images = [Image]
-
-    class Item(Thing):
-        partof = Item
-
-    
-    mac.save("mac.owl")
-    graph = default_world.as_rdflib_graph()
-    parse_json_to_graph(
-        "temp.json", graph
-    )
-
-    file = open("output.txt", mode="w")
-    file.write(graph.serialize(format='turtle'))
+graph = parse_json_to_graph("data.json", graph)
+print(graph)
 
 
+def run_queries(graph):
+    with mac:
+        query1 = """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?step ns:is_step ?Procedure .
+                }
+                GROUP BY ?procedure
+                HAVING (COUNT(?step) > 6)
+            """
+        result = graph.query(query1)
 
+        print
+        for row in result:
+            procedure_title = row.split("/")[-1] #Outputs just the part im interested in
+            print(procedure_title)
 
+        query2 = """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?item
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?step ns:is_step ?Procedure .
+                }
+                GROUP BY ?procedure
+                HAVING (COUNT(?step) > 6)
+            """
+        result = graph.query(query1)
 
+        print
+        for row in result:
+            procedure_title = row.split("/")[-1] #Outputs just the part im interested in
+            print(procedure_title)
 
-
-
+run_queries(graph)

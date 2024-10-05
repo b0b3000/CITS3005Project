@@ -8,6 +8,31 @@
 
 <owl:Ontology rdf:about="http://ifixit.org/mac.owl"/>
 
+<owl:ObjectProperty rdf:about="#has_steps">
+  <rdfs:domain rdf:resource="#Procedure"/>
+  <rdfs:range rdf:resource="#Step"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#in_toolbox">
+  <rdfs:domain rdf:resource="#Toolbox"/>
+  <rdfs:range rdf:resource="#Tool"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#has_tools">
+  <rdfs:domain rdf:resource="#Tool"/>
+  <rdfs:range rdf:resource="#Toolbox"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#has_images">
+  <rdfs:domain rdf:resource="#Step"/>
+  <rdfs:range rdf:resource="#Image"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#part_of">
+  <rdfs:domain rdf:resource="#Item"/>
+  <rdfs:range rdf:resource="#Item"/>
+</owl:ObjectProperty>
+
 <owl:Class rdf:about="#Procedure">
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
 </owl:Class>
@@ -29,7 +54,7 @@
 </owl:Class>
 
 <owl:Class rdf:about="#Part">
-  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:subClassOf rdf:resource="#Item"/>
 </owl:Class>
 
 <owl:Class rdf:about="#Image">
