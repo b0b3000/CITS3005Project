@@ -4,7 +4,8 @@ from rdflib import *
 fix = Namespace("http://ifixit.org/mac.owl#")
 mac = get_ontology("http://ifixit.org/mac.owl")
 
-def create_ontology(mac):
+
+def create_ontology(mac, filepath):
     with mac:
         class Procedure(Thing):
             pass
@@ -35,7 +36,7 @@ def create_ontology(mac):
             domain = [Tool]
             range = [Toolbox]
 
-        class has_images(ObjectProperty):
+        class has_image(ObjectProperty):
             domain = [Step]
             range = [Image]
 
@@ -56,11 +57,11 @@ def create_ontology(mac):
             domain = [Procedure]
             range = [Toolbox]
 
-        class step_number(DataProperty):
+        class step_number(DataProperty, FunctionalProperty):
             domain = [Step]
             range = [int]
 
-        class step_description(DataProperty):
+        class step_description(DataProperty, FunctionalProperty):
             domain = [Step]
             range = [str]
 
@@ -68,5 +69,5 @@ def create_ontology(mac):
             domain = [Procedure]
             range = [Procedure]
 
-        mac.save("mac.owl")
-    return mac
+        mac.save(filepath)
+

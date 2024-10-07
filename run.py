@@ -1,15 +1,22 @@
-import build, ontology, queries
+import build_old, ontology, queries, build
      
 from owlready2 import *
 from rdflib import *
 
+ONTO_FILE_PATH = "mac.owl"
+JSON_FILE_PATH = "data.json"
+RDFXML_FILE_PATH = "rdf_out.xml"
+
 fix = Namespace("http://ifixit.org/mac.owl#")
 mac = get_ontology("http://ifixit.org/mac.owl")
 
-mac = ontology.create_ontology(mac)
+ontology.create_ontology(mac, ONTO_FILE_PATH)
+mac = get_ontology(ONTO_FILE_PATH).load()
 
-graph = default_world.as_rdflib_graph()
-graph = build.parse_json_to_graph("data.json", graph, fix, mac)
+
+graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
 
 queries.run_queries(graph, mac)
+
+#{"Name": "spudger", "Url": "http://www.ifixit.com/Tools/Spudger/IF145-002", "Thumbnail": "https://da2lh5cs8ikqj.cloudfront.net/cart-products/fIQ3oZSjd1yLgqpX.mini"}, 
 
