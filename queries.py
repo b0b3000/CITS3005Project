@@ -74,3 +74,4 @@ def run_queries(graph, mac):
             procedure = str(row[0]).split("/")[-1].replace("_", " ")
             step = str(row[1]).split("/")[-1].replace("_", " ")
             print(procedure, step)
+
