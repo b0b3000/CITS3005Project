@@ -105,3 +105,8 @@ def create_ontology(mac, filepath):
 
         mac.save(filepath)
 
+#TO DO: 
+        
+#1) OWL ONTOLOGY RULES
+#2) DOWNWARD DIRECTION OF RELATIONS
+#3) SWRL RULES
