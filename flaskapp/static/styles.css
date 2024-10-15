@@ -27,15 +27,13 @@ body {
 }
 
 .navbar a:hover {
-  border-radius:20px ;
-  background-color: white;
+  background-color: rgb(206, 156, 82);
   color: black;
 }
 
 .navbar li a.active {
-  border-radius:20px ;
   font-weight: bold;
-  background-color: grey;
+  background-color: white;
   color: black;
 }
 
