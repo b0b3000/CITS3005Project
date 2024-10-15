@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Browse{% endblock %}
+
+{% block header %}Browse Categories{% endblock %}
+
+{% block content %}
+<section id="browse">
+    <h2>Categories</h2>
+    <div class="category-grid">
+        {% for category in categories %}
+        <div class="category-item">{{ category }}</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
