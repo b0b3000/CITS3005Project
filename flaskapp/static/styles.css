@@ -112,7 +112,7 @@ body {
 /* New styles for 3-column layout */
 #results_list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 2fr);
     gap: 20px;
     padding: 0;
 }
