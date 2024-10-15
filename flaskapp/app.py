@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+import json
 
 app = Flask(__name__)
 
@@ -36,6 +37,7 @@ def browse():
 @app.route("/get_query", methods = ['GET', 'POST'])
 def get_query():
     data = request.get_json()
-    search_id = data.get('search_id')  
-    query = queries.run_query(search_id, graph) 
-    return f"Test Query Return: {query}"
+    search_id = data['search_id']
+    results = queries.run_query(search_id, graph) 
+    # redirect to query results page
+    return json.dumps(results)

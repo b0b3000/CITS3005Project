@@ -55,18 +55,50 @@ def get_queries():
 
 def run_query(query_id: int, graph: Graph):
     id = int(query_id)
+    current_query = ""
+    tuple = False
     if id == 1:
-        print("Returning query 1")
-        result1 = graph.query(query1)
-        results = []
-        for row in result1:
-            procedure_title = str(row).split("/")[-1].replace("_", " ")[:-4] #Outputs just the part im interested in
-            results.append(procedure_title)
-        return results
+        current_query = query1
     elif id == 2:
-        return graph.query(query2)
+        current_query = query2
     elif id == 3:
-        return graph.query(query3)
+        current_query = query3
     elif id == 4:
-        return graph.query(query4)
-    return None
+        current_query = query4
+        tuple = True
+    results = graph.query(current_query)
+    result_list = []
+    for row in results:
+        uri = ""
+        if tuple == True:
+            procedure = str(row[0]).split("/")[-1].replace("_", " ")
+            step = str(row[1]).split("/")[-1].replace("_", " ")
+            uri = procedure +  "/" + step
+        else: 
+            uri = str(row).split("/")[-1].replace("_", " ")[:-4] #Outputs just the part im interested in
+        result_list.append(uri)
+    return result_list
+
+
+
+def run_queries(graph, mac):
+    with mac:
+        
+        
+        query4 = """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure ?step
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_step ?step .
+                    ?step ns:step_description ?text .
+                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
+                }
+            """
+        result4 = graph.query(query4)
+
+        print("\n\n\nPotential hazards in the procedure by identifying steps with works like careful and dangerous.\n\n\n")
+        for row in result4:
+            procedure = str(row[0]).split("/")[-1].replace("_", " ")
+            step = str(row[1]).split("/")[-1].replace("_", " ")
+            print(procedure, step)
