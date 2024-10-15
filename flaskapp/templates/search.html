@@ -1,57 +1,23 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Search{% endblock %} {% block header
+%}Search the iFixit database{% endblock %} {% block content %}
+<section id="browse">
+  <h2 style="text-align: center;">Available search functions</h2>
+  <select
+    class="search_function_selector"
+    id="searchFunction"
+    name="searchFunction"
+  >
+    {% for search_function in search_functions %}
+    <option value="{{ search_function }}">{{ search_function }}</option>
+    {% endfor %}
+  </select>
 
-{% block title %}Browse{% endblock %}
-
-{% block header %}Welcome to iFixit{% endblock %}
-
-{% block content %}
-<div class="content">
-    <section id="search">
-        <h2 class="search_header">Search Options</h2>
-        <div class="button-list">
-            {% for search in searches %}
-            <button onclick="performSearch('{{ search.id }}')"> {{ search.name }} </button>
-            {% endfor %}
-        </div>
-        <section id="results">
-            <h2 class="results_header">Search Results</h2>
-            <ul id="results_list"></ul>
-        </section>
-    </section>
-</div>
-
-<script>
-    async function performSearch(search_id) {
-        // Send a POST request with the search_id and search term
-        try {
-
-            console.log('Search ID:', search_id);
-            const response = await fetch('/get_query', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ search_id: search_id })
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const results = await response.json();
-            const resultsList = document.getElementById('results_list');
-            resultsList.innerHTML = ''; // Clear previous results
-            
-            for(let result of results) {
-                console.log('Result:', result);
-                const listItem = document.createElement('li');
-                listItem.classList.add('result-item'); // Add class to list item
-                listItem.textContent = result;
-                resultsList.appendChild(listItem);
-            }
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-        }
-    }
-</script>
+  <input type="text" id="searchInput" placeholder="Enter your search here" />
+</section>
+<section id="results">
+  <h2>Search Results</h2>
+  <ul id="results_list"></ul>
+</section>
+{% endblock %} {% block scripts %}
+<script src="static/search.js"></script>
 {% endblock %}

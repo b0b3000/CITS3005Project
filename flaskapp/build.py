@@ -78,6 +78,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                     else:
                                         # Called when tool is not lsited in toolbox, but still referenced in steps
                                         # This is likely a result of human error upon construction of data
+
                                         #print("TOOL NOT IN TOOLBOX. ADDING NOW", tool_uri, procedure_uri)
                                         
                                         new_tool = mac.Tool(tool_uri)
@@ -102,8 +103,9 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
         graph.bind("fix", fix)
-        """ file = open(rdfxml_file_path, mode="w")
-        file.write(graph.serialize(format='turtle')) """
+        """ file = open(rdfxml_file_path, mode="w", encoding="utf-8")
+        file.write(graph.serialize(format='ttl')) """
+        
 
         #Return the RDFLib graph, and OWLReady2 ontology
         return graph, mac

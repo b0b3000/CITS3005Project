@@ -3,8 +3,8 @@ import json
 
 app = Flask(__name__)
 
-import ontology, build, queries
-     
+import ontology, build, queries, searches
+
 from owlready2 import *
 from rdflib import *
 
@@ -22,22 +22,68 @@ graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Home', image="static/images/banner.png")
+    return render_template('index.html', title='Home')
+
+@app.route("/sparql_queries")
+def sparql():
+    query_names = list(queries.get_queries())
+    print(query_names)
+    return render_template('queries.html', title='Search', searches=query_names)
 
 @app.route("/search")
 def search():
-    searches = queries.get_queries()
-    return render_template('search.html', title='Search', searches=searches)
+    return render_template('search.html', title='Search', search_functions=["Search by procedure", "Search by item", "Search by part", "Search by tool"])
 
-@app.route("/browse")
-def browse():
-    return render_template('browse.html', title='Browse')
+@app.route("/user_guide")
+def user_guide():
+    return render_template('guide.html', title='User Guide')
 
+@app.route("/edit")
+def edit_graph():
+    return render_template('edit.html', title='Edit Graph')
+
+@app.route("/add_query", methods = ['POST'])
+def add_query():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid data"}), 400
+    print(data)
+    query_name = data['name']
+    query_value = data['value']
+    queries.add_query(query_name, query_value)
+    # redirect to query results page
+    
 
 @app.route("/get_query", methods = ['GET', 'POST'])
-def get_query():
+def run_query():
     data = request.get_json()
-    search_id = data['search_id']
-    results = queries.run_query(search_id, graph) 
+    query_key = data['search_id']
+    results = queries.run_query(query_key, graph) 
+    if results == ["Query not found"]:
+        return jsonify({"error": "Query not found"}), 400
+    if results == ["Query has no results"]:
+        return jsonify({"error": "Query has no results"}), 400
     # redirect to query results page
-    return json.dumps(results)
+    return jsonify(results), 200
+
+@app.route("/search_results", methods = ['GET', 'POST'])
+def search_results():
+    data = request.get_json()
+    search_type = data['searchFunction']
+    search_value = data['searchInput']
+
+    results = searches.run_search(search_type, search_value, graph)
+    return jsonify(results), 200
+
+@app.route("/add_procedure", methods = ['GET', 'POST'])
+def add_procedure():
+    return "Adding procedure"
+
+@app.route("/edit_procedure", methods = ['GET', 'POST'])
+def edit_procedure():
+    return "Editing procedure"
+
+
+
+
+
