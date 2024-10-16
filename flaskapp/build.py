@@ -13,10 +13,12 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
 
                     # Add procedure to graph
                     procedure = mac.Procedure(procedure_uri)
+                    procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 
                     # Add item to graph
                     item_uri = fix + "Item/" + entry["Category"].replace('/','~').replace(" ", "_").replace('"', "")
                     item = mac.Item(item_uri)
+                    item.has_name = entry["Category"]
                     item.has_procedure.append(procedure)    
 
                     #Add ancestor tree
@@ -30,6 +32,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     # Add part to graph
                     part_uri = fix + "Part/" + entry["Category"].replace('/','~').replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace('/','~').replace(" ", "_").replace('"', "")
                     part = mac.Part(part_uri)
+                    part.has_name = entry["Category"] + " " + entry["Subject"]
                     part.part_of.append(item)
                     part.has_procedure.append(procedure)
 
@@ -54,6 +57,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                         if tool['Url'] is not None:
                             tool_uri = fix + tool['Name'].replace('/','~').replace(" ", "_").replace('"', "")
                             new_tool = mac.Tool(tool_uri)
+                            new_tool.has_name = tool['Name']
                             new_tool.in_toolbox.append(toolbox)
                             toolbox_dict[tool_uri] = new_tool #used for searching tools when adding to step
 
@@ -95,17 +99,16 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
             
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-                
-                
+
+        sync_reasoner_pellet(infer_property_values = True)
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
         
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
         graph.bind("fix", fix)
-        """ file = open(rdfxml_file_path, mode="w", encoding="utf-8")
-        file.write(graph.serialize(format='ttl')) """
-        
+        file = open(rdfxml_file_path, mode="w")  
+        file.write(graph.serialize(format='turtle'))
 
         #Return the RDFLib graph, and OWLReady2 ontology
         return graph, mac
