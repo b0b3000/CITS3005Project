@@ -12,6 +12,10 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     procedure_uri = fix + "Procedure/" + entry["Title"].replace('/','~').replace(" ", "_").replace('"', "")
 
                     # Add procedure to graph
+                    for p in mac.Procedure.instances():
+                        if type(p) != None:
+                            if p.has_name == procedure_uri:
+                                print("PROC DUP", procedure_uri)
                     procedure = mac.Procedure(procedure_uri)
                     procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 
@@ -36,9 +40,8 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     part.part_of.append(item)
                     procedure.has_part.append(part)
 
-
                     #Add toolbox
-                    toolbox_uri = procedure_uri + "/Toolbox".replace("#Procedure", "#Toolbox")
+                    toolbox_uri = (procedure_uri + "/Toolbox").replace("#Procedure", "#Toolbox")
                     toolbox = mac.Toolbox(toolbox_uri)
                     procedure.has_toolbox.append(toolbox)
 
@@ -74,8 +77,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                         # Called when tool is not lsited in toolbox, but still referenced in steps
                                         # This is likely a result of human error upon construction of data
 
-                                        #print("TOOL NOT IN TOOLBOX. ADDING NOW", tool_uri, procedure_uri)
-                                        
                                         new_tool = mac.Tool(tool_uri)
                                         toolbox.has_tool.append(new_tool)
                                         toolbox_dict[tool_uri] = new_tool
@@ -90,8 +91,9 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
 
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-
-        sync_reasoner_pellet(infer_property_values = True)
+        #sync_reasoner(infer_property_values=True)
+        #print(list(default_world.inconsistent_classes()))
+        sync_reasoner_pellet(infer_property_values=True)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
