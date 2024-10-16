@@ -1,0 +1,57 @@
+@prefix shape: <http://www.w3.org/ns/shacl#> .
+@prefix ns: <"http://ifixit.org/mac.owl#"> .
+
+ns:ProcedureShape a shape:NodeShape;
+    shape:targetClass ns:Procedure;
+    shape:property [
+        shape:path ns:has_step;
+            shape:minCount 100;
+    ];
+    shape:property [
+        shape:path ns:has_toolbox;
+        shape:count 2;
+    ];
+    shape:property [
+        shape:path ns:has_item;
+        shape:count 1;
+    ];
+    shape:property [
+        shape:path ns:has_part;
+        shape:count 1;
+    ];
+    shape:property [
+        shape:path ns:has_name;
+        shape:count 1;
+    ] .
+
+ns:PartShape a shape:NodeShape;
+    shape:targetClass ns:Part;
+    shape:property [
+        shape:path ns:has_name;
+        shape:count 1;
+    ] .
+
+ns:ItemShape a shape:NodeShape;
+    shape:targetClass ns:Item;
+    shape:property [
+        shape:path ns:has_name;
+        shape:count 1;
+    ] .
+
+ns:ToolShape a shape:NodeShape;
+    shape:targetClass ns:Tool;
+    shape:property [
+        shape:path ns:has_name;
+        shape:count 1;
+    ] .
+
+ns:StepShape a shape:NodeShape;
+    shape:targetClass ns:Step;
+    shape:property [
+        shape:path ns:step_number;
+        shape:count 1;
+    ];
+    shape:property [
+        shape:path ns:step_description;
+        shape:count 1;
+    ] .
