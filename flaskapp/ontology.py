@@ -43,10 +43,15 @@ def create_ontology(mac, filepath):
             domain = [Step]
             range = [Image]
 
+        class has_part(ObjectProperty):
+            domain = [Procedure]
+            range = [Part]
+
         class part_of(ObjectProperty):
             domain = [Or([Item, Part])]
             range = [Item]
             is_transitive = True
+            inverse_property = has_part()
         
         class used_in(ObjectProperty):
             domain = [Tool]
@@ -54,11 +59,7 @@ def create_ontology(mac, filepath):
 
         class has_item(ObjectProperty):
             domain = [Procedure]
-            range = [Item]
-        
-        class has_part(ObjectProperty):
-            domain = [Procedure]
-            range = [Part]
+            range = [Item]      
         
         class has_toolbox(ObjectProperty):
             domain = [Procedure]
@@ -67,7 +68,6 @@ def create_ontology(mac, filepath):
         class subprocedure(ObjectProperty):
             domain = [Procedure]
             range = [Procedure]
-
 
         # --------------------------------------------------------- DATA PROPERTIES ---------------------------------------------------------------------
 

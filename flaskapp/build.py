@@ -36,7 +36,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     part.part_of.append(item)
                     procedure.has_part.append(part)
 
-
                     #Add toolbox
                     toolbox_uri = procedure_uri + "/Toolbox".replace("#Procedure", "#Toolbox")
                     toolbox = mac.Toolbox(toolbox_uri)
@@ -74,8 +73,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                         # Called when tool is not lsited in toolbox, but still referenced in steps
                                         # This is likely a result of human error upon construction of data
 
-                                        #print("TOOL NOT IN TOOLBOX. ADDING NOW", tool_uri, procedure_uri)
-                                        
                                         new_tool = mac.Tool(tool_uri)
                                         toolbox.has_tool.append(new_tool)
                                         toolbox_dict[tool_uri] = new_tool
