@@ -63,6 +63,11 @@
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step9> ;
     ns2:has_toolbox <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)_toolbox> .
 
+ns2:asda a ns2:Tool,
+        owl:NamedIndividual ;
+    ns2:has_name "asda"^^xsd:string ;
+    ns2:used_in <http://ifixit.org/mac.owl#name/0> .
+
 ns2:has_image a owl:ObjectProperty,
         owl:ObjectProperty ;
     rdfs:domain ns2:Step,
@@ -101,6 +106,15 @@ ns2:has_toolbox a owl:ObjectProperty,
         ns2:Procedure ;
     rdfs:range ns2:Toolbox,
         ns2:Toolbox .
+
+ns2:name a ns2:Procedure,
+        owl:NamedIndividual ;
+    ns2:has_item ns2:mac,
+        ns2:yerisora ;
+    ns2:has_name "name"^^xsd:string ;
+    ns2:has_part ns2:logic ;
+    ns2:has_step <http://ifixit.org/mac.owl#name/0> ;
+    ns2:has_toolbox ns2:name_toolbox .
 
 ns2:step_description a owl:DatatypeProperty,
         owl:DatatypeProperty,
@@ -143,10 +157,6 @@ ns2:Mac a ns2:Item,
 ns2:Mac_Desktop a ns2:Item,
         owl:NamedIndividual ;
     ns2:part_of ns2:Mac .
-
-ns2:Mac_Pro a ns2:Item,
-        owl:NamedIndividual ;
-    ns2:part_of ns2:Mac_Desktop .
 
 <http://ifixit.org/mac.owl#Mac_Pro_First_Generation_2.8_~_3.0_~_3.2_GHz_Processors> a ns2:Part,
         owl:NamedIndividual ;
@@ -369,6 +379,9 @@ ns2:high_content_rubbing_alcohol a ns2:Tool,
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step33>,
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step38> .
 
+<http://ifixit.org/mac.owl#http://127.0.0.1:5000/static/banner.png> a ns2:Image,
+        owl:NamedIndividual .
+
 <http://ifixit.org/mac.owl#https://d3nevzfk7ii3be.cloudfront.net/igi/1iiZbelytgfQJVbS.standard> a ns2:Image,
         owl:NamedIndividual .
 
@@ -558,6 +571,12 @@ ns2:lint-free_cloth a ns2:Tool,
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step1>,
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step21> .
 
+ns2:logic a ns2:Part,
+        owl:NamedIndividual ;
+    ns2:has_name "yerisora logic"^^xsd:string ;
+    ns2:part_of ns2:mac,
+        ns2:yerisora .
+
 ns2:long-handled_magnetized_3_mm_flathead_hex_screwdriver a ns2:Tool,
         owl:NamedIndividual ;
     ns2:has_name "long-handled magnetized 3 mm flathead hex screwdriver"^^xsd:string ;
@@ -579,6 +598,9 @@ ns2:magnetized_jeweler_s_1_phillips_screwdriver a ns2:Tool,
     ns2:has_name "magnetized jeweler s 1 phillips screwdriver"^^xsd:string ;
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step25> .
 
+ns2:name_toolbox a ns2:Toolbox,
+        owl:NamedIndividual .
+
 ns2:phillips_screwdriver a ns2:Tool,
         owl:NamedIndividual ;
     ns2:has_name "phillips screwdriver"^^xsd:string ;
@@ -596,10 +618,9 @@ ns2:right-angle_magnetized_1_phillips_screwdriver a ns2:Tool,
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step14>,
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step25> .
 
-ns2:Mac_Pro_First_Generation a ns2:Item,
+ns2:Mac_Pro a ns2:Item,
         owl:NamedIndividual ;
-    ns2:has_name "Mac Pro First Generation"^^xsd:string ;
-    ns2:part_of ns2:Mac_Pro .
+    ns2:part_of ns2:Mac_Desktop .
 
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step0> a ns2:Step,
         owl:NamedIndividual ;
@@ -689,6 +710,25 @@ ns2:Mac_Pro_First_Generation a ns2:Item,
     ns2:step_description "Handle the card only by the edges.Do not touch its connectors or any of the components.Lift the card straight out from the connector to remove it, and insert it straight into the connector to install it.Do not rock the card from side to side and don’t force the card into the slot.Once the replacement card is installed, pull on it gently to check. 1) Release the small locking clip at the front of the card’s logic board connector by pushing the clip up toward the media shelf. 2) Holding the card by the top corners, pull up the card and remove it from its expansion slot."^^xsd:string ;
     ns2:step_number 8 .
 
+ns2:mac a ns2:Item,
+        owl:NamedIndividual ;
+    ns2:has_name "mac"^^xsd:string ;
+    ns2:part_of ns2:Mac_Pro .
+
+<http://ifixit.org/mac.owl#name/0> a ns2:Step,
+        owl:NamedIndividual ;
+    ns2:has_image <http://ifixit.org/mac.owl#http://127.0.0.1:5000/static/banner.png> .
+
+ns2:yerisora a ns2:Item,
+        owl:NamedIndividual ;
+    ns2:has_name "yerisora"^^xsd:string ;
+    ns2:part_of ns2:Mac_Pro_First_Generation .
+
+ns2:Mac_Pro_First_Generation a ns2:Item,
+        owl:NamedIndividual ;
+    ns2:has_name "Mac Pro First Generation"^^xsd:string ;
+    ns2:part_of ns2:Mac_Pro .
+
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step1> a ns2:Step,
         owl:NamedIndividual ;
     ns2:has_image <http://ifixit.org/mac.owl#https://d3nevzfk7ii3be.cloudfront.net/igi/WPKXNvaiqiIJKYN4.standard> ;
@@ -753,16 +793,16 @@ ns2:Part a owl:Class,
 <urn:swrl#part3> a ns1:Variable,
         ns1:Variable .
 
-ns2:Tool a owl:Class,
-        owl:Class ;
-    rdfs:subClassOf owl:Thing,
-        owl:Thing .
-
 <urn:swrl#part1> a ns1:Variable,
         ns1:Variable .
 
 <urn:swrl#part2> a ns1:Variable,
         ns1:Variable .
+
+ns2:Tool a owl:Class,
+        owl:Class ;
+    rdfs:subClassOf owl:Thing,
+        owl:Thing .
 
 ns2:part_of a owl:ObjectProperty,
         owl:ObjectProperty ;

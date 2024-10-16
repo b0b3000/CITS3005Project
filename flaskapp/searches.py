@@ -14,6 +14,8 @@ def run_search(search_type: str, search_input: str,  graph: Graph):
     return ["THIS IS", "A TEST"]
 
 def get_ancestors(item_name: str, mac: Ontology):
+    if item_name == "":
+        return []
     possible_ancestors = []
     # get all items
     items = list(mac.Item.instances())

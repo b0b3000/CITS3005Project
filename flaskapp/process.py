@@ -12,7 +12,24 @@ def add_new_procedure(ontology_file_path: str, form_data: dict, mac: Ontology):
     new_procedure.has_item.append(item)
 
     #Add ancestor tree
-    #TODO
+    ancestor = form_data["ancestor"]
+    print("Ancestor: ", type(ancestor))
+    if ancestor != "":
+        print("Ancestor is not empty")
+        ancestor = mac.search_one(iri="*" + ancestor)
+        print(ancestor)
+        item.part_of.append(ancestor)
+        print(item.part_of)
+    else:
+        print("No ancestor")
+        # Add to root
+
+        # Root item
+        root = mac.search_one(iri="*Root")
+        item.part_of.append(root)
+
+        print(item.part_of)
+        # get root
 
     # Add part to graph
     part_uri = form_data["part"].replace('/','~').replace(" ", "_").replace('"', "")
@@ -27,7 +44,6 @@ def add_new_procedure(ontology_file_path: str, form_data: dict, mac: Ontology):
 
     #Add toolbox
     toolbox_uri = new_procedure_uri.replace("#Procedure", "#Toolbox") + "_toolbox"
-    print(toolbox_uri)
     toolbox = mac.Toolbox(toolbox_uri)
     new_procedure.has_toolbox.append(toolbox)
 

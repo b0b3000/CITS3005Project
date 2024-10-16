@@ -83,6 +83,7 @@ async function submitProcedure() {
     current_step_data = {};
     // get img data and step_entry for each step
     const steps = Array.from(document.getElementsByClassName('step_entry')).map(input => input.value);
+
     const step_images = document.getElementsByClassName('step-image');
 
     const tools_lists = document.getElementsByClassName("tools-list")
@@ -106,7 +107,10 @@ async function submitProcedure() {
         console.log("Tool usage: " + tool_usage);
     }
 
+    const ancestorDropdown = document.getElementById('ancestor_dropdown');
+    const selectedAncestor = ancestorDropdown ? ancestorDropdown.value : "";
 
+    console.log("Selected ancestor: " + selectedAncestor);
 
     for (let i = 0; i < steps.length; i++) {
         current_step_data[i] = { "img": step_images[i].src, "step_description": steps[i], "tools_used": tool_usage[i] };
@@ -122,7 +126,8 @@ async function submitProcedure() {
         part: document.getElementById('part').value,
         toolbox: Array.from(document.getElementsByClassName('tools_entry')).map(input => input.value),
         item: document.getElementById('item').value,
-        step_data: current_step_data
+        step_data: current_step_data,
+        ancestor: selectedAncestor
     };
 
     if (formData.part == "" || formData.step_data.length == 0, formData.item == "") {
