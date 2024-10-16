@@ -68,23 +68,4 @@ def run_query(query_name: str, graph: Graph):
 
 
 
-def run_queries(graph, mac):
-    with mac:
-        query4 = """
-            PREFIX ns: <http://ifixit.org/mac.owl#>
-                SELECT ?procedure ?step
-                WHERE {
-                    ?procedure a ns:Procedure .
-                    ?procedure ns:has_step ?step .
-                    ?step ns:step_description ?text .
-                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
-                }
-            """
-        result4 = graph.query(query4)
-
-        print("\n\n\nPotential hazards in the procedure by identifying steps with works like careful and dangerous.\n\n\n")
-        for row in result4:
-            procedure = str(row[0]).split("/")[-1].replace("_", " ")
-            step = str(row[1]).split("/")[-1].replace("_", " ")
-            print(procedure, step)
 

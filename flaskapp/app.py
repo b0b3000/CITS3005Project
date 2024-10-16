@@ -11,7 +11,7 @@ from owlready2 import *
 from rdflib import *
 
 ONTO_FILE_PATH = "ont/mac.owl"
-JSON_FILE_PATH = "ont/temp.json"
+JSON_FILE_PATH = "ont/data.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
 #fix = Namespace("http://ifixit.org/mac.owl#")
@@ -34,7 +34,7 @@ def sparql():
 
 @app.route("/search")
 def search():
-    return render_template('search.html', title='Search', search_functions=["Search by procedure", "Search by item", "Search by part", "Search by tool"])
+    return render_template('search.html', title='Search', search_functions=searches.get_search_functions())
 
 @app.route("/procedure")
 def procedure():
@@ -80,6 +80,7 @@ def search_results():
     search_value = data['searchInput']
 
     results = searches.run_search(search_type, search_value, graph)
+    print(results)
     return jsonify(results), 200
 
 @app.route("/create_procedure", methods = ['GET', 'POST'])

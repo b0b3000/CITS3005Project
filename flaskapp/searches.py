@@ -2,16 +2,48 @@ from rdflib import *
 from owlready2 import *
 
 
-search_dict = {
-    
-}
+search_dict = {}
+
+search_dict[
+    "Search procedures by item"
+] = """
+PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?name
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_name ?name .
+                    FILTER(CONTAINS(STR(?name), "Fan")) .
+                }
+"""
+
 
 def get_search_functions():
     return search_dict.keys()
 
-def run_search(search_type: str, search_input: str,  graph: Graph):
+
+def run_search(search_type: str, search_input: str, graph: Graph):
     current_search = search_dict.get(search_type)
-    return ["THIS IS", "A TEST"]
+    current_query = current_search.replace("keyword", search_input)
+    print(current_query)
+    if current_query == None:
+        return ["Query not found"]
+    results_list = []
+    try:
+        results = graph.query(current_query)
+    except:
+        return ["Query has no results"]
+    print(results)
+    for result in results:
+        print(result)
+    for row in results:
+        uri = ""
+        for item in row:
+            item = str(item).split("/")[-1].replace("_", " ")
+            uri += item + "/"
+        results_list.append(uri)
+
+    return results_list
+
 
 def get_ancestors(item_name: str, mac: Ontology):
     if item_name == "":

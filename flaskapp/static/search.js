@@ -22,8 +22,9 @@ function performSearch() {
       for (let result of results) {
         const listItem = document.createElement("li");
         listItem.classList.add("result-item");
-        listItem.addEventListener("click", redirectResult () );
+        
         const img = document.createElement("img");
+        img.addEventListener("click", displayResult);
         img.src = "/static/banner.png"; // Assuming result has an imageUrl property
         img.alt = result.imageAlt || "Search result image"; // Optional alt text
         listItem.textContent = result;
@@ -48,9 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
-function redirectResult() {
-  console.log("redirecting");
-  window.location.href = "/search_results";
+async function displayResult() {
+  console.log("Only result");
 }

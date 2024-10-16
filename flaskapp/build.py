@@ -19,7 +19,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                             if p.has_name == procedure_uri:
                                 print("PROC DUP", procedure_uri)
                     procedure = mac.Procedure(procedure_uri)
-                    print(procedure_uri)
                     procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 
                     # Add item to graph
