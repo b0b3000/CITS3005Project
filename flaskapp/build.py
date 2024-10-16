@@ -19,7 +19,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     item_uri = fix + "Item/" + entry["Category"].replace('/','~').replace(" ", "_").replace('"', "")
                     item = mac.Item(item_uri)
                     item.has_name = entry["Category"]
-                    item.has_procedure.append(procedure)    
+                    procedure.has_item.append(item)    
 
                     #Add ancestor tree
                     current_ancestor = item
@@ -34,17 +34,8 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     part = mac.Part(part_uri)
                     part.has_name = entry["Category"] + " " + entry["Subject"]
                     part.part_of.append(item)
-                    part.has_procedure.append(procedure)
+                    procedure.has_part.append(part)
 
-                    # Check for procedures with same item
-                    same_item_procedures = item.has_procedure
-                    same_item_procedures = same_item_procedures + part.has_procedure
-
-                    for subprocedure in same_item_procedures:
-                        if (subprocedure not in procedure.subprocedure) and (procedure not in subprocedure.subprocedure): 
-                            if subprocedure != procedure:
-                                # avoid duplicates & redundancy
-                                procedure.subprocedure.append(subprocedure)
 
                     #Add toolbox
                     toolbox_uri = procedure_uri + "/Toolbox".replace("#Procedure", "#Toolbox")
@@ -58,7 +49,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                             tool_uri = fix + tool['Name'].replace('/','~').replace(" ", "_").replace('"', "")
                             new_tool = mac.Tool(tool_uri)
                             new_tool.has_name = tool['Name']
-                            new_tool.in_toolbox.append(toolbox)
+                            toolbox.has_tool.append(new_tool)
                             toolbox_dict[tool_uri] = new_tool #used for searching tools when adding to step
 
                     # Add step to procedure
@@ -86,7 +77,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                         #print("TOOL NOT IN TOOLBOX. ADDING NOW", tool_uri, procedure_uri)
                                         
                                         new_tool = mac.Tool(tool_uri)
-                                        new_tool.in_toolbox.append(toolbox)
+                                        toolbox.has_tool.append(new_tool)
                                         toolbox_dict[tool_uri] = new_tool
                                         matching_tool = new_tool
                                     
@@ -96,11 +87,12 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                         for image_uri in step["Images"]:
                             image = mac.Image(image_uri)
                             new_step.has_image.append(image)
-            
+
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
 
-        #sync_reasoner_pellet(infer_property_values = True)
+        sync_reasoner_pellet(infer_property_values = True)
+
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
         

@@ -35,9 +35,9 @@ def create_ontology(mac, filepath):
             domain = [Procedure]
             range = [Step]
 
-        class in_toolbox(ObjectProperty):
-            domain = [Tool]
-            range = [Toolbox]
+        class has_tool(ObjectProperty):
+            domain = [Toolbox]
+            range = [Tool]
 
         class has_image(ObjectProperty):
             domain = [Step]
@@ -52,9 +52,13 @@ def create_ontology(mac, filepath):
             domain = [Tool]
             range = [Step]
 
-        class has_procedure(ObjectProperty):
-            domain = [Or([Item, Part])]
-            range = [Procedure]
+        class has_item(ObjectProperty):
+            domain = [Procedure]
+            range = [Item]
+        
+        class has_part(ObjectProperty):
+            domain = [Procedure]
+            range = [Part]
         
         class has_toolbox(ObjectProperty):
             domain = [Procedure]
@@ -63,6 +67,7 @@ def create_ontology(mac, filepath):
         class subprocedure(ObjectProperty):
             domain = [Procedure]
             range = [Procedure]
+
 
         # --------------------------------------------------------- DATA PROPERTIES ---------------------------------------------------------------------
 
@@ -77,36 +82,25 @@ def create_ontology(mac, filepath):
         class has_name(DataProperty, FunctionalProperty):
             domain = [Or([Procedure, Tool, Item, Part])]
             range = [str]
-
-        '''class procedure_name(DataProperty, FunctionalProperty):
-            domain = [Procedure]
-            range = [str]
-
-        class tool_name(DataProperty, FunctionalProperty):
-            domain = [Tool]
-            range = [str]
-
-        class item_name(DataProperty, FunctionalProperty):
-            domain = [Item]
-            range = [str]
-
-        class part_name(DataProperty, FunctionalProperty):
-            domain = [Part]
-            range = [str]'''
-        
-        class test(ObjectProperty):
-            domain = [Procedure]
-            range = [Procedure]
         
         # ---------------------------------------------------- SWRL -----------------------------------------------------------------
         
-        rule = Imp()
-        rule.set_as_rule("""Procedure(?proc1), subprocedure(?proc1, ?proc2), Procedure(?proc2) -> test(?proc1, ?proc2)""")
+        rule1 = Imp()
+        rule1.set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""")
 
+        rule2 = Imp()
+        rule2.set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2),  -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
+
+        rule3 = Imp()
+        rule3.set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
+
+        rule4 = Imp()
+        rule4.set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part1), part_of(?part1, ?part2), Procedure(?proc2), has_part(?proc2, ?part2) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Part
+        
         mac.save(filepath)
 
 #TO DO: 
         
 #1) OWL ONTOLOGY RULES
-#2) DOWNWARD DIRECTION OF RELATIONS
+#2) DOWNWARD DIRECTION OF RELATIONS DONE
 #3) SWRL RULES
