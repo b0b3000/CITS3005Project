@@ -1,30 +1,41 @@
 {% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
 %}Edit a procedure{% endblock %} {% block content %}
-<section id="add">
-    <h1>Add a new item</h1>
-    <form action="/create_procedure" method="post">
-        <div>
-            <label for="procedure_name">Procedure Name:</label>
-            <input type="text" id="procedure_name" name="procedure_name" required>
-        </div>
-        <div>
-            <label for="parts_required">Parts Required:</label>
-            <textarea id="parts_required" name="parts_required" rows="4" required></textarea>
-        </div>
-        <div>
-            <label for="tools_required">Tools Required:</label>
-            <textarea id="tools_required" name="tools_required" rows="4" required></textarea>
-        </div>
-        <ul id="steps_list"></ul>
-        <button type="button" onclick="addStep()">Add Step</button>
+<h1>Add a new item</h1>
+<form action="/create_procedure" method="post"></form>
+<div>
+    <label for="procedure_name">Procedure Name:</label>
+    <input type="text" id="procedure_name" name="procedure_name" required>
+</div>
+<div>
+    <label for="parts_required">Parts Required:</label>
+    <input type="text" id="parts_required" name="parts_required" rows="4" required></textarea>
+</div>
+<div>
+    <button type="button" onclick="addTool()">Add Tool</button>
+    <ul id="tools_list"></ul>
+    <script>
+        function addTool() {
+            const toolsList = document.getElementById('tools_list');
+            const newTool = document.createElement('li');
+            newTool.style.listStyleType = 'none';
+            const toolInput = document.createElement('input');
+            toolInput.type = 'text';
+            toolInput.name = 'tools_required[]';
+            toolInput.required = true;
+            newTool.appendChild(toolInput);
+            toolsList.appendChild(newTool);
+        }
+    </script>
+</div>
+<ul id="steps_list"></ul>
+<button type="button" onclick="addStep()">Add Step</button>
 
 
-        <div>
-            <button type="submit">Submit</button>
-        </div>
+<div>
+    <button type="submit" onclick="submitProcedure()">Submit</button>
+</div>
 
-    </form>
-</section>
+</form>
 
 {% endblock %} {% block scripts %}
 <script src="static/create.js"></script>

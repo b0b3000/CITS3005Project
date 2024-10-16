@@ -38,3 +38,8 @@ function addStep() {
 
     stepsList.appendChild(listItem);
 }
+
+
+function submitProcedure() {
+    
+}
