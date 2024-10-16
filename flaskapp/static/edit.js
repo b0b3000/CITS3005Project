@@ -78,7 +78,7 @@ function addTool() {
 }
 
 
-async function submitProcedure() {
+async function editProcedure() {
     console.log('Submitting procedure...');
     current_step_data = {};
     // get img data and step_entry for each step

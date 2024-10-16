@@ -144,7 +144,7 @@ async function submitProcedure() {
     }
 
     console.log(formData)
-    const result = await fetch('/edit_procedure', {
+    const result = await fetch('/create_procedure', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

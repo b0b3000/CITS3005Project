@@ -76,9 +76,11 @@ def get_ancestors(item_name: str, mac: Ontology):
 
 
 def get_procedure_info(procedure_uri: str, mac: Ontology):
-    print(procedure_uri)
+    print(f"URI: {procedure_uri}")
     query_uri = "http://ifixit.org/mac.owl#" + procedure_uri
     procedure = mac.search_one(iri=query_uri)
+
+
     name = procedure.has_name
     item_iri = procedure.has_item[0].iri
     item = mac.search_one(iri=item_iri).has_name
@@ -97,14 +99,16 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
 
     print(f"Steps: {procedure.has_step}")
     steps = []
-    for step in procedure.has_step:
+    for i, step in enumerate(procedure.has_step):
         current_step = mac.search_one(iri=step.iri)
 
         step_info = {
-            "number": current_step.step_number,
+            "number": i+ 1,
             "description": current_step.step_description,
             "img": current_step.has_image,
         }
+
+        print(f"INFO: {step_info}")
         steps.append(step_info)
 
     results = {

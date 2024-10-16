@@ -58,7 +58,7 @@ def result_viewer():
 
     # get the procedure information
     procedure_info = searches.get_procedure_info(result_uri, mac)
-    print(procedure_info["steps"])
+    print(procedure_info["steps"][0]["description"])
     return render_template("result_viewer.html", data=procedure_info)
 
 @app.route("/add_query", methods = ['POST'])
@@ -104,7 +104,7 @@ def search_results():
     print(f"Results: {results}")    
     return jsonify(results), 200
 
-@app.route("/edit_procedure", methods = ['GET', 'POST'])
+@app.route("/create_procedure", methods = ['GET', 'POST'])
 def add_procedure():
     # use pyshacl to validate the procedure add request
     new_procedure_data = request.get_json()
