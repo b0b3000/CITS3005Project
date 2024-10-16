@@ -20,7 +20,6 @@ mac = get_ontology("http://ifixit.org/mac.owl#")
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
 graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
-graph = graph
 
 @app.route('/')
 @app.route('/index')
@@ -89,7 +88,8 @@ def add_procedure():
     new_procedure_data = request.get_json()
     print(new_procedure_data)
     with mac:
-        add_new_procedure(ONTO_FILE_PATH, RDFXML_FILE_PATH,new_procedure_data, graph, mac)
+        add_new_procedure(ONTO_FILE_PATH,new_procedure_data, mac)
+        graph = default_world.as_rdflib_graph()
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
 
@@ -97,4 +97,12 @@ def add_procedure():
     # add the procedure to the ontology
 
     return jsonify("Procedure added"), 200
+
+
+@app.route("/get_ancestors", methods = ['GET', 'POST'])
+def get_ancestors():
+    item_name = request.get_json()
+    print(f"Item name: {item_name}")
+    ancestors = searches.get_ancestors(item_name, mac)
+    return jsonify(ancestors), 200
 

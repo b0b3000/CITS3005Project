@@ -72,7 +72,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                         for tool in step["Tools_extracted"]:
                                 # Add proper uri for tool 
                                 if tool != "NA":
-                                    tool_uri =tool.replace('/','~').replace(" ", "_").replace('"', "")
+                                    tool_uri = tool.replace('/','~').replace(" ", "_").replace('"', "")
 
                                     if tool_uri in toolbox_dict.keys():
                                         matching_tool = toolbox_dict[tool_uri]

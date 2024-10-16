@@ -177,3 +177,31 @@ function setTools() {
     }
 
 }
+
+async function getPossibleAncestors() {
+    const itemValue = document.getElementById('item').value;
+    const result = await fetch('/get_ancestors', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(itemValue)
+    }).then(response => response.json())
+        .then(data => {
+            const ancestorButton = document.getElementById('ancestor_button');
+            const dropdown = document.getElementById('ancestor_dropdown');
+            if (!dropdown) {
+                dropdown = document.createElement('select');
+                dropdown.id = 'ancestor_dropdown';
+                ancestorButton.parentNode.insertBefore(dropdown, ancestorButton.nextSibling);
+            }
+            dropdown.innerHTML = '';
+            data.forEach(ancestor => {
+                const option = document.createElement('option');
+                option.value = ancestor;
+                option.textContent = ancestor;
+                dropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching ancestors:', error));
+}
