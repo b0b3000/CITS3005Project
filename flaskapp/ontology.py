@@ -1,33 +1,29 @@
 from owlready2 import *
 from rdflib import *
 
-fix = Namespace("http://ifixit.org/mac.owl#")
-mac = get_ontology("http://ifixit.org/mac.owl")
-
-
-def create_ontology(mac, filepath):
+def create_ontology(mac: Ontology, filepath):
     with mac:
 
         # --------------------------------------------------------- TYPES ---------------------------------------------------------------------
         class Procedure(Thing):
             pass
 
-        class Step(Procedure):
+        class Step(Thing):
             pass
 
-        class Toolbox(Procedure):
+        class Toolbox(Thing):
             pass
 
-        class Tool(Toolbox):
+        class Tool(Thing):
             pass
 
-        class Item(Procedure):
+        class Item(Thing):
             pass
 
-        class Part(Item):
+        class Part(Thing):
             pass
 
-        class Image(Step):
+        class Image(Thing):
             pass
 
         # --------------------------------------------------------- RELATIONS ---------------------------------------------------------------------
