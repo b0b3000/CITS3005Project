@@ -877,54 +877,6 @@
   <rdf:type rdf:resource="#Image"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#name">
-  <rdf:type rdf:resource="#Procedure"/>
-  <has_item rdf:resource="#mac"/>
-  <has_part rdf:resource="#logic"/>
-  <has_toolbox rdf:resource="#name_toolbox"/>
-  <has_step rdf:resource="#name/0"/>
-  <has_item rdf:resource="#yerisora"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">name</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#mac">
-  <rdf:type rdf:resource="#Item"/>
-  <part_of rdf:resource="#Mac_Pro"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mac</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#logic">
-  <rdf:type rdf:resource="#Part"/>
-  <part_of rdf:resource="#mac"/>
-  <part_of rdf:resource="#yerisora"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">yerisora logic</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#name_toolbox">
-  <rdf:type rdf:resource="#Toolbox"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#asda">
-  <rdf:type rdf:resource="#Tool"/>
-  <used_in rdf:resource="#name/0"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asda</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#name/0">
-  <rdf:type rdf:resource="#Step"/>
-  <has_image rdf:resource="#http://127.0.0.1:5000/static/banner.png"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#http://127.0.0.1:5000/static/banner.png">
-  <rdf:type rdf:resource="#Image"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#yerisora">
-  <rdf:type rdf:resource="#Item"/>
-  <part_of rdf:resource="#Mac_Pro_First_Generation"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">yerisora</has_name>
-</owl:NamedIndividual>
-
 <swrl:Variable rdf:about="urn:swrl#proc1"/>
 
 <swrl:Variable rdf:about="urn:swrl#item"/>
