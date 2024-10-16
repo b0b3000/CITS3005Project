@@ -47,7 +47,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                 procedure.subprocedure.append(subprocedure)
 
                     #Add toolbox
-                    toolbox_uri = (procedure_uri + "/Toolbox").replace("#Procedure", "#Toolbox")
+                    toolbox_uri = procedure_uri.replace("#Procedure", "#Toolbox") + "_toolbox"
                     toolbox = mac.Toolbox(toolbox_uri)
                     procedure.has_toolbox.append(toolbox)
 
