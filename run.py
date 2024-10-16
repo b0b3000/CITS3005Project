@@ -16,7 +16,5 @@ mac = get_ontology(ONTO_FILE_PATH).load()
 
 graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
 
-queries.run_queries(graph, mac)
-
-#{"Name": "spudger", "Url": "http://www.ifixit.com/Tools/Spudger/IF145-002", "Thumbnail": "https://da2lh5cs8ikqj.cloudfront.net/cart-products/fIQ3oZSjd1yLgqpX.mini"}, 
+#queries.run_queries(graph, mac)
 
