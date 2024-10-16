@@ -1,8 +1,7 @@
 from owlready2 import *
 from rdflib import *
 
-
-def create_ontology(mac, filepath):
+def create_ontology(mac: Ontology, filepath):
     with mac:
 
         # --------------------------------------------------------- TYPES ---------------------------------------------------------------------

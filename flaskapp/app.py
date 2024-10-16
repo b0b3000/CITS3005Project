@@ -5,19 +5,22 @@ app = Flask(__name__)
 
 import ontology, build, queries, searches
 
+from process import add_new_procedure
+
 from owlready2 import *
 from rdflib import *
 
 ONTO_FILE_PATH = "ont/mac.owl"
-JSON_FILE_PATH = "ont/data.json"
+JSON_FILE_PATH = "ont/temp.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
-fix = Namespace("http://ifixit.org/mac.owl#")
-mac = get_ontology("http://ifixit.org/mac.owl")
+#fix = Namespace("http://ifixit.org/mac.owl#")
+mac = get_ontology("http://ifixit.org/mac.owl#")
 
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
 graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
+graph = graph
 
 @app.route('/')
 @app.route('/index')
@@ -80,10 +83,18 @@ def search_results():
     results = searches.run_search(search_type, search_value, graph)
     return jsonify(results), 200
 
-@app.route("/create_procedures", methods = ['GET', 'POST'])
+@app.route("/create_procedure", methods = ['GET', 'POST'])
 def add_procedure():
     # use pyshacl to validate the procedure add request
-    data = request.get_json()
-    print(data["procedure"])
-    return "Adding procedure"
+    new_procedure_data = request.get_json()
+    print(new_procedure_data)
+    with mac:
+        add_new_procedure(ONTO_FILE_PATH, RDFXML_FILE_PATH,new_procedure_data, graph, mac, fix)
+        file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
+        file.write(graph.serialize(format='turtle'))
+
+
+    # add the procedure to the ontology
+
+    return jsonify("Procedure added"), 200
 
