@@ -14,8 +14,8 @@ ONTO_FILE_PATH = "ont/mac.owl"
 JSON_FILE_PATH = "ont/temp.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
-fix = Namespace("http://ifixit.org/mac.owl#")
-mac = get_ontology("http://ifixit.org/mac.owl")
+#fix = Namespace("http://ifixit.org/mac.owl#")
+mac = get_ontology("http://ifixit.org/mac.owl#")
 
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()

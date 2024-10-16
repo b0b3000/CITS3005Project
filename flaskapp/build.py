@@ -9,28 +9,30 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
             for line in file:
                 try:
                     entry = json.loads(line)
-                    procedure_uri = fix + "Procedure/" + entry["Title"].replace('/','~').replace(" ", "_").replace('"', "")
+                    procedure_uri =  entry["Title"].replace('/','~').replace(" ", "_").replace('"', "")
 
                     # Add procedure to graph
                     procedure = mac.Procedure(procedure_uri)
+                    print(procedure_uri)
                     procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 
                     # Add item to graph
-                    item_uri = fix + "Item/" + entry["Category"].replace('/','~').replace(" ", "_").replace('"', "")
+                    item_uri = entry["Category"].replace('/','~').replace(" ", "_").replace('"', "")
                     item = mac.Item(item_uri)
                     item.has_name = entry["Category"]
-                    item.has_procedure.append(procedure)    
+                    item.has_procedure.append(procedure) 
+                    print(item_uri)   
 
                     #Add ancestor tree
                     current_ancestor = item
                     for item_ancestor in entry["Ancestors"]:
-                        item_ancestor_uri = fix + "Item/" + item_ancestor.replace('/','~').replace(" ", "_").replace('"', "")
+                        item_ancestor_uri = item_ancestor.replace('/','~').replace(" ", "_").replace('"', "")
                         item_ancestor = mac.Item(item_ancestor_uri)
                         current_ancestor.part_of.append(item_ancestor)
                         current_ancestor = item_ancestor
 
                     # Add part to graph
-                    part_uri = fix + "Part/" + entry["Category"].replace('/','~').replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace('/','~').replace(" ", "_").replace('"', "")
+                    part_uri = entry["Category"].replace('/','~').replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace('/','~').replace(" ", "_").replace('"', "")
                     part = mac.Part(part_uri)
                     part.has_name = entry["Category"] + " " + entry["Subject"]
                     part.part_of.append(item)
@@ -47,7 +49,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                                 procedure.subprocedure.append(subprocedure)
 
                     #Add toolbox
-                    toolbox_uri = procedure_uri.replace("#Procedure", "#Toolbox") + "_toolbox"
+                    toolbox_uri = procedure_uri + "_toolbox"
                     toolbox = mac.Toolbox(toolbox_uri)
                     procedure.has_toolbox.append(toolbox)
 
@@ -55,7 +57,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     toolbox_dict ={}
                     for tool in entry["Toolbox"]:
                         if tool['Url'] is not None:
-                            tool_uri = fix + tool['Name'].replace('/','~').replace(" ", "_").replace('"', "")
+                            tool_uri = tool['Name'].replace('/','~').replace(" ", "_").replace('"', "")
                             new_tool = mac.Tool(tool_uri)
                             new_tool.has_name = tool['Name']
                             new_tool.in_toolbox.append(toolbox)
@@ -75,7 +77,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                         for tool in step["Tools_extracted"]:
                                 # Add proper uri for tool 
                                 if tool != "NA":
-                                    tool_uri = fix + tool.replace('/','~').replace(" ", "_").replace('"', "")
+                                    tool_uri =tool.replace('/','~').replace(" ", "_").replace('"', "")
 
                                     if tool_uri in toolbox_dict.keys():
                                         matching_tool = toolbox_dict[tool_uri]
@@ -106,7 +108,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
         
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
-        graph.bind("fix", fix)
         file = open(rdfxml_file_path, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
 
