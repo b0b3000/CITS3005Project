@@ -100,14 +100,14 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
 
-        sync_reasoner_pellet(infer_property_values = True)
+        #sync_reasoner_pellet(infer_property_values = True)
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
         
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
         graph.bind("fix", fix)
-        file = open(rdfxml_file_path, mode="w")  
+        file = open(rdfxml_file_path, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
 
         #Return the RDFLib graph, and OWLReady2 ontology

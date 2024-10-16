@@ -34,13 +34,18 @@ def sparql():
 def search():
     return render_template('search.html', title='Search', search_functions=["Search by procedure", "Search by item", "Search by part", "Search by tool"])
 
+@app.route("/procedure")
+def procedure():
+    # get all relevant information for the procedure
+    return render_template('procedure.html', title='Procedure')
+
 @app.route("/user_guide")
 def user_guide():
     return render_template('guide.html', title='User Guide')
 
-@app.route("/edit")
+@app.route("/create")
 def edit_graph():
-    return render_template('edit.html', title='Edit Graph')
+    return render_template('create.html', title='Create')
 
 @app.route("/add_query", methods = ['POST'])
 def add_query():
@@ -75,15 +80,10 @@ def search_results():
     results = searches.run_search(search_type, search_value, graph)
     return jsonify(results), 200
 
-@app.route("/add_procedure", methods = ['GET', 'POST'])
+@app.route("/create_procedures", methods = ['GET', 'POST'])
 def add_procedure():
+    # use pyshacl to validate the procedure add request
+    data = request.get_json()
+    print(data["procedure"])
     return "Adding procedure"
-
-@app.route("/edit_procedure", methods = ['GET', 'POST'])
-def edit_procedure():
-    return "Editing procedure"
-
-
-
-
 
