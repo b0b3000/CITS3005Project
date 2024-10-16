@@ -19,7 +19,7 @@ mac = get_ontology("http://ifixit.org/mac.owl#")
 
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
-graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
+graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
 graph = graph
 
 @app.route('/')
@@ -89,7 +89,7 @@ def add_procedure():
     new_procedure_data = request.get_json()
     print(new_procedure_data)
     with mac:
-        add_new_procedure(ONTO_FILE_PATH, RDFXML_FILE_PATH,new_procedure_data, graph, mac, fix)
+        add_new_procedure(ONTO_FILE_PATH, RDFXML_FILE_PATH,new_procedure_data, graph, mac)
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
 

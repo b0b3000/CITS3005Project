@@ -3,7 +3,7 @@ from rdflib import *
 
 import json
 
-def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac):
+def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
         with open(json_file_path, 'r') as file:
             for line in file:
@@ -94,7 +94,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                     print(f"Error decoding JSON from line: {line.strip()}")
         #sync_reasoner(infer_property_values=True)
         #print(list(default_world.inconsistent_classes()))
-        sync_reasoner_pellet(infer_property_values=True)
+        #sync_reasoner_pellet(infer_property_values=True)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
