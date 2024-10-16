@@ -1,0 +1,90 @@
+from rdflib import Graph
+
+
+query_dict = {
+    "All procedures with more than 6 steps" : """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_step ?step .
+                }
+                GROUP BY ?procedure
+                HAVING (COUNT(?step) > 6)
+            """,
+    "All items that have more than 10 procedures written for them " : """PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?item
+                WHERE {
+                    ?item a ns:Item .
+                    ?item ns:has_procedure ?procedure .
+                }
+                GROUP BY ?item
+                HAVING (COUNT(?procedure) > 10)""",
+    "All procedures that include a tool that is never mentioned in the procedure steps" : """PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT DISTINCT ?procedure
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_toolbox ?toolbox .
+                    ?tool ns:in_toolbox ?toolbox .
+                    MINUS {
+                        ?procedure ns:has_step ?step .
+                        ?tool ns:used_in ?step .
+                    }
+                }""",
+    "Potential hazards in the procedure by identifying steps with works like careful and dangerous." : """PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure ?step
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_step ?step .
+                    ?step ns:step_description ?text .
+                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
+                }
+            """,
+}
+
+def get_queries():
+    return query_dict.keys()
+
+def add_query(query_name: str, query_value: str):
+    query_dict.update({query_name: "PREFIX ns: <http://ifixit.org/mac.owl#>" + query_value})
+
+def run_query(query_name: str, graph: Graph):
+    current_query = query_dict.get(query_name)
+    print(current_query)
+    if current_query == None:
+        return ["Query not found"]
+    results_list = []
+    try:
+        results = graph.query(current_query)
+    except:
+        return ["Query has no results"]
+    for row in results:
+        uri = ""
+        for item in row:
+            item = str(item).split("/")[-1].replace("_", " ")
+            uri += item + "/"
+        results_list.append(uri)
+    return results_list
+
+
+
+def run_queries(graph, mac):
+    with mac:
+        query4 = """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure ?step
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_step ?step .
+                    ?step ns:step_description ?text .
+                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
+                }
+            """
+        result4 = graph.query(query4)
+
+        print("\n\n\nPotential hazards in the procedure by identifying steps with works like careful and dangerous.\n\n\n")
+        for row in result4:
+            procedure = str(row[0]).split("/")[-1].replace("_", " ")
+            step = str(row[1]).split("/")[-1].replace("_", " ")
+            print(procedure, step)
+
