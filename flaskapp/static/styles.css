@@ -383,6 +383,13 @@ button:hover {
 
 }
 
+.step_entry {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .tool_buttons {
   display: flex;
   justify-content: space-between ;

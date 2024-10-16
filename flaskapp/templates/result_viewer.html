@@ -1,0 +1,72 @@
+
+{% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
+  %}Edit an existing procedure{% endblock %} {% block content %}
+
+  <div>
+      <div class="procedure_top">
+          <label for="procedure_name">Procedure Name:</label>
+          <button type="submit" onclick="editProcedure()">Submit</button>
+      </div>
+      <div class="entry_div">
+          <input type="text" id="procedure_name" placeholder="Provide a procedure name that describes the process of the procedure" value="{{ data.name }}">
+      </div>
+  </div>
+  
+  <hr>
+  </hr>
+  <label id="item_label" for="item">Item subject to repair</label>
+  <div class="entry_div">
+      <input type="text" id="item" value="{{ data.item }}" placeholder="Input the item being repaired. Can also use to select ancestors. If ancestor selection is empty, will assign to root  ">
+      <select id="ancestor_dropdown"> </select>
+      <button id="ancestor_button" onclick="getPossibleAncestors()" >Search Ancestors</button>
+  </div>
+  
+  <hr>
+  </hr>
+  <label id="part_label" for="part">Part used for repair</label>
+  <div class="entry_div">
+      <input type="text" id="part" placeholder="Input the part which is being used within the repair" value="{{ data.part }}">
+  </div>
+  
+  <hr>
+  </hr>
+  <div class="entry_div">
+      <ul id="tools_list">
+      {% for tool in data.toolbox %}
+        <li style="list-style-type: none;">
+          <input type="text" class="tools_entry" value="{{ tool }}"required="">
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="tool_buttons">
+      <button class="new_entries tool_button" type="button" onclick="addTool()">Add Tool</button>
+      <button class="new_entries tool_button" type="button" onclick="setTools()">Set Tools</button>
+  </div>
+  <hr>
+  </hr>
+  <div class="entry_div">
+      <ul id="steps_list">
+      {% for step in data.steps %}
+      <li class="step-item" style="display: none;">
+        <input type="file" accept="image/*" style="display: none;">
+        <img id="preview_1" src="/static/banner.png" class="step-image">
+        <label>Step {{ step.number }}</label>
+        <textarea name="step_{{ step.number }}" class="step_entry" placeholder="Describe the step..." oninput="autoExpand(this)">{{ step.description }}</textarea>
+        <ul class="tools-list" style="list-style: none;">
+          {% for tool in step.tools %}
+          <li><input type="text" class="tools_entry" value="{{ tool }}" required=""></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+      </ul>
+  </div>
+  <button class="new_entries" id="newStepButton" type="button" onclick="addStep()" style="display: none;">Add
+      Step</button>
+  
+  
+  {% endblock %} {% block scripts %}
+  <script src="static/edit.js"></script>
+  {% endblock %}
+  

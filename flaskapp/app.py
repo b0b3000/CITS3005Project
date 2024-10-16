@@ -11,7 +11,7 @@ from owlready2 import *
 from rdflib import *
 
 ONTO_FILE_PATH = "ont/mac.owl"
-JSON_FILE_PATH = "ont/data.json"
+JSON_FILE_PATH = "ont/temp.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
 #fix = Namespace("http://ifixit.org/mac.owl#")
@@ -45,9 +45,21 @@ def procedure():
 def user_guide():
     return render_template('guide.html', title='User Guide')
 
-@app.route("/create")
+@app.route("/create", methods = ['GET', 'POST'])
 def edit_graph():
     return render_template('create.html', title='Create')
+
+
+@app.route("/result_viewer", methods=['GET'])
+def result_viewer():
+    result_uri = request.args.get('data')
+    if not result_uri:
+        return jsonify({"error": "No data provided"}), 400
+
+    # get the procedure information
+    procedure_info = searches.get_procedure_info(result_uri, mac)
+    print(procedure_info["steps"])
+    return render_template("result_viewer.html", data=procedure_info)
 
 @app.route("/add_query", methods = ['POST'])
 def add_query():
@@ -67,9 +79,9 @@ def run_query():
     query_key = data['search_id']
     results = queries.run_query(query_key, graph) 
     if results == ["Query not found"]:
-        return jsonify({"error": "Query not found"}), 400
+        return jsonify({"error": "Query not found"}), 404
     if results == ["Query has no results"]:
-        return jsonify({"error": "Query has no results"}), 400
+        return jsonify({"error": "Query has no results"}), 404
     # redirect to query results page
     return jsonify(results), 200
 
@@ -80,10 +92,19 @@ def search_results():
     search_value = data['searchInput']
 
     results = searches.run_search(search_type, search_value, graph)
-    print(results)
+    for result in results:
+        print(result)
+    if results[0] == "Query not found":
+        print("Query not found")
+        return jsonify({"error": "Query not found"}), 404
+    
+    if results[0] == "Query has no results":
+        print("Query has no results")
+        return jsonify({"error": "Query has no results"}), 404
+    print(f"Results: {results}")    
     return jsonify(results), 200
 
-@app.route("/create_procedure", methods = ['GET', 'POST'])
+@app.route("/edit_procedure", methods = ['GET', 'POST'])
 def add_procedure():
     # use pyshacl to validate the procedure add request
     new_procedure_data = request.get_json()
@@ -93,10 +114,7 @@ def add_procedure():
         graph = default_world.as_rdflib_graph()
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
-
-
     # add the procedure to the ontology
-
     return jsonify("Procedure added"), 200
 
 
@@ -106,4 +124,6 @@ def get_ancestors():
     print(f"Item name: {item_name}")
     ancestors = searches.get_ancestors(item_name, mac)
     return jsonify(ancestors), 200
+
+
 

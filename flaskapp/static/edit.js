@@ -161,6 +161,10 @@ async function submitProcedure() {
 
 function setTools() {
     // make the tools uneditable
+    const stepItems = document.getElementsByClassName('step-item');
+    for (let item of stepItems) {
+        item.style.display = 'flex';
+    }
     const tools = Array.from(document.getElementsByClassName('tools_entry'));
     for (let tool of tools) {
         tool.readOnly = true;
