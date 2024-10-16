@@ -52,6 +52,11 @@ def create_ontology(mac, filepath):
             range = [Item]
             is_transitive = True
         
+        class transitive_part_of(ObjectProperty):
+            domain = [Or([Item, Part])]
+            range = [Item]
+            is_transitive = True
+
         class used_in(ObjectProperty):
             domain = [Tool]
             range = [Step]
@@ -81,19 +86,37 @@ def create_ontology(mac, filepath):
         class has_name(DataProperty, FunctionalProperty):
             domain = [Or([Procedure, Tool, Item, Part])]
             range = [str]
+
+        class Procedure(Thing):
+            has_step.min(1),  
+            has_toolbox.exactly(1),
+            has_item.exactly(1),
+            has_part.exactly(1),
+            has_name.exactly(1)
+        
+        class Part(Item):
+            has_name.exactly(1)
+        
+        class Item(Procedure):
+            has_name.exactly(1)
+        
+        class Tool(Toolbox):
+            has_name.exactly(1)
+        
+        class Step(Procedure):
+            step_number.exactly(1)
+            step_description.exactly(1)
         
         # ---------------------------------------------------- SWRL -----------------------------------------------------------------
         
-        #These 4 rules ensure that 
+        #Subprocedure
         rule1 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") #First Item is same as Second Item
         rule2 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2),  -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
         rule3 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
         rule4 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part1), part_of(?part1, ?part2), Procedure(?proc2), has_part(?proc2, ?part2) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Part
         
-        mac.save(filepath)
+        #Transitive 'part_of'
+        rule5 = Imp().set_as_rule("""Part(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
+        rule6 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
 
-#TO DO: 
-        
-#1) OWL ONTOLOGY RULES
-#2) DOWNWARD DIRECTION OF RELATIONS DONE
-#3) SWRL RULES
+        mac.save(filepath)
