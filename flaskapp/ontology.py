@@ -1,9 +1,6 @@
 from owlready2 import *
 from rdflib import *
 
-fix = Namespace("http://ifixit.org/mac.owl#")
-mac = get_ontology("http://ifixit.org/mac.owl")
-
 
 def create_ontology(mac, filepath):
     with mac:
@@ -12,22 +9,22 @@ def create_ontology(mac, filepath):
         class Procedure(Thing):
             pass
 
-        class Step(Procedure):
+        class Step(Thing):
             pass
 
-        class Toolbox(Procedure):
+        class Toolbox(Thing):
             pass
 
-        class Tool(Toolbox):
+        class Tool(Thing):
             pass
 
-        class Item(Procedure):
+        class Item(Thing):
             pass
 
-        class Part(Item):
+        class Part(Thing):
             pass
 
-        class Image(Step):
+        class Image(Thing):
             pass
 
         # --------------------------------------------------------- RELATIONS ---------------------------------------------------------------------
@@ -94,16 +91,16 @@ def create_ontology(mac, filepath):
             has_part.exactly(1),
             has_name.exactly(1)
         
-        class Part(Item):
+        class Part(Thing):
             has_name.exactly(1)
         
-        class Item(Procedure):
+        class Item(Thing):
             has_name.exactly(1)
         
-        class Tool(Toolbox):
+        class Tool(Thing):
             has_name.exactly(1)
         
-        class Step(Procedure):
+        class Step(Thing):
             step_number.exactly(1)
             step_description.exactly(1)
         
@@ -120,3 +117,9 @@ def create_ontology(mac, filepath):
         rule6 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
 
         mac.save(filepath)
+        mac.save("test.owl")
+
+        #TODO
+
+        # 1) pySHACL
+        # 2) 

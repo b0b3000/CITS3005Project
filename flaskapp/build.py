@@ -1,7 +1,8 @@
 from owlready2 import *
 from rdflib import *
-
 import json
+
+from shape_validation import validate_ontology_shacl
 
 def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac):
     with mac:
@@ -91,18 +92,24 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
 
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-        #sync_reasoner(infer_property_values=True)
-        #print(list(default_world.inconsistent_classes()))
-        sync_reasoner_pellet(infer_property_values=True)
+
+
+        sync_reasoner_pellet(infer_property_values=True) #REASON - IMPORTANT
+
+        
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
+
+        #APPLY SHACL CONSTRAINTS - IMPORTANT
         
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
-        graph.bind("fix", fix)
+        #graph.bind("fix", fix)
         file = open(rdfxml_file_path, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
+
+        validate_ontology_shacl(graph)
 
         #Return the RDFLib graph, and OWLReady2 ontology
         return graph, mac
