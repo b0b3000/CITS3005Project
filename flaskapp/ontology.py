@@ -51,7 +51,6 @@ def create_ontology(mac, filepath):
             domain = [Or([Item, Part])]
             range = [Item]
             is_transitive = True
-            inverse_property = has_part()
         
         class used_in(ObjectProperty):
             domain = [Tool]
@@ -85,17 +84,11 @@ def create_ontology(mac, filepath):
         
         # ---------------------------------------------------- SWRL -----------------------------------------------------------------
         
-        rule1 = Imp()
-        rule1.set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""")
-
-        rule2 = Imp()
-        rule2.set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2),  -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
-
-        rule3 = Imp()
-        rule3.set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
-
-        rule4 = Imp()
-        rule4.set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part1), part_of(?part1, ?part2), Procedure(?proc2), has_part(?proc2, ?part2) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Part
+        #These 4 rules ensure that 
+        rule1 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") #First Item is same as Second Item
+        rule2 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2),  -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
+        rule3 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
+        rule4 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part1), part_of(?part1, ?part2), Procedure(?proc2), has_part(?proc2, ?part2) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Part
         
         mac.save(filepath)
 
