@@ -80,7 +80,11 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
     query_uri = "http://ifixit.org/mac.owl#" + procedure_uri
     procedure = mac.search_one(iri=query_uri)
     name = procedure.has_name
-    item = procedure.has_item
+    item_iri = procedure.has_item[0].iri
+    item = mac.search_one(iri=item_iri).has_name
+
+    part_iri = procedure.has_part[0].iri
+    part = mac.search_one(iri=part_iri).has_name
     toolbox_ref = procedure.has_toolbox
     
     # get toolbox
@@ -107,7 +111,7 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
         "name": name,
         "item": item,
         "toolbox": tools,
-        "part": procedure.has_part,
+        "part": part,
         "steps": steps,
     }
     return results
