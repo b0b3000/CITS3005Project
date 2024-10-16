@@ -80,10 +80,14 @@ def search_results():
     results = searches.run_search(search_type, search_value, graph)
     return jsonify(results), 200
 
-@app.route("/create_procedures", methods = ['GET', 'POST'])
+@app.route("/create_procedure", methods = ['GET', 'POST'])
 def add_procedure():
     # use pyshacl to validate the procedure add request
-    data = request.get_json()
-    print(data["procedure"])
-    return "Adding procedure"
+    new_procedure_data = request.get_json()
+    print(new_procedure_data)
+
+    
+    # add the procedure to the ontology
+
+    return jsonify("Procedure added"), 200
 

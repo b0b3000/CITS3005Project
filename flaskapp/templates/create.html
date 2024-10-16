@@ -1,41 +1,48 @@
 {% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
 %}Edit a procedure{% endblock %} {% block content %}
-<h1>Add a new item</h1>
-<form action="/create_procedure" method="post"></form>
+<h1>Add a new Procedure</h1>
 <div>
-    <label for="procedure_name">Procedure Name:</label>
-    <input type="text" id="procedure_name" name="procedure_name" required>
+    <div class="procedure_top">
+        <label for="procedure_name">Procedure Name:</label>
+        <button type="submit" onclick="submitProcedure()">Submit</button>
+    </div>
+    <div class="entry_div">
+        <input type="text" id="procedure_name">
+    </div>
 </div>
-<div>
-    <label for="parts_required">Parts Required:</label>
-    <input type="text" id="parts_required" name="parts_required" rows="4" required></textarea>
+
+<hr>
+</hr>
+<label id="item_label" for="item">Item subject to repair</label>
+<div class="entry_div">
+    <input type="text" id="item">
 </div>
-<div>
-    <button type="button" onclick="addTool()">Add Tool</button>
+
+<hr>
+</hr>
+<label id="part_label" for="part">Part used for repair</label>
+
+<div class="entry_div">
+    <input type="text" id="part">
+</div>
+
+<hr>
+</hr>
+<div class="entry_div">
     <ul id="tools_list"></ul>
-    <script>
-        function addTool() {
-            const toolsList = document.getElementById('tools_list');
-            const newTool = document.createElement('li');
-            newTool.style.listStyleType = 'none';
-            const toolInput = document.createElement('input');
-            toolInput.type = 'text';
-            toolInput.name = 'tools_required[]';
-            toolInput.required = true;
-            newTool.appendChild(toolInput);
-            toolsList.appendChild(newTool);
-        }
-    </script>
 </div>
-<ul id="steps_list"></ul>
-<button type="button" onclick="addStep()">Add Step</button>
-
-
-<div>
-    <button type="submit" onclick="submitProcedure()">Submit</button>
+<div class="tool_buttons">
+    <button class="new_entries tool_button" type="button" onclick="addTool()">Add Tool</button>
+    <button class="new_entries tool_button" type="button" onclick="setTools()">Set Tools</button>
 </div>
+<hr>
+</hr>
+<div class="entry_div">
+    <ul id="steps_list"></ul>
+</div>
+<button class="new_entries" id="newStepButton" type="button" onclick="addStep()" style="display: none;">Add
+    Step</button>
 
-</form>
 
 {% endblock %} {% block scripts %}
 <script src="static/create.js"></script>
