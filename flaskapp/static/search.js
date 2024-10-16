@@ -17,9 +17,12 @@ function performSearch() {
     .then((response) => response.json())
     .then((results) => {
       console.log("Success:", results);
+
+      // Add result items to the lists
       for (let result of results) {
         const listItem = document.createElement("li");
         listItem.classList.add("result-item");
+        listItem.addEventListener("click", redirectResult () );
         const img = document.createElement("img");
         img.src = "/static/banner.png"; // Assuming result has an imageUrl property
         img.alt = result.imageAlt || "Search result image"; // Optional alt text
@@ -44,3 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
+
+
+
+function redirectResult() {
+  console.log("redirecting");
+  window.location.href = "/search_results";
+}
