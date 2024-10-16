@@ -90,16 +90,16 @@ def create_ontology(mac: Ontology, filepath):
             has_part.exactly(1),
             has_name.exactly(1)
         
-        class Part(Item):
+        class Part(Thing):
             has_name.exactly(1)
         
-        class Item(Procedure):
+        class Item(Thing):
             has_name.exactly(1)
         
-        class Tool(Toolbox):
+        class Tool(Thing):
             has_name.exactly(1)
         
-        class Step(Procedure):
+        class Step(Thing):
             step_number.exactly(1)
             step_description.exactly(1)
         
@@ -116,3 +116,9 @@ def create_ontology(mac: Ontology, filepath):
         rule6 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
 
         mac.save(filepath)
+        mac.save("test.owl")
+
+        #TODO
+
+        # 1) pySHACL
+        # 2) 
