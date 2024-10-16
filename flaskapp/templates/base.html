@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/" id="home-link">Home</a></li>
+        <li>
+          <a href="/user_guide" id="user-guide-link">User Guide</a>
+        </li>
+        <li>
+          <a href="/search" id="search-link">Search Dataset</a>
+        </li>
+        <li>
+          <a href="/sparql_queries" id="sparql-queries-link">SPARQL Queries</a>
+        </li>
+        <li>
+          <a href="/edit" id="edit-link">Edit Knowledge Graph</a>
+        </li>
+      </ul>
+
+    </nav>
+    <div class="banner">
+      <h1>{% block header %} Welcome to My Website {% endblock %}</h1>
+    </div>
+
+    <div class="content">{% block content %} {% endblock %}</div>
+    {% block scripts %} {% endblock %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentPath = window.location.pathname;
+        const links = {
+          "/": "home-link",
+          "/user_guide": "user-guide-link",
+          "/search": "search-link",
+          "/sparql_queries": "sparql-queries-link",
+          "/edit": "edit-link",
+        };
+        const currentLinkId = links[currentPath];
+        if (currentLinkId) {
+          document.getElementById(currentLinkId).classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>
