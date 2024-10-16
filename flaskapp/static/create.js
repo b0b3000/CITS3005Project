@@ -80,19 +80,34 @@ function addTool() {
 
 async function submitProcedure() {
     console.log('Submitting procedure...');
-    console.log('Procedure Name: ' + document.getElementById("procedure_name").value);
     current_step_data = {};
     // get img data and step_entry for each step
     const steps = Array.from(document.getElementsByClassName('step_entry')).map(input => input.value);
-    console.log("IMAGES: ");
-    console.log(document.getElementsByClassName('step-image'));
     const step_images = document.getElementsByClassName('step-image');
 
-    for (let i = 0; i < step_images.length; i++) {
-        console.log(step_images[i].
-            src);
+    const tools_lists = document.getElementsByClassName("tools-list")
+    tool_usage = {};
+    console.log(tools_lists);
+    console.log("Getting used tools");
+    for (let i = 0; i < tools_lists.length; i++) {
+        let tool_list_items = tools_lists[i].getElementsByClassName("tool-item");
+        let tools_used = [];
+        console.log(tool_list_items);
+        for (let tool_item of tool_list_items) {
+            let checkbox = tool_item.getElementsByTagName("input")[0];
+            console.log(checkbox.value);
+            if (checkbox.checked) {
+                console.log("Adding used tool: " + checkbox.value);
+                tools_used.push(checkbox.value);
+            }
+        }
+        console.log(tools_used)
+        tool_usage[i] = tools_used
+        console.log("Tool usage: " + tool_usage);
     }
-    
+
+
+
     for (let i = 0; i < steps.length; i++) {
         current_step_data[i] = { "img": step_images[i].src, "step_description": steps[i], "tools_used": tool_usage[i] };
     }
@@ -105,7 +120,7 @@ async function submitProcedure() {
     const formData = {
         procedure_name: document.getElementById('procedure_name').value,
         part: document.getElementById('part').value,
-        toolsList: Array.from(document.getElementsByClassName('tools_entry')).map(input => input.value),
+        toolbox: Array.from(document.getElementsByClassName('tools_entry')).map(input => input.value),
         item: document.getElementById('item').value,
         step_data: current_step_data
     };
@@ -121,15 +136,6 @@ async function submitProcedure() {
             document.body.removeChild(errorPopup);
         }, 3000);
         return;
-    }
-
-    console.log("item: " + formData.item);
-
-    console.log("Parts: " + formData.part);
-
-    console.log("Tools:");
-    for (let tool of formData.toolsList) {
-        console.log(tool);
     }
 
     console.log(formData)
