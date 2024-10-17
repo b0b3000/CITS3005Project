@@ -3,6 +3,7 @@ from rdflib import *
 import json
 
 def constrained_to_ont(mac):
+    report = ""
 
     with mac:
 
@@ -69,23 +70,30 @@ def constrained_to_ont(mac):
 
     if invalid:
         print("\nSummary of invalid instances:")
+        report+="Summary of invalid instances:\n"
         for invalid_instance in invalid:
             print(f" - {invalid_instance}")
+            report+=f" - {invalid_instance}\n"
+        
+        return False, report
+    
     else:
         print("All instances satisfy the ontology constraints.")
+        return True, report
 
 def reason_ontology(mac):
     with mac:
         consistent = False
+        report = ""
 
         try:
             
             sync_reasoner(infer_property_values=True, debug = 3)
-
-            if list(mac.inconsistent_classes()) or (constrained_to_ont(mac) == False):
-                print("Ontology has inconsistent classes as follows: ")
+            valid, report = constrained_to_ont (mac)
+            if list(mac.inconsistent_classes()) or (not valid):
+                print("Ontology is inconsistent")
                 for inconsistency in mac.inconsistent_classes():
-                    print("Inconsitency: ", inconsistency)
+                    report+= f"Inconsitency: {inconsistency}\n"
                     #consistent remains false
 
             else:
@@ -96,7 +104,7 @@ def reason_ontology(mac):
             print("Errors in ontology consistency")
             #consistent remains false
 
-    return consistent
+    return consistent, report
 
 def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
@@ -193,7 +201,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
         #dummyProc = mac.Procedure("dummyProcURI")
         #dummyProc = mac.Step("dummyProcURI")
 
-        ontology_consistency = reason_ontology(mac)
+        ontology_consistency, report = reason_ontology(mac)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
@@ -204,6 +212,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
         file.write(graph.serialize(format='turtle'))
 
         #Return the RDFLib graph, and OWLReady2 ontology
-        return graph, mac, ontology_consistency
+        return graph, mac, ontology_consistency, report
 
 
