@@ -415,7 +415,7 @@ button:hover {
 
 .tools_entry,
 .parts_entry,
-.entry {
+.entry_div {
   padding-top: 10px;
   width: 100%;
   display: flex;
@@ -439,7 +439,7 @@ hr {
   align-items: center;
 }
 
-#item_label, #part_label {
+#item_label, #part_label, #tools_label, #name_label {
   width: 100%;
   display: flex;
   justify-content: center;

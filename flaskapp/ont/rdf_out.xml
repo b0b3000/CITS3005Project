@@ -10,6 +10,14 @@
 <http://ifixit.org/mac.owl> a owl:Ontology,
         owl:Ontology .
 
+ns2:Cool_Rollercoaster a ns2:Procedure,
+        owl:NamedIndividual ;
+    ns2:has_item ns2:Rolelrcoaster ;
+    ns2:has_name "Cool Rollercoaster"^^xsd:string ;
+    ns2:has_part ns2:Wheel ;
+    ns2:has_step <http://ifixit.org/mac.owl#Cool_Rollercoaster/step0> ;
+    ns2:has_toolbox ns2:Cool_Rollercoaster_toolbox .
+
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)> a ns2:Procedure,
         owl:NamedIndividual ;
     ns2:has_item ns2:Mac_Pro_First_Generation ;
@@ -135,6 +143,10 @@ ns2:used_in a owl:ObjectProperty,
         ns2:Tool ;
     rdfs:range ns2:Step,
         ns2:Step .
+
+ns2:Cool_Rollercoaster_toolbox a ns2:Toolbox,
+        owl:NamedIndividual ;
+    ns2:has_tool ns2:asda .
 
 ns2:Mac a ns2:Item,
         owl:NamedIndividual ;
@@ -351,6 +363,11 @@ ns2:Mac_Pro a ns2:Item,
         ns2:phillips_screwdriver_long-handled,
         ns2:right-angle_magnetized_1_phillips_screwdriver .
 
+ns2:Wheel a ns2:Part,
+        owl:NamedIndividual ;
+    ns2:has_name "Rolelrcoaster Wheel"^^xsd:string ;
+    ns2:part_of ns2:Rolelrcoaster .
+
 ns2:anti-static_wrist_strap a ns2:Tool,
         owl:NamedIndividual ;
     ns2:has_name "anti-static wrist strap"^^xsd:string ;
@@ -368,11 +385,11 @@ ns2:asda a ns2:Procedure,
     ns2:has_part ns2:asdas ;
     ns2:has_step <http://ifixit.org/mac.owl#asda/step0> ;
     ns2:has_toolbox ns2:asda_toolbox ;
-    ns2:used_in <http://ifixit.org/mac.owl#asda/step0> .
+    ns2:used_in <http://ifixit.org/mac.owl#Cool_Rollercoaster/step0> .
 
 ns2:asda_toolbox a ns2:Toolbox,
         owl:NamedIndividual ;
-    ns2:has_tool ns2:asda .
+    ns2:has_tool ns2:asdas .
 
 ns2:high_content_rubbing_alcohol a ns2:Tool,
         owl:NamedIndividual ;
@@ -563,9 +580,6 @@ ns2:high_content_rubbing_alcohol a ns2:Tool,
 <http://ifixit.org/mac.owl#https://d3nevzfk7ii3be.cloudfront.net/igi/yAKVbIMAkuBMqQNd.standard> a ns2:Image,
         owl:NamedIndividual .
 
-<http://ifixit.org/mac.owl#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&s> a ns2:Image,
-        owl:NamedIndividual .
-
 ns2:lint-free_cloth a ns2:Tool,
         owl:NamedIndividual ;
     ns2:has_name "lint-free cloth"^^xsd:string ;
@@ -609,6 +623,11 @@ ns2:right-angle_magnetized_1_phillips_screwdriver a ns2:Tool,
     ns2:has_name "right-angle magnetized 1 phillips screwdriver"^^xsd:string ;
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step14>,
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step25> .
+
+<http://ifixit.org/mac.owl#Cool_Rollercoaster/step0> a ns2:Step,
+        owl:NamedIndividual ;
+    ns2:has_image <http://ifixit.org/mac.owl#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&s> ;
+    ns2:step_description "asda"^^xsd:string .
 
 ns2:Mac_Pro_First_Generation a ns2:Item,
         owl:NamedIndividual ;
@@ -703,13 +722,18 @@ ns2:Mac_Pro_First_Generation a ns2:Item,
     ns2:step_description "Handle the card only by the edges.Do not touch its connectors or any of the components.Lift the card straight out from the connector to remove it, and insert it straight into the connector to install it.Do not rock the card from side to side and don’t force the card into the slot.Once the replacement card is installed, pull on it gently to check. 1) Release the small locking clip at the front of the card’s logic board connector by pushing the clip up toward the media shelf. 2) Holding the card by the top corners, pull up the card and remove it from its expansion slot."^^xsd:string ;
     ns2:step_number 8 .
 
-ns2:Root a ns2:Item,
-        owl:NamedIndividual .
+ns2:Rolelrcoaster a ns2:Item,
+        owl:NamedIndividual ;
+    ns2:has_name "Rolelrcoaster"^^xsd:string ;
+    ns2:part_of ns2:Root .
 
 <http://ifixit.org/mac.owl#asda/step0> a ns2:Step,
         owl:NamedIndividual ;
     ns2:has_image <http://ifixit.org/mac.owl#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&s> ;
-    ns2:step_description "asdas"^^xsd:string .
+    ns2:step_description "asdasd"^^xsd:string .
+
+<http://ifixit.org/mac.owl#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&s> a ns2:Image,
+        owl:NamedIndividual .
 
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step1> a ns2:Step,
         owl:NamedIndividual ;
@@ -729,12 +753,17 @@ ns2:Root a ns2:Item,
     ns2:step_description "Perform the following steps once you have installed the new processors and ready to re-install the heatsinks. Preparing an EXISTING Heatsink for Re-installation. If you have a new heatsink, follow the NEW Heatsink procedure. Using the alcohol pad included with the logic board or processor replacement part, clean off any used thermal grease from the processor and the bottom of the heatsink. Using the thermal grease included with the logic board or processor replacement part, apply one dot of fresh grease to the raised square area on the bottom of the heatsink. Spread the grease evenly across the square to a thickness of approximately 1 mm. Warning: Do not apply more grease than recommended. The grease must not overflow the heatsink and come in contact with the processor connector."^^xsd:string ;
     ns2:step_number 38 .
 
+ns2:Root a ns2:Item,
+        owl:NamedIndividual .
+
 ns2:asdas a ns2:Item,
         ns2:Part,
+        ns2:Tool,
         owl:NamedIndividual ;
-    ns2:has_name "asdas asdas"^^xsd:string ;
+    ns2:has_name "asdas"^^xsd:string ;
     ns2:part_of ns2:Root,
-        ns2:asdas .
+        ns2:asdas ;
+    ns2:used_in <http://ifixit.org/mac.owl#asda/step0> .
 
 <urn:swrl#item1> a ns1:Variable,
         ns1:Variable .
@@ -745,17 +774,17 @@ ns2:asdas a ns2:Item,
 <urn:swrl#part> a ns1:Variable,
         ns1:Variable .
 
-ns2:Toolbox a owl:Class,
-        owl:Class ;
-    rdfs:subClassOf owl:Thing,
-        owl:Thing .
-
 ns2:has_part a owl:ObjectProperty,
         owl:ObjectProperty ;
     rdfs:domain ns2:Procedure,
         ns2:Procedure ;
     rdfs:range ns2:Part,
         ns2:Part .
+
+ns2:Toolbox a owl:Class,
+        owl:Class ;
+    rdfs:subClassOf owl:Thing,
+        owl:Thing .
 
 ns2:subprocedure a owl:ObjectProperty,
         owl:ObjectProperty ;
@@ -774,13 +803,13 @@ ns2:has_item a owl:ObjectProperty,
     rdfs:range ns2:Item,
         ns2:Item .
 
+<urn:swrl#part3> a ns1:Variable,
+        ns1:Variable .
+
 ns2:Part a owl:Class,
         owl:Class ;
     rdfs:subClassOf owl:Thing,
         owl:Thing .
-
-<urn:swrl#part3> a ns1:Variable,
-        ns1:Variable .
 
 <urn:swrl#part1> a ns1:Variable,
         ns1:Variable .

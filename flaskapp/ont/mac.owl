@@ -882,9 +882,9 @@
   <has_item rdf:resource="#asdas"/>
   <has_toolbox rdf:resource="#asda_toolbox"/>
   <has_part rdf:resource="#asdas"/>
-  <rdf:type rdf:resource="#Tool"/>
   <has_step rdf:resource="#asda/step0"/>
-  <used_in rdf:resource="#asda/step0"/>
+  <rdf:type rdf:resource="#Tool"/>
+  <used_in rdf:resource="#Cool_Rollercoaster/step0"/>
   <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asda</has_name>
 </owl:NamedIndividual>
 
@@ -893,22 +893,56 @@
   <part_of rdf:resource="#Root"/>
   <rdf:type rdf:resource="#Part"/>
   <part_of rdf:resource="#asdas"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asdas asdas</has_name>
+  <rdf:type rdf:resource="#Tool"/>
+  <used_in rdf:resource="#asda/step0"/>
+  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asdas</has_name>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#asda_toolbox">
   <rdf:type rdf:resource="#Toolbox"/>
-  <has_tool rdf:resource="#asda"/>
+  <has_tool rdf:resource="#asdas"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#asda/step0">
   <rdf:type rdf:resource="#Step"/>
   <has_image rdf:resource="#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&amp;s"/>
-  <step_description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asdas</step_description>
+  <step_description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asdasd</step_description>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&amp;s">
   <rdf:type rdf:resource="#Image"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Cool_Rollercoaster">
+  <rdf:type rdf:resource="#Procedure"/>
+  <has_item rdf:resource="#Rolelrcoaster"/>
+  <has_toolbox rdf:resource="#Cool_Rollercoaster_toolbox"/>
+  <has_part rdf:resource="#Wheel"/>
+  <has_step rdf:resource="#Cool_Rollercoaster/step0"/>
+  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cool Rollercoaster</has_name>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Rolelrcoaster">
+  <rdf:type rdf:resource="#Item"/>
+  <part_of rdf:resource="#Root"/>
+  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rolelrcoaster</has_name>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Wheel">
+  <rdf:type rdf:resource="#Part"/>
+  <part_of rdf:resource="#Rolelrcoaster"/>
+  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rolelrcoaster Wheel</has_name>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Cool_Rollercoaster_toolbox">
+  <rdf:type rdf:resource="#Toolbox"/>
+  <has_tool rdf:resource="#asda"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Cool_Rollercoaster/step0">
+  <rdf:type rdf:resource="#Step"/>
+  <has_image rdf:resource="#https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2J91RNQHF_b_Ac4ZNeiMR_1FwPsVG2cTdwA&amp;s"/>
+  <step_description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">asda</step_description>
 </owl:NamedIndividual>
 
 <swrl:Variable rdf:about="urn:swrl#proc1"/>

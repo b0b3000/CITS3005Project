@@ -9,22 +9,14 @@ function addStep() {
     imagePreview.id = `preview_${stepCount}`;
     imagePreview.src = '/static/banner.png';
     imagePreview.classList.add('step-image');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.style.display = 'none';
 
     imagePreview.addEventListener('click', function () {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', function () {
-        if (fileInput.files && fileInput.files[0]) {
-            imagePreview.src = URL.createObjectURL(fileInput.files[0]);
+        const imgAddress = prompt('Please enter the image address:');
+        if (imgAddress) {
+            imagePreview.src = imgAddress;
         }
     });
-
-    listItem.appendChild(fileInput);
+    
     listItem.appendChild(imagePreview);
 
     const stepLabel = document.createElement('label');
