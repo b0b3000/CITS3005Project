@@ -77,7 +77,7 @@ def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology)
         text = ""
         for item in row:
             item = str(item).removeprefix("http://ifixit.org/mac.owl#")
-            text += item + ":"
+            text += item + " "
         results_list.append({"text" : str(text)})
 
     return results_list
@@ -103,10 +103,12 @@ def get_ancestors(item_name: str, mac: Ontology):
 
 def get_procedure_info(procedure_uri: str, mac: Ontology):
     query_uri = "http://ifixit.org/mac.owl#" + procedure_uri
+    print(f"Query URI: {query_uri}")
     procedure = mac.search_one(iri=query_uri)
+    print(f"Procedure: {procedure}")
+
     if procedure == None:
         return {"error": "Procedure not found"}
-    print(f"Procedure: {procedure}")
     
     name = procedure.has_name
     item_iri = procedure.has_item[0].iri
