@@ -79,6 +79,8 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
     print(f"URI: {procedure_uri}")
     query_uri = "http://ifixit.org/mac.owl#" + procedure_uri
     procedure = mac.search_one(iri=query_uri)
+    if procedure == None:
+        return {"error": "Procedure not found"}
 
 
     name = procedure.has_name
@@ -94,10 +96,8 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
     toolbox = mac.search_one(iri=toolbox_uri)
     tools = []
     for tool in toolbox.has_tool:
-        print(f"Tool {tool.has_name}")
         tools.append(tool.has_name)
 
-    print(f"Steps: {procedure.has_step}")
     steps = []
     for i, step in enumerate(procedure.has_step):
         current_step = mac.search_one(iri=step.iri)
@@ -106,9 +106,9 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
             "number": i+ 1,
             "description": current_step.step_description,
             "img": current_step.has_image,
+            # TODO, implemeted tools used in step
         }
 
-        print(f"INFO: {step_info}")
         steps.append(step_info)
 
     results = {

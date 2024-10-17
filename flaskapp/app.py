@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 import ontology, build, queries, searches
 
-from process import add_new_procedure
+from process import add_new_procedure, delete_procedure
 
 from owlready2 import *
 from rdflib import *
@@ -46,19 +46,22 @@ def user_guide():
     return render_template('guide.html', title='User Guide')
 
 @app.route("/create", methods = ['GET', 'POST'])
-def edit_graph():
+def create():
     return render_template('create.html', title='Create')
 
 
 @app.route("/result_viewer", methods=['GET'])
 def result_viewer():
     result_uri = request.args.get('data')
+    print(f"View URI: {result_uri}")
     if not result_uri:
         return jsonify({"error": "No data provided"}), 400
 
     # get the procedure information
     procedure_info = searches.get_procedure_info(result_uri, mac)
-    print(procedure_info["steps"][0]["description"])
+    if "error" in procedure_info.keys():
+        return render_template("result_viewer.html",data={"name": "No procedure found"})
+    print(f"View Procedure info: {procedure_info}")
     return render_template("result_viewer.html", data=procedure_info)
 
 @app.route("/add_query", methods = ['POST'])
@@ -124,6 +127,8 @@ def get_ancestors():
     print(f"Item name: {item_name}")
     ancestors = searches.get_ancestors(item_name, mac)
     return jsonify(ancestors), 200
+
+
 
 
 

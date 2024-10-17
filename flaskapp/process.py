@@ -88,3 +88,10 @@ def add_new_procedure(ontology_file_path: str, form_data: dict, mac: Ontology):
     mac.save(ontology_file_path)
 
     
+def delete_procedure(ontology_file_path: str, procedure_uri: str, mac: Ontology):
+    print(f"Searching for procedure: {procedure_uri}")
+    procedure = mac.search_one(iri=procedure_uri)
+
+    if procedure == None:
+        return {"error": "Procedure not found"}
+    return {"message": "Procedure deleted"}
