@@ -1,113 +1,89 @@
-{% extends "base.html" %} {% block title %}Search{% endblock %} {% block header
-%}Search the iFixit database{% endblock %} {% block content %}
-<h1>Ontology User Guide</h1>
+{% extends "base.html" %} 
+{% block title %}Search{% endblock %} 
+{% block header %} 
+  <header class="header_section">Search the iFixit database</header> 
+{% endblock %} 
+{% block content %}
 
-<div class="section">
-  <h2>Overview</h2>
-  <p>
-    This ontology defines a structured way to model knowledge about procedures,
-    steps, tools, and related entities. It provides a logical representation for
-    processes, the steps within them, and the tools or parts involved in those
-    processes.
-  </p>
+<div class="content_section">
+  <h1 class="title_heading">Ontology User Guide</h1>
+
+  <div class="section overview_section">
+    <h2 class="section_heading">Overview</h2>
+    <p class="guide_text">
+      This ontology defines a structured way to model knowledge about procedures, steps, tools, and related entities. It provides a logical representation for processes, the steps within them, and the tools or parts involved in those processes.
+    </p>
+  </div>
+
+  <div class="section classes_section">
+    <h2 class="guide_heading">Classes (Types of Entities)</h2>
+    <ul class="entity_list">
+      <li class="guide_list_item"><strong>Procedure</strong>: Represents a process or method.</li>
+      <li class="guide_list_item"><strong>Step</strong>: Represents a step within a procedure.</li>
+      <li class="guide_list_item"><strong>Toolbox</strong>: Represents a container for tools.</li>
+      <li class="guide_list_item"><strong>Tool</strong>: Represents an individual tool.</li>
+      <li class="guide_list_item"><strong>Item</strong>: Represents a general item.</li>
+      <li class="guide_list_item"><strong>Part</strong>: Represents a part of an item.</li>
+      <li class="guide_list_item"><strong>Image</strong>: Represents an image associated with a step.</li>
+    </ul>
+  </div>
+
+  <div class="section properties_section">
+    <h2 class="guide_heading">Object Properties (Relationships Between Entities)</h2>
+    <ul class="relationship_list">
+      <li class="guide_list_item"><strong>has_step</strong>: Links a procedure to its steps.</li>
+      <li class="guide_list_item"><strong>has_tool</strong>: Links a toolbox to its tools.</li>
+      <li class="guide_list_item"><strong>has_image</strong>: Links a step to its images.</li>
+      <li class="guide_list_item"><strong>has_part</strong>: Links a procedure to its parts.</li>
+      <li class="guide_list_item"><strong>part_of</strong>: Indicates that an item or part is part of another item (transitive).</li>
+      <li class="guide_list_item"><strong>used_in</strong>: Links a tool to the step it is used in.</li>
+      <li class="guide_list_item"><strong>has_item</strong>: Links a procedure to its items.</li>
+      <li class="guide_list_item"><strong>has_toolbox</strong>: Links a procedure to its toolbox.</li>
+      <li class="guide_list_item"><strong>subprocedure</strong>: Indicates that one procedure is a subprocedure of another (transitive).</li>
+    </ul>
+  </div>
+
+  <div class="section data_properties_section">
+    <h2 class="guide_heading">Data Properties (Attributes of Entities)</h2>
+    <ul class="attributes_list">
+      <li class="guide_list_item"><strong>step_number</strong>: An integer representing the number of a step.</li>
+      <li class="guide_list_item"><strong>step_description</strong>: A string describing a step.</li>
+      <li class="guide_list_item"><strong>has_name</strong>: A string representing the name of a procedure, tool, item, or part.</li>
+    </ul>
+  </div>
+
+  <div class="section constraints_section">
+    <h2 class="guide_heading">Constraints</h2>
+    <ul class="constraints_list">
+      <li class="guide_list_item"><strong>Procedure</strong>: Must have at least one step, exactly one toolbox, one item, one part, and one name.</li>
+      <li class="guide_list_item"><strong>Part, Item, Tool</strong>: Must have exactly one name.</li>
+      <li class="guide_list_item"><strong>Step</strong>: Must have exactly one step number and one step description.</li>
+    </ul>
+  </div>
+
+  <div class="section swrl_rules_section">
+    <h2 class="guide_heading">SWRL Rules (Logical Implications)</h2>
+    <p class="guide_text">
+      The following rules ensure logical consistency in the ontology:
+    </p>
+    <ul class="rules_list">
+      <li class="guide_list_item"><strong>Rule 1-9</strong>: Ensure that a procedure has steps, toolboxes, items, and parts, and that tools are used in steps.</li>
+      <li class="guide_list_item"><strong>Additional Rules</strong>: Handle subprocedures, tool usage in steps, and the transitivity of the <code>part_of</code> relationship.</li>
+    </ul>
+  </div>
+
+  <div class="section disjoint_section">
+    <h2 class="guide_heading">Disjoint Classes</h2>
+    <p class="guide_text">
+      Disjointness ensures that an entity cannot belong to two specific classes at the same time:
+    </p>
+    <ul class="disjoint_list">
+      <li class="guide_list_item"><strong>Procedure and Step</strong>: Ensures that an entity cannot be both a procedure and a step.</li>
+    </ul>
+  </div>
 </div>
 
-<div class="section">
-  <h2>Classes (Types of Entities)</h2>
-  <ul>
-    <li><strong>Procedure</strong>: Represents a process or method.</li>
-    <li><strong>Step</strong>: Represents a step within a procedure.</li>
-    <li><strong>Toolbox</strong>: Represents a container for tools.</li>
-    <li><strong>Tool</strong>: Represents an individual tool.</li>
-    <li><strong>Item</strong>: Represents a general item.</li>
-    <li><strong>Part</strong>: Represents a part of an item.</li>
-    <li><strong>Image</strong>: Represents an image associated with a step.</li>
-  </ul>
-</div>
-
-<div class="section">
-  <h2>Object Properties (Relationships Between Entities)</h2>
-  <ul>
-    <li><strong>has_step</strong>: Links a procedure to its steps.</li>
-    <li><strong>has_tool</strong>: Links a toolbox to its tools.</li>
-    <li><strong>has_image</strong>: Links a step to its images.</li>
-    <li><strong>has_part</strong>: Links a procedure to its parts.</li>
-    <li>
-      <strong>part_of</strong>: Indicates that an item or part is part of
-      another item (transitive).
-    </li>
-    <li><strong>used_in</strong>: Links a tool to the step it is used in.</li>
-    <li><strong>has_item</strong>: Links a procedure to its items.</li>
-    <li><strong>has_toolbox</strong>: Links a procedure to its toolbox.</li>
-    <li>
-      <strong>subprocedure</strong>: Indicates that one procedure is a
-      subprocedure of another (transitive).
-    </li>
-  </ul>
-</div>
-
-<div class="section">
-  <h2>Data Properties (Attributes of Entities)</h2>
-  <ul>
-    <li>
-      <strong>step_number</strong>: An integer representing the number of a
-      step.
-    </li>
-    <li><strong>step_description</strong>: A string describing a step.</li>
-    <li>
-      <strong>has_name</strong>: A string representing the name of a procedure,
-      tool, item, or part.
-    </li>
-  </ul>
-</div>
-
-<div class="section">
-  <h2>Constraints</h2>
-  <ul>
-    <li>
-      <strong>Procedure</strong>: Must have at least one step, exactly one
-      toolbox, one item, one part, and one name.
-    </li>
-    <li><strong>Part, Item, Tool</strong>: Must have exactly one name.</li>
-    <li>
-      <strong>Step</strong>: Must have exactly one step number and one step
-      description.
-    </li>
-  </ul>
-</div>
-
-<div class="section">
-  <h2>SWRL Rules (Logical Implications)</h2>
-  <p>The following rules ensure logical consistency in the ontology:</p>
-  <ul>
-    <li>
-      <strong>Rule 1-9</strong>: Ensure that a procedure has steps, toolboxes,
-      items, and parts, and that tools are used in steps.
-    </li>
-    <li>
-      <strong>Additional Rules</strong>: Handle subprocedures, tool usage in
-      steps, and the transitivity of the <code>part_of</code> relationship.
-    </li>
-  </ul>
-</div>
-
-<div class="section">
-  <h2>Disjoint Classes</h2>
-  <p>
-    Disjointness ensures that an entity cannot belong to two specific classes at
-    the same time:
-  </p>
-  <ul>
-    <li>
-      <strong>Procedure and Step</strong>: Ensures that an entity cannot be both
-      a procedure and a step.
-    </li>
-  </ul>
-</div>
-
-<footer>
-  <p>&copy; 2024 Ontology Guide. All rights reserved.</p>
-</footer>
-{% endblock %} {% block scripts %}
-<script src="static/search.js"></script>
+{% endblock %} 
+{% block scripts %} 
+<script src="static/search.js" class="scripts_section"></script> 
 {% endblock %}

@@ -3,7 +3,6 @@
 <div>
     <div class="procedure_top">
         <label for="procedure_name">Procedure Name:</label>
-        <button type="submit" onclick="submitProcedure()">Submit</button>
     </div>
     <div class="entry_div">
         <input type="text" id="procedure_name" placeholder="Provide a procedure name that describes the process of the procedure">
@@ -42,8 +41,10 @@
 </div>
 <button class="new_entries" id="newStepButton" type="button" onclick="addStep()" style="display: none;">Add
     Step</button>
+    <button type="submit" id="submitbutton" onclick="submitProcedure()">Submit</button>
 
 
-{% endblock %} {% block scripts %}
+{% endblock %} 
+{% block scripts %}
 <script src="static/create.js"></script>
 {% endblock %}
