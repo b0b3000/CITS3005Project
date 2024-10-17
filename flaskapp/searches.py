@@ -51,15 +51,9 @@ def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology)
     for row in results:
         print(f"Row: {row}")
         uri = ""
-        
         for item in row:
             item = str(item).removeprefix("http://ifixit.org/mac.owl#")
-            print(f"Searching for: {item}")
-            query_uri = "http://ifixit.org/mac.owl#" + item
-            current_procedure = mac.search_one(iri=query_uri)
-            preview_img = current_procedure.has_step[0].has_image[0].iri
-            img_src = preview_img.removeprefix("http://ifixit.org/mac.owl#")
-            results_list.append({"text" : str(item), "img_src":  img_src})
+            results_list.append({"text" : str(item)})
     return results_list
 
 

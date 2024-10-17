@@ -37,14 +37,10 @@ async function performSearch() {
       const listItem = document.createElement("li");
       listItem.classList.add("result-item");
 
-      const img = document.createElement("img");
-      img.addEventListener("click", displayResult);
-      img.src = result.img_src; // Assuming result has an imageUrl property
-      img.alt = result.imageAlt || "Search result image"; // Optional alt text
       const label = document.createElement("label");
       label.textContent = result.text;
+      label.addEventListener("click", displayResult);
       label.classList.add("result-label");
-      listItem.appendChild(img);
       listItem.appendChild(label);
       searchResults.appendChild(listItem);
     }
