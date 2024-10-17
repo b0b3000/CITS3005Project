@@ -5,7 +5,7 @@ from owlready2 import *
 search_dict = {}
 
 search_dict[
-    "Search procedures by item"
+    "Search procedures"
 ] = """
 PREFIX ns: <http://ifixit.org/mac.owl#>
                 SELECT ?procedure
@@ -31,7 +31,7 @@ def get_search_functions():
     return search_dict.keys()
 
 
-def run_search(search_type: str, search_input: str, graph: Graph):
+def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology):
     current_search = search_dict.get(search_type)
     current_query = current_search.replace("keyword", search_input)
     print(current_query)
@@ -51,9 +51,15 @@ def run_search(search_type: str, search_input: str, graph: Graph):
     for row in results:
         print(f"Row: {row}")
         uri = ""
+        
         for item in row:
             item = str(item).removeprefix("http://ifixit.org/mac.owl#")
-            results_list.append(str(item))
+            print(f"Searching for: {item}")
+            query_uri = "http://ifixit.org/mac.owl#" + item
+            current_procedure = mac.search_one(iri=query_uri)
+            preview_img = current_procedure.has_step[0].has_image[0].iri
+            img_src = preview_img.removeprefix("http://ifixit.org/mac.owl#")
+            results_list.append({"text" : str(item), "img_src":  img_src})
     return results_list
 
 
@@ -105,10 +111,8 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
         step_info = {
             "number": i+ 1,
             "description": current_step.step_description,
-            "img": current_step.has_image,
-            # TODO, implemeted tools used in step
+            "img": str(current_step.has_image[0].iri).removeprefix("http://ifixit.org/mac.owl#"),
         }
-
         steps.append(step_info)
 
     results = {

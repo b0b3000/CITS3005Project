@@ -33,15 +33,19 @@ async function performSearch() {
 
     // Add result items to the lists
     for (let result of results) {
+      console.log(result);
       const listItem = document.createElement("li");
       listItem.classList.add("result-item");
 
       const img = document.createElement("img");
       img.addEventListener("click", displayResult);
-      img.src = "/static/banner.png"; // Assuming result has an imageUrl property
+      img.src = result.img_src; // Assuming result has an imageUrl property
       img.alt = result.imageAlt || "Search result image"; // Optional alt text
-      listItem.textContent = result;
+      const label = document.createElement("label");
+      label.textContent = result.text;
+      label.classList.add("result-label");
       listItem.appendChild(img);
+      listItem.appendChild(label);
       searchResults.appendChild(listItem);
     }
   } catch (error) {

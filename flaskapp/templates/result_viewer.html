@@ -43,7 +43,7 @@
       <ul id="steps_list">
       {% for step in data.steps %}
       <li class="step-item" >
-        <img id="preview_1" src="/static/banner.png" class="step-image">
+        <img id="preview_1" src="{{ step.img }}" class="step-image">
         <label> Step {{ step.number }}: </label>
         <textarea name="step_{{ step.number }}" class="step_entry" placeholder="Describe the step..." oninput="autoExpand(this)" readonly style="height:200px;"  >{{ step.description }}</textarea>
         <ul class="tools-list" style="list-style: none;">

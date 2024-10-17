@@ -20,7 +20,12 @@ mac = get_ontology("http://ifixit.org/mac.owl#")
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
 graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
+# Configure the upload set
 
+# Ensure the upload directory exists
+if not os.path.exists('uploads/images'):
+    os.makedirs('uploads/images')
+    
 @app.route('/')
 @app.route('/index')
 def index():
@@ -94,17 +99,14 @@ def search_results():
     search_type = data['searchFunction']
     search_value = data['searchInput']
 
-    results = searches.run_search(search_type, search_value, graph)
+    results = searches.run_search(search_type, search_value, graph, mac)
     for result in results:
         print(result)
     if results[0] == "Query not found":
-        print("Query not found")
         return jsonify({"error": "Query not found"}), 404
     
     if results[0] == "Query has no results":
-        print("Query has no results")
         return jsonify({"error": "Query has no results"}), 404
-    print(f"Results: {results}")    
     return jsonify(results), 200
 
 @app.route("/create_procedure", methods = ['GET', 'POST'])
@@ -127,8 +129,4 @@ def get_ancestors():
     print(f"Item name: {item_name}")
     ancestors = searches.get_ancestors(item_name, mac)
     return jsonify(ancestors), 200
-
-
-
-
 
