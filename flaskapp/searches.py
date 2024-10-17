@@ -15,7 +15,7 @@ WHERE {
 """
 
 search_dict["Retrieve All Steps with a Keyword in Description "] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?step    ?description
+SELECT ?step ?description
 WHERE {
     ?step a ns:Step .
     ?step ns:step_description ?description .
