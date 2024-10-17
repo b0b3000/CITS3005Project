@@ -31,7 +31,7 @@ query_dict = {
                         ?tool ns:used_in ?step .
                     }
                 }""",
-    "Potential hazards in the procedure by identifying steps with works like careful and dangerous." : """PREFIX ns: <http://ifixit.org/mac.owl#>
+    "All procedures with potential hazards, with steps containing words like 'careful' and 'dangerous'." : """PREFIX ns: <http://ifixit.org/mac.owl#>
                 SELECT ?procedure ?step
                 WHERE {
                     ?procedure a ns:Procedure .
