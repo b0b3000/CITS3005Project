@@ -34,7 +34,7 @@ def add_new_procedure(ontology_file_path: str, form_data: dict, mac: Ontology):
     # Add part to graph
     part_uri = form_data["part"].replace('/','~').replace(" ", "_").replace('"', "")
     part = mac.Part(part_uri)
-    part.has_name = form_data["item"] + " " + form_data["part"]
+    part.has_name = form_data["part"]
 
     part.part_of.append(item)
 

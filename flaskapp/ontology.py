@@ -103,6 +103,8 @@ def create_ontology(mac: Ontology, filepath):
             step_number.exactly(1)
             step_description.exactly(1)
         
+        AllDisjoint([Procedure, Step])
+        
         # ---------------------------------------------------- SWRL -----------------------------------------------------------------
         
         #Subprocedure
@@ -116,9 +118,3 @@ def create_ontology(mac: Ontology, filepath):
         rule6 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
 
         mac.save(filepath)
-        mac.save("test.owl")
-
-        #TODO
-
-        # 1) pySHACL
-        # 2) 
