@@ -16,8 +16,7 @@ WHERE {
 
 
 search_dict["Steps with a keyword in their description"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?step    ?description
-
+SELECT ?step ?description
 WHERE {
     ?step a ns:Step .
     ?step ns:step_description ?description .
@@ -25,7 +24,7 @@ WHERE {
 }"""
 
 search_dict["Items containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?item    ?name
+SELECT ?item 
 WHERE {
     ?item a ns:Item .
     ?item ns:has_name ?name .
@@ -33,7 +32,7 @@ WHERE {
 }"""
 
 search_dict["Parts containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?part    ?name
+SELECT ?part 
 WHERE {
     ?part a ns:Part .
     ?part ns:has_name ?name .
@@ -41,7 +40,7 @@ WHERE {
 }"""
 
 search_dict["Tools containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?tool    ?name
+SELECT ?tool
 WHERE {
     ?tool a ns:Tool .
     ?tool ns:has_name ?name .
