@@ -38,7 +38,7 @@ async function performSearch() {
       listItem.classList.add("result-item");
 
       const label = document.createElement("label");
-      label.textContent = result.text;
+      label.textContent = result.text.replace(/_/g, ' ');
       label.addEventListener("click", displayResult);
       label.classList.add("result-label");
       listItem.appendChild(label);
@@ -53,18 +53,11 @@ async function performSearch() {
   // Handle the response data here
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("searchInput")
-    .addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        console.log(this.value);
-        performSearch(this.value);
-      }
-    });
-});
 
 async function displayResult() {
-  const resultData = this.parentElement.textContent;
+  let resultData = this.parentElement.textContent.replace(/ /g, '_');
+  if (resultData.endsWith('_')) {
+    resultData = resultData.slice(0, -1);
+  }
   window.location.href = `/result_viewer?data=${resultData}`;
 }

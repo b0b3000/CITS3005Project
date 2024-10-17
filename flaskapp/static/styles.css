@@ -1,4 +1,4 @@
-/* styles.css */
+                                  /* styles.css */
 
 /* Reset some default styles */
 body,
@@ -386,6 +386,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 }
 
 .entry_div,
@@ -415,12 +416,23 @@ button:hover {
 
 .tools_entry,
 .parts_entry,
+.view_entry,
 .entry_div {
-  padding-top: 10px;
-  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.view_entry:hover, .tools_entry:hover, .parts_entry:hover {
+  background-color: #e0e0e0;
+  border: 1px solid #999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
 hr {
@@ -670,4 +682,44 @@ button:hover {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.view_div {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border: 1px solid #ccc;
+  background-color: #c0c0c0;
+  border-radius: 5px;
+}
+
+
+.view-step-item {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  justify-content: center;
+}
+
+.view-step-item:hover {
+  background-color: #e0e0e0;
+  border: 1px solid #999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease-out;
+}
+
+.view-step-item {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.view-step-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-step-item:not(:hover) {
+  transform: scale(1);
+  box-shadow: none;
 }

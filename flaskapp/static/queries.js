@@ -25,7 +25,7 @@ async function runQuery(search_id) {
       console.log("Result:", result);
       const listItem = document.createElement("li");
       listItem.classList.add("result-item"); // Add class to list item
-      listItem.textContent = result;
+      listItem.textContent = result.replace(/_/g, ' '); // Replace underscores with spaces
       resultsList.appendChild(listItem);
     }
   } catch (error) {

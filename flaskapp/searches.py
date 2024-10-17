@@ -47,6 +47,7 @@ WHERE {
     FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
 }"""
 
+
 def get_search_functions():
     functions = [func for func in search_dict.keys() if func != "Search procedures"]
     return functions

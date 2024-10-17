@@ -1,34 +1,34 @@
 
 {% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
-  %}View Procedure{% endblock %} {% block content %}
+  %}Edit an existing procedure{% endblock %} {% block content %}
 
   <div>
       <div class="procedure_top">
           <label id="name_label" for="procedure_name">Procedure Name:</label>
       </div>
-      <div class="entry_div">
-           <div id="procedure_name"> {{ data.name }}</div>
-      </div>
+      <div class="view_div">
+        <div class="view_entry"> {{ data.name }}</div>
+     </div>
   </div>
   
   <hr>
   </hr>
   <label id="item_label" for="item">Item subject to repair</label>
-  <div class="entry_div">
-     <div > {{ data.item }}</div>
+  <div class="view_div">
+     <div class="view_entry"> {{ data.item }}</div>
   </div>
   
   <hr>
   </hr>
   <label id="part_label">Part used for repair</label>
-  <div class="entry_div">
-    <div > {{ data.part }}</div>
+  <div class="view_div">
+    <div class="view_entry"> {{ data.part }}</div>
   </div>
   
   <hr>
   </hr>
   <label id="tools_label">Tools used in repair</label>
-  <div class="entry_div">
+  <div class="view_div">
       <ul id="tools_list">
       {% for tool in data.toolbox %}
         <li style="list-style-type: none;">
@@ -37,12 +37,14 @@
       {% endfor %}
     </ul>
   </div>
+
   <hr>
   </hr>
-  <div class="entry_div">
+
+  <div class="view_div">
       <ul id="steps_list">
       {% for step in data.steps %}
-      <li class="step-item" >
+      <li class="view-step-item" >
         <img id="preview_1" src="{{ step.img }}" class="step-image">
         <label> Step {{ step.number }}: </label>
         <textarea name="step_{{ step.number }}" class="step_entry" placeholder="Describe the step..." oninput="autoExpand(this)" readonly style="height:200px;"  >{{ step.description }}</textarea>
@@ -58,5 +60,6 @@
   
   
   {% endblock %} {% block scripts %}
+  <script src="static/view.js"></script>
   {% endblock %}
   
