@@ -122,7 +122,6 @@
 
 <owl:Class rdf:about="#Part">
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  <rdf:type rdf:resource="#Part"/>
 </owl:Class>
 
 <owl:Class rdf:about="#Image">
@@ -876,92 +875,6 @@
 
 <owl:NamedIndividual rdf:about="#https://d3nevzfk7ii3be.cloudfront.net/igi/SddO5KNPdmeSfbXD.standard">
   <rdf:type rdf:resource="#Image"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Name">
-  <rdf:type rdf:resource="#Procedure"/>
-  <has_item rdf:resource="#reeere"/>
-  <has_toolbox rdf:resource="#Name_toolbox"/>
-  <has_part rdf:resource="#erasda"/>
-  <has_step rdf:resource="#Name/step0"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Name</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#reeere">
-  <rdf:type rdf:resource="#Item"/>
-  <part_of rdf:resource="#Root"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">reeere</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#erasda">
-  <rdf:type rdf:resource="#Part"/>
-  <part_of rdf:resource="#reeere"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">reeere erasda</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Name_toolbox">
-  <rdf:type rdf:resource="#Toolbox"/>
-  <has_tool rdf:resource="#Hammer"/>
-  <has_tool rdf:resource="#Screwdriver"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Hammer">
-  <rdf:type rdf:resource="#Tool"/>
-  <used_in rdf:resource="#Name/step0"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hammer</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Screwdriver">
-  <rdf:type rdf:resource="#Tool"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Screwdriver</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Name/step0">
-  <rdf:type rdf:resource="#Step"/>
-  <has_image rdf:resource="#http://127.0.0.1:5000/static/banner.png"/>
-  <step_description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whack da nail homeslice</step_description>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#http://127.0.0.1:5000/static/banner.png">
-  <rdf:type rdf:resource="#Image"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#rrrrr">
-  <rdf:type rdf:resource="#Procedure"/>
-  <has_item rdf:resource="#eeee"/>
-  <has_toolbox rdf:resource="#rrrrr_toolbox"/>
-  <has_part rdf:resource="#aaa"/>
-  <has_step rdf:resource="#rrrrr/step0"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rrrrr</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#eeee">
-  <rdf:type rdf:resource="#Item"/>
-  <part_of rdf:resource="#Root"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">eeee</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#aaa">
-  <rdf:type rdf:resource="#Part"/>
-  <part_of rdf:resource="#eeee"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">eeee aaa</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#rrrrr_toolbox">
-  <rdf:type rdf:resource="#Toolbox"/>
-  <has_tool rdf:resource="#ssss"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#ssss">
-  <rdf:type rdf:resource="#Tool"/>
-  <used_in rdf:resource="#rrrrr/step0"/>
-  <has_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ssss</has_name>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#rrrrr/step0">
-  <rdf:type rdf:resource="#Step"/>
-  <has_image rdf:resource="#http://127.0.0.1:5000/static/banner.png"/>
-  <step_description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">care</step_description>
 </owl:NamedIndividual>
 
 <swrl:Variable rdf:about="urn:swrl#proc1"/>

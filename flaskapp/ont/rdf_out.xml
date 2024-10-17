@@ -10,14 +10,6 @@
 <http://ifixit.org/mac.owl> a owl:Ontology,
         owl:Ontology .
 
-ns2:Name a ns2:Procedure,
-        owl:NamedIndividual ;
-    ns2:has_item ns2:reeere ;
-    ns2:has_name "Name"^^xsd:string ;
-    ns2:has_part ns2:erasda ;
-    ns2:has_step <http://ifixit.org/mac.owl#Name/step0> ;
-    ns2:has_toolbox ns2:Name_toolbox .
-
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)> a ns2:Procedure,
         owl:NamedIndividual ;
     ns2:has_item ns2:Mac_Pro_First_Generation ;
@@ -110,14 +102,6 @@ ns2:has_toolbox a owl:ObjectProperty,
     rdfs:range ns2:Toolbox,
         ns2:Toolbox .
 
-ns2:rrrrr a ns2:Procedure,
-        owl:NamedIndividual ;
-    ns2:has_item ns2:eeee ;
-    ns2:has_name "rrrrr"^^xsd:string ;
-    ns2:has_part ns2:aaa ;
-    ns2:has_step <http://ifixit.org/mac.owl#rrrrr/step0> ;
-    ns2:has_toolbox ns2:rrrrr_toolbox .
-
 ns2:step_description a owl:DatatypeProperty,
         owl:DatatypeProperty,
         owl:FunctionalProperty,
@@ -152,11 +136,6 @@ ns2:used_in a owl:ObjectProperty,
     rdfs:range ns2:Step,
         ns2:Step .
 
-ns2:Hammer a ns2:Tool,
-        owl:NamedIndividual ;
-    ns2:has_name "Hammer"^^xsd:string ;
-    ns2:used_in <http://ifixit.org/mac.owl#Name/step0> .
-
 ns2:Mac a ns2:Item,
         owl:NamedIndividual ;
     ns2:part_of ns2:Root .
@@ -173,11 +152,6 @@ ns2:Mac_Pro a ns2:Item,
         owl:NamedIndividual ;
     ns2:has_name "Mac Pro First Generation 2.8 / 3.0 / 3.2 GHz Processors"^^xsd:string ;
     ns2:part_of ns2:Mac_Pro_First_Generation .
-
-ns2:Name_toolbox a ns2:Toolbox,
-        owl:NamedIndividual ;
-    ns2:has_tool ns2:Hammer,
-        ns2:Screwdriver .
 
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step11> a ns2:Step,
         owl:NamedIndividual ;
@@ -377,14 +351,8 @@ ns2:Name_toolbox a ns2:Toolbox,
         ns2:phillips_screwdriver_long-handled,
         ns2:right-angle_magnetized_1_phillips_screwdriver .
 
-ns2:Screwdriver a ns2:Tool,
-        owl:NamedIndividual ;
-    ns2:has_name "Screwdriver"^^xsd:string .
-
-ns2:aaa a ns2:Part,
-        owl:NamedIndividual ;
-    ns2:has_name "eeee aaa"^^xsd:string ;
-    ns2:part_of ns2:eeee .
+ns2:Root a ns2:Item,
+        owl:NamedIndividual .
 
 ns2:anti-static_wrist_strap a ns2:Tool,
         owl:NamedIndividual ;
@@ -394,11 +362,6 @@ ns2:anti-static_wrist_strap a ns2:Tool,
 ns2:arctic_silver_thermal_paste a ns2:Tool,
         owl:NamedIndividual ;
     ns2:has_name "arctic silver thermal paste"^^xsd:string .
-
-ns2:erasda a ns2:Part,
-        owl:NamedIndividual ;
-    ns2:has_name "reeere erasda"^^xsd:string ;
-    ns2:part_of ns2:reeere .
 
 ns2:high_content_rubbing_alcohol a ns2:Tool,
         owl:NamedIndividual ;
@@ -633,24 +596,10 @@ ns2:right-angle_magnetized_1_phillips_screwdriver a ns2:Tool,
     ns2:used_in <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step14>,
         <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step25> .
 
-ns2:rrrrr_toolbox a ns2:Toolbox,
-        owl:NamedIndividual ;
-    ns2:has_tool ns2:ssss .
-
-ns2:ssss a ns2:Tool,
-        owl:NamedIndividual ;
-    ns2:has_name "ssss"^^xsd:string ;
-    ns2:used_in <http://ifixit.org/mac.owl#rrrrr/step0> .
-
 ns2:Mac_Pro_First_Generation a ns2:Item,
         owl:NamedIndividual ;
     ns2:has_name "Mac Pro First Generation"^^xsd:string ;
     ns2:part_of ns2:Mac_Pro .
-
-<http://ifixit.org/mac.owl#Name/step0> a ns2:Step,
-        owl:NamedIndividual ;
-    ns2:has_image <http://ifixit.org/mac.owl#http://127.0.0.1:5000/static/banner.png> ;
-    ns2:step_description "Whack da nail homeslice"^^xsd:string .
 
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step0> a ns2:Step,
         owl:NamedIndividual ;
@@ -740,24 +689,6 @@ ns2:Mac_Pro_First_Generation a ns2:Item,
     ns2:step_description "Handle the card only by the edges.Do not touch its connectors or any of the components.Lift the card straight out from the connector to remove it, and insert it straight into the connector to install it.Do not rock the card from side to side and don’t force the card into the slot.Once the replacement card is installed, pull on it gently to check. 1) Release the small locking clip at the front of the card’s logic board connector by pushing the clip up toward the media shelf. 2) Holding the card by the top corners, pull up the card and remove it from its expansion slot."^^xsd:string ;
     ns2:step_number 8 .
 
-ns2:eeee a ns2:Item,
-        owl:NamedIndividual ;
-    ns2:has_name "eeee"^^xsd:string ;
-    ns2:part_of ns2:Root .
-
-<http://ifixit.org/mac.owl#http://127.0.0.1:5000/static/banner.png> a ns2:Image,
-        owl:NamedIndividual .
-
-ns2:reeere a ns2:Item,
-        owl:NamedIndividual ;
-    ns2:has_name "reeere"^^xsd:string ;
-    ns2:part_of ns2:Root .
-
-<http://ifixit.org/mac.owl#rrrrr/step0> a ns2:Step,
-        owl:NamedIndividual ;
-    ns2:has_image <http://ifixit.org/mac.owl#http://127.0.0.1:5000/static/banner.png> ;
-    ns2:step_description "care"^^xsd:string .
-
 <http://ifixit.org/mac.owl#Replacing~Upgrading_Mac_Pro_Processors_(Early_2008)/step1> a ns2:Step,
         owl:NamedIndividual ;
     ns2:has_image <http://ifixit.org/mac.owl#https://d3nevzfk7ii3be.cloudfront.net/igi/WPKXNvaiqiIJKYN4.standard> ;
@@ -776,9 +707,6 @@ ns2:reeere a ns2:Item,
     ns2:step_description "Perform the following steps once you have installed the new processors and ready to re-install the heatsinks. Preparing an EXISTING Heatsink for Re-installation. If you have a new heatsink, follow the NEW Heatsink procedure. Using the alcohol pad included with the logic board or processor replacement part, clean off any used thermal grease from the processor and the bottom of the heatsink. Using the thermal grease included with the logic board or processor replacement part, apply one dot of fresh grease to the raised square area on the bottom of the heatsink. Spread the grease evenly across the square to a thickness of approximately 1 mm. Warning: Do not apply more grease than recommended. The grease must not overflow the heatsink and come in contact with the processor connector."^^xsd:string ;
     ns2:step_number 38 .
 
-ns2:Root a ns2:Item,
-        owl:NamedIndividual .
-
 <urn:swrl#item1> a ns1:Variable,
         ns1:Variable .
 
@@ -788,17 +716,17 @@ ns2:Root a ns2:Item,
 <urn:swrl#part> a ns1:Variable,
         ns1:Variable .
 
+ns2:Toolbox a owl:Class,
+        owl:Class ;
+    rdfs:subClassOf owl:Thing,
+        owl:Thing .
+
 ns2:has_part a owl:ObjectProperty,
         owl:ObjectProperty ;
     rdfs:domain ns2:Procedure,
         ns2:Procedure ;
     rdfs:range ns2:Part,
         ns2:Part .
-
-ns2:Toolbox a owl:Class,
-        owl:Class ;
-    rdfs:subClassOf owl:Thing,
-        owl:Thing .
 
 ns2:subprocedure a owl:ObjectProperty,
         owl:ObjectProperty ;
@@ -817,11 +745,15 @@ ns2:has_item a owl:ObjectProperty,
     rdfs:range ns2:Item,
         ns2:Item .
 
+ns2:Part a owl:Class,
+        owl:Class ;
+    rdfs:subClassOf owl:Thing,
+        owl:Thing .
+
 <urn:swrl#part3> a ns1:Variable,
         ns1:Variable .
 
-ns2:Part a ns2:Part,
-        owl:Class,
+ns2:Tool a owl:Class,
         owl:Class ;
     rdfs:subClassOf owl:Thing,
         owl:Thing .
@@ -840,11 +772,6 @@ ns2:part_of a owl:ObjectProperty,
             owl:unionOf ( ns2:Item ns2:Part ) ] ;
     rdfs:range ns2:Item,
         ns2:Item .
-
-ns2:Tool a owl:Class,
-        owl:Class ;
-    rdfs:subClassOf owl:Thing,
-        owl:Thing .
 
 <urn:swrl#proc1> a ns1:Variable,
         ns1:Variable .
