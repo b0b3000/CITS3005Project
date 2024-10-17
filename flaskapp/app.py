@@ -11,7 +11,7 @@ from owlready2 import *
 from rdflib import *
 
 ONTO_FILE_PATH = "ont/mac.owl"
-JSON_FILE_PATH = "ont/data.json"
+JSON_FILE_PATH = "ont/temp.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
 #fix = Namespace("http://ifixit.org/mac.owl#")
@@ -130,6 +130,9 @@ def add_procedure():
         graph = default_world.as_rdflib_graph()
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
+    
+    if not build.reason_ontology(mac):
+        return jsonify("Invalid Procedure Added"), 400
     # add the procedure to the ontology
     return jsonify("Procedure added"), 200
 
