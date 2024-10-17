@@ -140,9 +140,6 @@ def add_procedure():
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
     
-    consistent, report = build.reason_ontology(mac)
-    if not consistent:
-       return jsonify({"Consistent" : consistent, "report" : report})
     # add the procedure to the ontology
     return jsonify("Procedure added"), 200
 
