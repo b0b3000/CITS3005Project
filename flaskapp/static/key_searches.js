@@ -52,17 +52,6 @@ async function performSearch() {
   // Handle the response data here
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("searchInput")
-    .addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        console.log(this.value);
-        performSearch(this.value);
-      }
-    });
-});
-
 async function displayResult() {
   const resultData = this.parentElement.textContent;
   window.location.href = `/result_viewer?data=${resultData}`;
