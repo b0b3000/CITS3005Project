@@ -2,9 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch("/consistent")
     .then((response) => response.json())
     .then((result) => {
-      if (!result) {
+      console.log("Consistency data:", result);
+      if (!result.Consistent) {
+        error_report = ""
+        for (let report of result.report) {
+          error_report += report + "\n";
+        }
         const errorPopup = document.createElement("div");
-        errorPopup.textContent = "Ontology has errors!";
+        errorPopup.textContent = error_report;
         errorPopup.id = "error-popup";
 
         document.body.appendChild(errorPopup);
