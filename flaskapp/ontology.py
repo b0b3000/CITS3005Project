@@ -128,7 +128,12 @@ def create_ontology(mac: Ontology, filepath):
         rule2 = Imp().set_as_rule("""Procedure(?proc), has_toolbox(?proc, ?toolbox) -> Toolbox(?toolbox)""")
         rule3 = Imp().set_as_rule("""Procedure(?proc), has_item(?proc, ?item) -> Item(?item)""")
         rule4 = Imp().set_as_rule("""Procedure(?proc), has_part(?proc, ?part) -> Part(?part)""")
-        rule4 = Imp().set_as_rule("""Toolbox(?toolbox), has_tool(?toolbox, ?tool) -> Tool(?tool)""")
+        rule5 = Imp().set_as_rule("""Toolbox(?toolbox), has_tool(?toolbox, ?tool) -> Tool(?tool)""")
+        rule6 = Imp().set_as_rule("""Step(?step), has_image(?step, ?img) -> Image(?img)""")
+        rule7 = Imp().set_as_rule("""Tool(?tool), used_in(?tool, ?step) -> Step(?step)""")
+        rule8 = Imp().set_as_rule("""Part(?part), part_of(?part, ?item) -> Item(?item)""")
+        rule9 = Imp().set_as_rule("""Part(?item1), part_of(?item1, ?item2) -> Item(?item2)""")
+
 
 
         # ---------------------------------------------------- SWRL ADDITIONS -----------------------------------------------------------------

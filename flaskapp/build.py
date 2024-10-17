@@ -7,7 +7,7 @@ from shape_validation import validate_ontology_shacl
 def reason_ontology(mac):
     with mac:
         consistent = False
-        #sync_reasoner(infer_property_values=True)
+
         try:
             
             sync_reasoner(infer_property_values=True)
