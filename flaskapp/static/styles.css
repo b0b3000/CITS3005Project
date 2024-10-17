@@ -689,8 +689,8 @@ button:hover {
   justify-content: center;
   align-items: center;
   display: flex;
-  border: 1px solid #ccc;
-  background-color: #c0c0c0;
+  border: 1px solid #e0e0e0;
+  background-color: #e0e0e059;
   border-radius: 5px;
 }
 
