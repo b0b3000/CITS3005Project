@@ -32,7 +32,7 @@ query_dict = {
                     }
                 }""",
     "All procedures with potential hazards, with steps containing words like 'careful' and 'dangerous'.": """PREFIX ns: <http://ifixit.org/mac.owl#>
-                SELECT ?procedure ?step
+                SELECT DISTINCT ?procedure ?step
                 WHERE {
                     ?procedure a ns:Procedure .
                     ?procedure ns:has_step ?step .
@@ -41,20 +41,33 @@ query_dict = {
                 }
             """,
     """ Retrieve all items that are part of another item """: """PREFIX ns: <http://ifixit.org/mac.owl#> 
-                    SELECT ?item1
+                    SELECT DISTINCT ?item1
                     WHERE {
                         ?item1 a ns:Item .
                         ?item1 ns:part_of ?item2 .
             }
     """,
-    """ Retrieve All Images Associated with Steps""": """\
-        PREFIX ns: <http://ifixit.org/mac.owl#>
-        SELECT ?step ?image
+    """ Get all steps that do not have an image. """: """PREFIX ns: <http://ifixit.org/mac.owl#>
+        SELECT DISTINCT ?step
         WHERE {
             ?step a ns:Step .
-            ?step ns:has_image ?image .
+            ?step ns:step_description ?desc .
+            FILTER NOT EXISTS { ?step ns:has_image ?image }
         }
-""",
+    """,
+    """ All tools that are used in multiple procedures """: """PREFIX ns: <http://ifixit.org/mac.owl#>
+        SELECT DISTINCT ?tool
+        WHERE {
+            ?procedure1 a ns:Procedure .
+            ?procedure1 ns:has_toolbox ?toolbox1 .
+            ?tool ns:in_toolbox ?toolbox1 .
+            ?procedure2 a ns:Procedure .
+            ?procedure2 ns:has_toolbox ?toolbox2 .
+            ?tool ns:in_toolbox ?toolbox2 .
+            FILTER(?procedure1 != ?procedure2)
+        }
+    """
+    
 }
 
 

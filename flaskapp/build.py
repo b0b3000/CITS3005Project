@@ -88,7 +88,7 @@ def reason_ontology(mac):
 
         try:
             
-            sync_reasoner(infer_property_values=True, debug = 3)
+            sync_reasoner(infer_property_values=True)
             valid, report = constrained_to_ont (mac)
             if list(mac.inconsistent_classes()) or (not valid):
                 print("Ontology is inconsistent")
