@@ -48,9 +48,13 @@ def sparql():
     print(query_names)
     return render_template('queries.html', title='Search', searches=query_names)
 
-@app.route("/search")
-def search():
-    return render_template('search.html', title='Search', search_functions=searches.get_search_functions())
+@app.route("/key_searches")
+def key_searches():
+    return render_template('key_searches.html', title='Search', search_functions=searches.get_search_functions())
+
+@app.route("/search_procedures")
+def search_procedures():
+    return render_template('search_procedures.html', title='Search', search=searches.get_procedure_search())
 
 @app.route("/procedure")
 def procedure():
@@ -111,10 +115,10 @@ def run_query():
 @app.route("/search_results", methods = ['GET', 'POST'])
 def search_results():
     data = request.get_json()
-    search_type = data['searchFunction']
+    search_func = data['searchFunction']
     search_value = data['searchInput']
 
-    results = searches.run_search(search_type, search_value, graph, mac)
+    results = searches.run_search(search_func, search_value, graph, mac)
     for result in results:
         print(result)
     if results[0] == "Query not found":

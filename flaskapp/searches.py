@@ -14,9 +14,20 @@ WHERE {
 }
 """
 
+search_dict["Retrieve All Steps with a Keyword in Description "] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?step    ?description
+WHERE {
+    ?step a ns:Step .
+    ?step ns:step_description ?description .
+    FILTER(CONTAINS(STR(?description), "keyword"))
+}"""
 
 def get_search_functions():
-    return search_dict.keys()
+    functions = [func for func in search_dict.keys() if func != "Search procedures"]
+    return functions
+
+def get_procedure_search():
+    return "Search procedures"
 
 
 def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology):
@@ -70,6 +81,8 @@ def get_procedure_info(procedure_uri: str, mac: Ontology):
     if procedure == None:
         return {"error": "Procedure not found"}
 
+    if "Procedure" not in str(procedure):
+        return {"error": "Procedure not found"}
 
     name = procedure.has_name
     item_iri = procedure.has_item[0].iri

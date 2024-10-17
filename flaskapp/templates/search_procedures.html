@@ -1,17 +1,16 @@
 {% extends "base.html" %} {% block title %}Search{% endblock %} {% block header
 %}Search the iFixit database{% endblock %} {% block content %}
 <section id="browse">
-  <h2 style="text-align: center;">Available search functions</h2>
+  <h2 style="text-align: center">Search Procedures</h2>
   <select
     class="search_function_selector"
     id="searchFunction"
     name="searchFunction"
+    style="opacity: 1; display: none;"
+    disabled
   >
-    {% for search_function in search_functions %}
-    <option value="{{ search_function }}">{{ search_function }}</option>
-    {% endfor %}
+    <option value="{{ search }}">{{ search }}</option>
   </select>
-
   <input type="text" id="searchInput" placeholder="Enter your search here" />
 </section>
 <section id="results">
@@ -19,5 +18,5 @@
   <ul id="results_list"></ul>
 </section>
 {% endblock %} {% block scripts %}
-<script src="static/search.js"></script>
+<script src="static/search_procedures.js"></script>
 {% endblock %}
