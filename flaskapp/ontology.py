@@ -47,11 +47,6 @@ def create_ontology(mac: Ontology, filepath):
             domain = [Or([Item, Part])]
             range = [Item]
             is_transitive = True
-        
-        class transitive_part_of(ObjectProperty):
-            domain = [Or([Item, Part])]
-            range = [Item]
-            is_transitive = True
 
         class used_in(ObjectProperty):
             domain = [Tool]
@@ -68,6 +63,12 @@ def create_ontology(mac: Ontology, filepath):
         class subprocedure(ObjectProperty):
             domain = [Procedure]
             range = [Procedure]
+            is_transitive = True
+        
+        class subprocedure2(ObjectProperty):
+            domain = [Procedure]
+            range = [Procedure]
+            is_transitive = True
 
         # --------------------------------------------------------- DATA PROPERTIES ---------------------------------------------------------------------
 
@@ -83,38 +84,67 @@ def create_ontology(mac: Ontology, filepath):
             domain = [Or([Procedure, Tool, Item, Part])]
             range = [str]
 
+        # ---------------------------------------------------------PROPERTY CONSTRAINTS---------------------------------------------------------
+
         class Procedure(Thing):
-            has_step.min(1),  
-            has_toolbox.exactly(1),
-            has_item.exactly(1),
-            has_part.exactly(1),
-            has_name.exactly(1)
+            is_a = [
+                has_step.min(1),
+                has_step.only(Step),
+                has_toolbox.exactly(1),
+                has_toolbox.only(Toolbox),
+                has_item.exactly(1),
+                has_item.only(Item),
+                has_part.exactly(1),
+                has_part.only(Part),
+                has_name.exactly(1)
+            ]
         
         class Part(Thing):
-            has_name.exactly(1)
+            is_a = [
+                has_name.exactly(1)
+            ]
         
         class Item(Thing):
-            has_name.exactly(1)
+            is_a = [
+                has_name.exactly(1)
+            ]
         
         class Tool(Thing):
-            has_name.exactly(1)
-        
+            is_a = [
+                has_name.exactly(1)
+            ]
+
         class Step(Thing):
-            step_number.exactly(1)
-            step_description.exactly(1)
-        
+            is_a = [
+                step_number.exactly(1),
+                step_description.exactly(1)
+            ]
+
         AllDisjoint([Procedure, Step])
         
-        # ---------------------------------------------------- SWRL -----------------------------------------------------------------
+        # ---------------------------------------------------- SWRL ENFORCEMENTS -----------------------------------------------------------------
         
-        #Subprocedure
-        rule1 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") #First Item is same as Second Item
-        rule2 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2),  -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
-        rule3 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
-        rule4 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part1), part_of(?part1, ?part2), Procedure(?proc2), has_part(?proc2, ?part2) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Part
+        rule1 = Imp().set_as_rule("""Procedure(?proc), has_step(?proc, ?step) -> Step(?step)""")
+        rule2 = Imp().set_as_rule("""Procedure(?proc), has_toolbox(?proc, ?toolbox) -> Toolbox(?toolbox)""")
+        rule3 = Imp().set_as_rule("""Procedure(?proc), has_item(?proc, ?item) -> Item(?item)""")
+        rule4 = Imp().set_as_rule("""Procedure(?proc), has_part(?proc, ?part) -> Part(?part)""")
+        rule4 = Imp().set_as_rule("""Toolbox(?toolbox), has_tool(?toolbox, ?tool) -> Tool(?tool)""")
+
+
+        # ---------------------------------------------------- SWRL ADDITIONS -----------------------------------------------------------------
         
-        #Transitive 'part_of'
-        rule5 = Imp().set_as_rule("""Part(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
-        rule6 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
+        # Create subprocedures
+        rule_a1 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item), Procedure(?proc2), has_item(?proc2, ?item), DifferentFrom(?proc1, ?proc2) -> subprocedure(?proc1, ?proc2)""") #First Item is same as Second Item
+        rule_a2 = Imp().set_as_rule("""Procedure(?proc1), has_item(?proc1, ?item1), part_of(?item1, ?item2), Procedure(?proc2), has_item(?proc2, ?item2) -> subprocedure(?proc1, ?proc2)""") # First Item is a part of second Item
+        rule_a3 = Imp().set_as_rule("""Procedure(?proc1), has_part(?proc1, ?part), part_of(?part, ?item), Procedure(?proc2), has_item(?proc2, ?item) -> subprocedure(?proc1, ?proc2)""") # First Part is a part of second Item
+        rule_a4 = Imp().set_as_rule("""Procedure(?part1), Procedure(?part2), Procedure(?part3), subprocedure(?part1, ?part2), subprocedure(?part2, ?part3)-> subprocedure(?part1, ?part3)""") # Adds transitive subprocedure 
+        
+        #Tools used in step of procedure should appear in toolbox
+        rule_a5 = Imp().set_as_rule("""Tool(?tool), used_in(?tool, ?step), Step(?step), has_step(?proc, ?step), has_toolbox(?proc, ?toolbox) -> has_tool(?toolbox, ?tool)""") # First Part is a part of second Item
+
+        # Ensure 'part_of' is transitive
+        rule_a6 = Imp().set_as_rule("""Part(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
+        rule_a7 = Imp().set_as_rule("""Item(?part1), Item(?part2), Item(?part3), part_of(?part1, ?part2), part_of(?part2, ?part3) -> part_of(?part1, ?part3)""")
+
 
         mac.save(filepath)

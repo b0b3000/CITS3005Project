@@ -6,13 +6,27 @@ from shape_validation import validate_ontology_shacl
 
 def reason_ontology(mac):
     with mac:
-        sync_reasoner(infer_property_values=True)
-        if list(mac.inconsistent_classes()):
-            print("Ontology has inconsistent classes as follows: ")
-            for inconsistency in mac.inconsistent_classes():
-                print("Inconsitency: ", inconsistency)
-        else:
-            print("Ontology has no inconsitencies")
+        consistent = False
+        #sync_reasoner(infer_property_values=True)
+        try:
+            
+            sync_reasoner(infer_property_values=True)
+
+            if list(mac.inconsistent_classes()):
+                print("Ontology has inconsistent classes as follows: ")
+                for inconsistency in mac.inconsistent_classes():
+                    print("Inconsitency: ", inconsistency)
+                    #consistent remains false
+
+            else:
+                print("Ontology has no inconsitencies")
+                consistent = True
+
+        except owlready2.base.OwlReadyInconsistentOntologyError:
+            print("Errors in ontology consistency")
+            #consistent remains false
+
+    return consistent
 
 def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
@@ -48,6 +62,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                     part_uri = entry["Category"].replace('/','~').replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace('/','~').replace(" ", "_").replace('"', "")
                     part = mac.Part(part_uri)
                     part.has_name = entry["Category"] + " " + entry["Subject"]
+                    print(type(part.has_name))
                     part.part_of.append(item)
                     procedure.has_part.append(part)
 
@@ -103,7 +118,10 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
         
-        reason_ontology(mac)
+        #dummyProc = mac.Procedure("dummyProcURI")
+        #dummyProc = mac.Step("dummyProcURI")
+
+        ontology_consistency = reason_ontology(mac)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
@@ -114,6 +132,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
         file.write(graph.serialize(format='turtle'))
 
         #Return the RDFLib graph, and OWLReady2 ontology
-        return graph, mac
+        return graph, mac, ontology_consistency
 
 
