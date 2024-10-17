@@ -1,14 +1,13 @@
-/* styles.css */
-
 /* Reset some default styles */
-body,
-ul {
+body, ul {
   margin: 0;
   padding: 0;
 }
 
 body {
   font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
 }
 
 /* Navbar styling */
@@ -19,11 +18,20 @@ body {
 
 .navbar ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   justify-content: space-around;
+}
 
+.navbar li {
+  flex: 1;
+  text-align: center;
+}
+
+.navbar a {
+  display: block;
+  color: white;
+  padding: 14px 20px;
+  text-decoration: none;
 }
 
 .navbar a:hover {
@@ -36,22 +44,6 @@ body {
   background-color: white;
   color: black;
 }
-
-.navbar li {
-  flex: 1;
-  text-align: center;
-  display: inline-block;
-}
-
-.navbar a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 20px;
-  text-decoration: none;
-}
-
-
 
 /* Banner styling */
 .banner {
@@ -109,7 +101,6 @@ body {
 }
 
 /* Ensure result items do not go off screen */
-
 .result-item {
   max-width: 100%;
   box-sizing: border-box;
@@ -120,9 +111,7 @@ body {
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
-  list-style-type: none;
-  /* Remove bullet points */
-} 
+}
 
 .result-item:hover {
   transform: translateY(-5px);
@@ -155,7 +144,7 @@ body {
   background-color: #45a049;
 }
 
-/* New styles for 3-column layout */
+/* 3-column layout */
 #results_list {
   display: grid;
   grid-template-columns: repeat(1, 5fr);
@@ -164,13 +153,13 @@ body {
   width: 100%;
 }
 
-.result-label{
+.result-label {
   width: auto;
   display: flex;
 }
 
-.queryNameInput,
-.queryNameValue {
+/* Input fields and buttons */
+.queryNameInput, .queryNameValue, .search_function_selector, #searchInput {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -181,306 +170,111 @@ body {
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.newQueryButton {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.newQueryButton:hover {
-  background-color: #45a049;
-}
-
-.newQuerySection {
-  text-align: center;
-  margin-top: x;
-}
-
-.queryNameInpuocus,
-.queryNameValuocus {
+.queryNameInput:focus, .queryNameValue:focus, .search_function_selector:focus, #searchInput:focus {
   border-color: #66afe9;
-  box-shadow: 8px rgba(102, 175, 233, 0.6);
-  outline: non
+  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  outline: none;
 }
 
-.newQueryButton {
+/* Button styles */
+.newQueryButton, button {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
-  margin: 10px 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.newQueryButton:hover {
+.newQueryButton:hover, button:hover {
   background-color: #45a049;
 }
 
-.newQuerySection {
+.newQuerySection, .tools_entry, .parts_entry, .entry_div {
   text-align: center;
   margin-top: 20px;
 }
 
-.search_function_selector {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.search_function_selector:focus {
-  border-color: #66afe9;
-  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
-  outline: none;
-}
-
-#searchInput {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-#searchInput:focus {
-  border-color: #66afe9;
-  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
-  outline: none;
-}
-
-.step-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.step-item input[type="text"] {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.step-image-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.step-image-upload input[type="file"] {
-  display: none;
-}
-
-.step-image-upload label {
-  background-color: #f4f4f4;
-  border: 1px dashed #ccc;
-  padding: 10px;
-  text-align: center;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #aaa;
-}
-
-.step-image-preview {
-  max-width: 100px;
-  max-height: 100px;
-  margin-left: 20px;
-  display: none;
-}
-
-
-#add {
-  background-color: #fff;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
-}
-
-input[type="text"],
-textarea {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-}
-
-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-#steps_list,
-#parts_list,
-#tools_list {
+/* Steps and tools list */
+#steps_list, #parts_list, #tools_list, ul {
   width: 100%;
   list-style-type: none;
   padding: 0;
-  margin-bottom: 15px;
 }
 
-#steps_list li {
-  background-color: #f8f9fa;
+#steps_list li, {
+  background: #e7e7e7;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-bottom: 5px;
 }
 
-.procedure_top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#procedure_name {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.entry_div,
-#step_list {
-  display: flex;
-
-}
-
-.step_entry {
-  width: 45%;
-  display: block;
-  justify-content: right;
-  align-items: right;
-}
-
-.tool_buttons {
-  display: flex;
-  justify-content: space-between ;
-
-}
-
-.new_entries {
-  width: 20%;
-  display: flex;
-  justify-content: center;
-}
-
-.tools_entry,
-.parts_entry,
-.entry_div {
-  padding-top: 10px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-hr {
-  position: relative;
-  top: 20px;
-  border: none;
-  height: 12px;
-  background: darkblue;
-  margin-bottom: 20px;
-}
-
-#item, #part {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Tool and part labels */
 #item_label, #part_label, #tools_label, #name_label {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font: optional;
   font-size: large;
   font-style: italic;
 }
 
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
+/* Procedure section */
+#add, .section {
+  background: #fff;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
 }
 
+h1, h2 {
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+/* Error popup */
 #error-popup {
   font-size: 36px;
   padding: 30px;
-  animation:  fadeOut 3s forwards;
+  animation: fadeOut 3s forwards;
   position: fixed;
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
   background-color: red;
   color: white;
-  padding: 10px;
   border-radius: 5px;
   z-index: 1000;
 }
 
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
-.tool-list {
-  width: 20%;
-  align-self: right;
-  display: grid;
-  grid-template-columns: repeat(auto-10, minmax(100px, 1fr));
-  gap: 10px;
-  padding: 10px;
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #333;
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }

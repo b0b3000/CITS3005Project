@@ -20,7 +20,7 @@
           <a href="/search_procedures" id="search-link">Search Procedures</a>
         </li>
         <li>
-          <a href="/key_searches" id="search-link">Keyword Searches</a>
+          <a href="/key_searches" id="key-link">Keyword Searches</a>
         </li>
         <li>
           <a href="/sparql_queries" id="sparql-queries-link">SPARQL Queries</a>
@@ -43,10 +43,11 @@
           "/": "home-link",
           "/user_guide": "user-guide-link",
           "/search_procedures": "search-link",
-          "/key_searches": "search-link",
+          "/key_searches": "key-link",
           "/sparql_queries": "sparql-queries-link",
           "/edit": "edit-link",
         };
+
         const currentLinkId = links[currentPath];
         if (currentLinkId) {
           document.getElementById(currentLinkId).classList.add("active");
