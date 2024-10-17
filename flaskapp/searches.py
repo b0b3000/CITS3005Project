@@ -15,7 +15,7 @@ WHERE {
 """
 
 search_dict["Retrieve All Steps with a Keyword in Description "] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?step    ?description
+SELECT ?step ?description
 WHERE {
     ?step a ns:Step .
     ?step ns:step_description ?description .
@@ -49,10 +49,11 @@ def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology)
         print(result)
     for row in results:
         print(f"Row: {row}")
-        uri = ""
+        text = ""
         for item in row:
             item = str(item).removeprefix("http://ifixit.org/mac.owl#")
-            results_list.append({"text" : str(item)})
+            text += item + ":"
+        results_list.append({"text" : str(text)})
     return results_list
 
 
