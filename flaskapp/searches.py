@@ -4,18 +4,7 @@ from owlready2 import *
 
 search_dict = {}
 
-search_dict[
-    "Search procedures"
-] = """
-PREFIX ns: <http://ifixit.org/mac.owl#>
-                SELECT ?procedure
-                WHERE {
-                    ?procedure a ns:Procedure .
-                    ?procedure ns:has_name ?name .
-                    FILTER(CONTAINS(STR(?name), "keyword")) .
-                }
-"""
-search_dict["Search parts"] = """
+search_dict["Search procedures"] = """
 PREFIX ns: <http://ifixit.org/mac.owl#>
 SELECT ?procedure
 WHERE {

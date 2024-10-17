@@ -37,9 +37,16 @@ query_dict = {
                     ?procedure a ns:Procedure .
                     ?procedure ns:has_step ?step .
                     ?step ns:step_description ?text .
-                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
+                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard"))) .
                 }
             """,
+    """ Retrieve all items that are part of another item """: """PREFIX ns: <http://ifixit.org/mac.owl#> 
+                    SELECT ?item1
+                    WHERE {
+                        ?item1 a ns:Item .
+                        ?item1 ns:part_of ?item2 .
+            }
+    """
 }
 
 def get_queries():

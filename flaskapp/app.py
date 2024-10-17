@@ -65,6 +65,10 @@ def user_guide():
 def create():
     return render_template('create.html', title='Create')
 
+@app.route("/consistent", methods = ['GET', 'POST'])
+def consistent():
+    return jsonify(build.reason_ontology(mac))
+
 
 @app.route("/result_viewer", methods=['GET'])
 def result_viewer():

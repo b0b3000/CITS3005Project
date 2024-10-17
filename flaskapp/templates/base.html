@@ -26,7 +26,6 @@
           <a href="/create" id="create-link">Add Procedure</a>
         </li>
       </ul>
-
     </nav>
     <div class="banner">
       <h1>{% block header %} Welcome to My Website {% endblock %}</h1>
@@ -48,6 +47,7 @@
         if (currentLinkId) {
           document.getElementById(currentLinkId).classList.add("active");
         }
+        
       });
     </script>
   </body>
