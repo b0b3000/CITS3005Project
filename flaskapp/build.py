@@ -2,20 +2,98 @@ from owlready2 import *
 from rdflib import *
 import json
 
-from shape_validation import validate_ontology_shacl
+def constrained_to_ont(mac):
+    report = ""
+
+    with mac:
+
+        invalid = []
+
+        for proc in mac.Procedure.instances():
+            if len(proc.has_step) < 1:
+                msg = f"Procedure {proc} violates has_step.min(1)"
+                print(msg)
+                invalid.append(msg)
+
+            if len(proc.has_toolbox) != 1:
+                msg = f"Procedure {proc} violates has_toolbox.exactly(1)"
+                print(msg)
+                invalid.append(msg)
+
+            if len(proc.has_item) != 1:
+                msg = f"Procedure {proc} violates has_item.exactly(1)"
+                print(msg)
+                invalid.append(msg)
+
+            if len(proc.has_part) != 1:
+                msg = f"Procedure {proc} violates has_part.exactly(1)"
+                print(msg)
+                invalid.append(msg)
+
+            if not proc.has_name:
+                msg = f"Procedure {proc} violates has_name.exactly(1)"
+                print(msg)
+                invalid.append(msg)
+
+    # Check all Step instances for the constraints
+    for step in mac.Step.instances():
+        if type(step.step_number) is None:
+            msg = f"Step {step} violates step_number.exactly(1)"
+            print(msg)
+            invalid.append(msg)
+
+        if not step.step_description:
+            msg = f"Step {step} violates step_description.exactly(1)"
+            print(msg)
+            invalid.append(msg)
+
+    # Check all Part instances for the constraints
+    for part in mac.Part.instances():
+        if not part.has_name:
+            msg = f"Part {part} violates has_name.exactly(1)"
+            print(msg)
+            invalid.append(msg)
+
+    # Check all Item instances for the constraints
+    for item in mac.Item.instances():
+        if not item.has_name:
+            msg = f"Item {item} violates has_name.exactly(1)"
+            print(msg)
+            invalid.append(msg)
+
+    # Check all Tool instances for the constraints
+    for tool in mac.Tool.instances():
+        if not tool.has_name:
+            msg = f"Tool {tool} violates has_name.exactly(1)"
+            print(msg)
+            invalid.append(msg)
+
+    if invalid:
+        print("\nSummary of invalid instances:")
+        report+="Summary of invalid instances:\n"
+        for invalid_instance in invalid:
+            print(f" - {invalid_instance}")
+            report+=f" - {invalid_instance}\n"
+        
+        return False, report
+    
+    else:
+        print("All instances satisfy the ontology constraints.")
+        return True, report
 
 def reason_ontology(mac):
     with mac:
         consistent = False
+        report = ""
 
         try:
             
-            sync_reasoner(infer_property_values=True)
-
-            if list(mac.inconsistent_classes()):
-                print("Ontology has inconsistent classes as follows: ")
+            sync_reasoner(infer_property_values=True, debug = 3)
+            valid, report = constrained_to_ont (mac)
+            if list(mac.inconsistent_classes()) or (not valid):
+                print("Ontology is inconsistent")
                 for inconsistency in mac.inconsistent_classes():
-                    print("Inconsitency: ", inconsistency)
+                    report+= f"Inconsitency: {inconsistency}\n"
                     #consistent remains false
 
             else:
@@ -26,7 +104,7 @@ def reason_ontology(mac):
             print("Errors in ontology consistency")
             #consistent remains false
 
-    return consistent
+    return consistent, report
 
 def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
@@ -52,9 +130,10 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
 
                     #Add ancestor tree
                     current_ancestor = item
-                    for item_ancestor in entry["Ancestors"]:
-                        item_ancestor_uri = item_ancestor.replace('/','~').replace(" ", "_").replace('"', "")
+                    for item_ancestor_str in entry["Ancestors"]:
+                        item_ancestor_uri = item_ancestor_str.replace('/','~').replace(" ", "_").replace('"', "")
                         item_ancestor = mac.Item(item_ancestor_uri)
+                        item_ancestor.has_name = item_ancestor_str
                         current_ancestor.part_of.append(item_ancestor)
                         current_ancestor = item_ancestor
 
@@ -104,6 +183,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                                         # This is likely a result of human error upon construction of data
 
                                         new_tool = mac.Tool(tool_uri)
+                                        new_tool.has_name = tool
                                         toolbox.has_tool.append(new_tool)
                                         toolbox_dict[tool_uri] = new_tool
                                         matching_tool = new_tool
@@ -121,7 +201,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
         #dummyProc = mac.Procedure("dummyProcURI")
         #dummyProc = mac.Step("dummyProcURI")
 
-        ontology_consistency = reason_ontology(mac)
+        ontology_consistency, report = reason_ontology(mac)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
@@ -132,6 +212,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
         file.write(graph.serialize(format='turtle'))
 
         #Return the RDFLib graph, and OWLReady2 ontology
-        return graph, mac, ontology_consistency
+        return graph, mac, ontology_consistency, report
 
 

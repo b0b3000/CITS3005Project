@@ -64,11 +64,6 @@ def create_ontology(mac: Ontology, filepath):
             domain = [Procedure]
             range = [Procedure]
             is_transitive = True
-        
-        class subprocedure2(ObjectProperty):
-            domain = [Procedure]
-            range = [Procedure]
-            is_transitive = True
 
         # --------------------------------------------------------- DATA PROPERTIES ---------------------------------------------------------------------
 
