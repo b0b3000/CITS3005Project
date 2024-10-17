@@ -75,15 +75,12 @@ def get_ancestors(item_name: str, mac: Ontology):
 
 
 def get_procedure_info(procedure_uri: str, mac: Ontology):
-    print(f"URI: {procedure_uri}")
     query_uri = "http://ifixit.org/mac.owl#" + procedure_uri
-    procedure = mac.search_one(iri=query_uri)
+    procedure = mac.search(iri=query_uri)
     if procedure == None:
         return {"error": "Procedure not found"}
-
-    if "Procedure" not in str(procedure):
-        return {"error": "Procedure not found"}
-
+    print(f"Procedure: {procedure}")
+    
     name = procedure.has_name
     item_iri = procedure.has_item[0].iri
     item = mac.search_one(iri=item_iri).has_name
