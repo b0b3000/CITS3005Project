@@ -15,14 +15,13 @@ PREFIX ns: <http://ifixit.org/mac.owl#>
                     FILTER(CONTAINS(STR(?name), "keyword")) .
                 }
 """
-
 search_dict["Search parts"] = """
 PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?partName
+SELECT ?procedure
 WHERE {
-    ?part a ns:Part .
-    ?part ns:has_name ?partName .
-    FILTER(CONTAINS(STR(?partName), "keyword")) .
+    ?procedure a ns:Procedure .
+    ?procedure ns:has_name ?name .
+    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword"))) .
 }
 """
 

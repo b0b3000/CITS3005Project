@@ -158,7 +158,7 @@ body {
 /* New styles for 3-column layout */
 #results_list {
   display: grid;
-  grid-template-columns: repeat(3, 5fr);
+  grid-template-columns: repeat(1, 5fr);
   gap: 20px;
   padding: 0;
   width: 100%;
