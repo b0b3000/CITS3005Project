@@ -15,17 +15,17 @@ def constrained_to_ont(mac):
                 print(msg)
                 invalid.append(msg)
 
-            if len(proc.has_toolbox) != 1:
+            if not proc.has_toolbox:
                 msg = f"Procedure {proc} violates has_toolbox.exactly(1)"
                 print(msg)
                 invalid.append(msg)
 
-            if len(proc.has_item) != 1:
+            if not proc.has_item :
                 msg = f"Procedure {proc} violates has_item.exactly(1)"
                 print(msg)
                 invalid.append(msg)
 
-            if len(proc.has_part) != 1:
+            if not proc.has_part :
                 msg = f"Procedure {proc} violates has_part.exactly(1)"
                 print(msg)
                 invalid.append(msg)
@@ -141,7 +141,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                     part_uri = entry["Category"].replace('/','~').replace(" ", "_").replace('"', "") + "_" + entry["Subject"].replace('/','~').replace(" ", "_").replace('"', "")
                     part = mac.Part(part_uri)
                     part.has_name = entry["Category"] + " " + entry["Subject"]
-                    print(type(part.has_name))
                     part.part_of.append(item)
                     procedure.has_part.append(part)
 

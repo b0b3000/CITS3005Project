@@ -33,7 +33,7 @@ async function performSearch() {
 
     // Add result items to the lists
     for (let result of results) {
-      console.log(result);
+      console.log(result.text);
       const listItem = document.createElement("li");
       listItem.classList.add("result-item");
 
