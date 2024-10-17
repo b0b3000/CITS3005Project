@@ -1,13 +1,12 @@
 {% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
-%}Edit a procedure{% endblock %} {% block content %}
-<h1>Add a new Procedure</h1>
+%}Add a new procedure{% endblock %} {% block content %}
 <div>
     <div class="procedure_top">
         <label for="procedure_name">Procedure Name:</label>
         <button type="submit" onclick="submitProcedure()">Submit</button>
     </div>
     <div class="entry_div">
-        <input type="text" id="procedure_name">
+        <input type="text" id="procedure_name" placeholder="Provide a procedure name that describes the process of the procedure">
     </div>
 </div>
 
@@ -15,15 +14,16 @@
 </hr>
 <label id="item_label" for="item">Item subject to repair</label>
 <div class="entry_div">
-    <input type="text" id="item">
+    <input type="text" id="item" placeholder="Input the item being repaired. Can also use to select ancestors. If ancestor selection is empty, will assign to root  ">
+    <select id="ancestor_dropdown"> </select>
+    <button id="ancestor_button" onclick="getPossibleAncestors()" >Search Ancestors</button>
 </div>
 
 <hr>
 </hr>
 <label id="part_label" for="part">Part used for repair</label>
-
 <div class="entry_div">
-    <input type="text" id="part">
+    <input type="text" id="part" placeholder="Input the part which is being used within the repair" value="{{ part }}">
 </div>
 
 <hr>

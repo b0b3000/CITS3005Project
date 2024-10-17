@@ -13,7 +13,8 @@ mac = get_ontology("http://ifixit.org/mac.owl")
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
 
-graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
+
+graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
 
 #queries.run_queries(graph, mac)
 

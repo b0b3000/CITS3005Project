@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 import ontology, build, queries, searches
 
-from process import add_new_procedure
+from process import add_new_procedure, delete_procedure
 
 from owlready2 import *
 from rdflib import *
@@ -19,9 +19,13 @@ mac = get_ontology("http://ifixit.org/mac.owl#")
 
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
-graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, fix, mac)
-graph = graph
+graph, mac = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
+# Configure the upload set
 
+# Ensure the upload directory exists
+if not os.path.exists('uploads/images'):
+    os.makedirs('uploads/images')
+    
 @app.route('/')
 @app.route('/index')
 def index():
@@ -35,7 +39,7 @@ def sparql():
 
 @app.route("/search")
 def search():
-    return render_template('search.html', title='Search', search_functions=["Search by procedure", "Search by item", "Search by part", "Search by tool"])
+    return render_template('search.html', title='Search', search_functions=searches.get_search_functions())
 
 @app.route("/procedure")
 def procedure():
@@ -46,9 +50,24 @@ def procedure():
 def user_guide():
     return render_template('guide.html', title='User Guide')
 
-@app.route("/create")
-def edit_graph():
+@app.route("/create", methods = ['GET', 'POST'])
+def create():
     return render_template('create.html', title='Create')
+
+
+@app.route("/result_viewer", methods=['GET'])
+def result_viewer():
+    result_uri = request.args.get('data')
+    print(f"View URI: {result_uri}")
+    if not result_uri:
+        return jsonify({"error": "No data provided"}), 400
+
+    # get the procedure information
+    procedure_info = searches.get_procedure_info(result_uri, mac)
+    if "error" in procedure_info.keys():
+        return render_template("result_viewer.html",data={"name": "No procedure found"})
+    print(f"View Procedure info: {procedure_info}")
+    return render_template("result_viewer.html", data=procedure_info)
 
 @app.route("/add_query", methods = ['POST'])
 def add_query():
@@ -68,9 +87,9 @@ def run_query():
     query_key = data['search_id']
     results = queries.run_query(query_key, graph) 
     if results == ["Query not found"]:
-        return jsonify({"error": "Query not found"}), 400
+        return jsonify({"error": "Query not found"}), 404
     if results == ["Query has no results"]:
-        return jsonify({"error": "Query has no results"}), 400
+        return jsonify({"error": "Query has no results"}), 404
     # redirect to query results page
     return jsonify(results), 200
 
@@ -80,7 +99,14 @@ def search_results():
     search_type = data['searchFunction']
     search_value = data['searchInput']
 
-    results = searches.run_search(search_type, search_value, graph)
+    results = searches.run_search(search_type, search_value, graph, mac)
+    for result in results:
+        print(result)
+    if results[0] == "Query not found":
+        return jsonify({"error": "Query not found"}), 404
+    
+    if results[0] == "Query has no results":
+        return jsonify({"error": "Query has no results"}), 404
     return jsonify(results), 200
 
 @app.route("/create_procedure", methods = ['GET', 'POST'])
@@ -89,12 +115,18 @@ def add_procedure():
     new_procedure_data = request.get_json()
     print(new_procedure_data)
     with mac:
-        add_new_procedure(ONTO_FILE_PATH, RDFXML_FILE_PATH,new_procedure_data, graph, mac, fix)
+        add_new_procedure(ONTO_FILE_PATH,new_procedure_data, mac)
+        graph = default_world.as_rdflib_graph()
         file = open(RDFXML_FILE_PATH, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
-
-
     # add the procedure to the ontology
-
     return jsonify("Procedure added"), 200
+
+
+@app.route("/get_ancestors", methods = ['GET', 'POST'])
+def get_ancestors():
+    item_name = request.get_json()
+    print(f"Item name: {item_name}")
+    ancestors = searches.get_ancestors(item_name, mac)
+    return jsonify(ancestors), 200
 

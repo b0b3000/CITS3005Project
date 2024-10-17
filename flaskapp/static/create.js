@@ -9,22 +9,14 @@ function addStep() {
     imagePreview.id = `preview_${stepCount}`;
     imagePreview.src = '/static/banner.png';
     imagePreview.classList.add('step-image');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.style.display = 'none';
 
     imagePreview.addEventListener('click', function () {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', function () {
-        if (fileInput.files && fileInput.files[0]) {
-            imagePreview.src = URL.createObjectURL(fileInput.files[0]);
+        const imgAddress = prompt('Please enter the image address:');
+        if (imgAddress) {
+            imagePreview.src = imgAddress;
         }
     });
-
-    listItem.appendChild(fileInput);
+    
     listItem.appendChild(imagePreview);
 
     const stepLabel = document.createElement('label');
@@ -83,6 +75,7 @@ async function submitProcedure() {
     current_step_data = {};
     // get img data and step_entry for each step
     const steps = Array.from(document.getElementsByClassName('step_entry')).map(input => input.value);
+
     const step_images = document.getElementsByClassName('step-image');
 
     const tools_lists = document.getElementsByClassName("tools-list")
@@ -106,7 +99,10 @@ async function submitProcedure() {
         console.log("Tool usage: " + tool_usage);
     }
 
+    const ancestorDropdown = document.getElementById('ancestor_dropdown');
+    const selectedAncestor = ancestorDropdown ? ancestorDropdown.value : "";
 
+    console.log("Selected ancestor: " + selectedAncestor);
 
     for (let i = 0; i < steps.length; i++) {
         current_step_data[i] = { "img": step_images[i].src, "step_description": steps[i], "tools_used": tool_usage[i] };
@@ -122,7 +118,8 @@ async function submitProcedure() {
         part: document.getElementById('part').value,
         toolbox: Array.from(document.getElementsByClassName('tools_entry')).map(input => input.value),
         item: document.getElementById('item').value,
-        step_data: current_step_data
+        step_data: current_step_data,
+        ancestor: selectedAncestor
     };
 
     if (formData.part == "" || formData.step_data.length == 0, formData.item == "") {
@@ -176,4 +173,32 @@ function setTools() {
         button.style.display = 'none';
     }
 
+}
+
+async function getPossibleAncestors() {
+    const itemValue = document.getElementById('item').value;
+    const result = await fetch('/get_ancestors', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(itemValue)
+    }).then(response => response.json())
+        .then(data => {
+            const ancestorButton = document.getElementById('ancestor_button');
+            const dropdown = document.getElementById('ancestor_dropdown');
+            if (!dropdown) {
+                dropdown = document.createElement('select');
+                dropdown.id = 'ancestor_dropdown';
+                ancestorButton.parentNode.insertBefore(dropdown, ancestorButton.nextSibling);
+            }
+            dropdown.innerHTML = '';
+            data.forEach(ancestor => {
+                const option = document.createElement('option');
+                option.value = ancestor;
+                option.textContent = ancestor;
+                dropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching ancestors:', error));
 }

@@ -4,7 +4,8 @@ import json
 
 from shape_validation import validate_ontology_shacl
 
-def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac):
+
+def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
         with open(json_file_path, 'r') as file:
             for line in file:
@@ -18,7 +19,6 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                             if p.has_name == procedure_uri:
                                 print("PROC DUP", procedure_uri)
                     procedure = mac.Procedure(procedure_uri)
-                    print(procedure_uri)
                     procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 
                     # Add item to graph
@@ -71,7 +71,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
                         for tool in step["Tools_extracted"]:
                                 # Add proper uri for tool 
                                 if tool != "NA":
-                                    tool_uri =tool.replace('/','~').replace(" ", "_").replace('"', "")
+                                    tool_uri = tool.replace('/','~').replace(" ", "_").replace('"', "")
 
                                     if tool_uri in toolbox_dict.keys():
                                         matching_tool = toolbox_dict[tool_uri]
@@ -93,11 +93,9 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, fix, mac
 
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-
-
-        sync_reasoner_pellet(infer_property_values=True) #REASON - IMPORTANT
-
-        
+        #sync_reasoner(infer_property_values=True)
+        #print(list(default_world.inconsistent_classes()))
+        #sync_reasoner_pellet(infer_property_values=True)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
