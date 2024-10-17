@@ -4,6 +4,15 @@ import json
 
 from shape_validation import validate_ontology_shacl
 
+def reason_ontology(mac):
+    with mac:
+        sync_reasoner(infer_property_values=True)
+        if list(mac.inconsistent_classes()):
+            print("Ontology has inconsistent classes as follows: ")
+            for inconsistency in mac.inconsistent_classes():
+                print("Inconsitency: ", inconsistency)
+        else:
+            print("Ontology has no inconsitencies")
 
 def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
     with mac:
@@ -93,21 +102,16 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
 
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON from line: {line.strip()}")
-        #sync_reasoner(infer_property_values=True)
-        #print(list(default_world.inconsistent_classes()))
-        #sync_reasoner_pellet(infer_property_values=True)
+        
+        reason_ontology(mac)
 
         #Save the ontology into an OWL file
         mac.save(onto_file_path)
-
-        #APPLY SHACL CONSTRAINTS - IMPORTANT
         
         #Save the ontology as an RDF/XML file representing triples of a graph
         graph = default_world.as_rdflib_graph()
         file = open(rdfxml_file_path, mode="w", encoding='utf-8')  
         file.write(graph.serialize(format='turtle'))
-
-        validate_ontology_shacl(graph)
 
         #Return the RDFLib graph, and OWLReady2 ontology
         return graph, mac
