@@ -4,7 +4,7 @@ from owlready2 import *
 from rdflib import *
 
 ONTO_FILE_PATH = "ont/mac.owl"
-JSON_FILE_PATH = "ont/temp3.json"
+JSON_FILE_PATH = "ont/data.json"
 RDFXML_FILE_PATH = "ont/rdf_out.xml"
 
 fix = Namespace("http://ifixit.org/mac.owl#")
