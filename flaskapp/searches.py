@@ -14,12 +14,38 @@ WHERE {
 }
 """
 
-search_dict["Retrieve All Steps with a Keyword in Description "] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?step ?description
+
+search_dict["Steps with a keyword in their description"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?step    ?description
+
 WHERE {
     ?step a ns:Step .
     ?step ns:step_description ?description .
-    FILTER(CONTAINS(STR(?description), "keyword"))
+    FILTER(CONTAINS(LCASE(STR(?description)), LCASE("keyword")))
+}"""
+
+search_dict["Items containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?item    ?name
+WHERE {
+    ?item a ns:Item .
+    ?item ns:has_name ?name .
+    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
+}"""
+
+search_dict["Parts containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?part    ?name
+WHERE {
+    ?part a ns:Part .
+    ?part ns:has_name ?name .
+    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
+}"""
+
+search_dict["Tools containing a keyword or substring"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?tool    ?name
+WHERE {
+    ?tool a ns:Tool .
+    ?tool ns:has_name ?name .
+    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
 }"""
 
 def get_search_functions():
@@ -28,7 +54,6 @@ def get_search_functions():
 
 def get_procedure_search():
     return "Search procedures"
-
 
 def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology):
     current_search = search_dict.get(search_type)
