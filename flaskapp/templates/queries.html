@@ -1,8 +1,7 @@
-{% extends "base.html" %} {% block title %}Search Queries{% endblock %} {% block
-header %}Welcome to iFixit{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Queries{% endblock %} {% block
+header %}Query the iFixit knowledge graph{% endblock %} {% block content %}
 <div class="content">
   <section id="search">
-    <h2 class="search_header">Search Options</h2>
     <div class="new_search_description">
       To implement a new SPARQL query, use the prefix <b><i>ns</i></b> as the
       namespace
@@ -20,10 +19,14 @@ header %}Welcome to iFixit{% endblock %} {% block content %}
         id="newQueryValue"
         placeholder="Enter new SPARQL query"
       />
+      
       <button class="newQueryButton" onclick="createNewQuery()">
         Add New Query
       </button>
     </div>
+    <br>
+    <h3>Select a button below to run existing SPARQL queries</h3>
+    <br>
     <div class="button-list">
       {% for search in searches %}
       <button onclick="runQuery('{{ search }}')">{{ search }}</button>

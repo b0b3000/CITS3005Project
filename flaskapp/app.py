@@ -20,18 +20,6 @@ mac = get_ontology("http://ifixit.org/mac.owl#")
 ontology.create_ontology(mac, ONTO_FILE_PATH)
 mac = get_ontology(ONTO_FILE_PATH).load()
 graph, mac, consistent, report = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
-# Configure the upload set
-
-
-#
-#
-#
-# USE CONSISTENT
-#
-#
-#
-#
-
 
 # Ensure the upload directory exists
 if not os.path.exists('uploads/images'):

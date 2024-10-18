@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% block title %}Search{% endblock %} {% block header
-%}Search the iFixit database{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}Search Procedures{% endblock %} {% block header
+%}Search the iFixit knowledge graph for procedures{% endblock %} {% block content %}
 <section id="browse">
-  <h2 style="text-align: center">Search Procedures</h2>
+  <h3>Search Procedures</h3>
   <select
     class="search_function_selector"
     id="searchFunction"
@@ -11,7 +11,7 @@
   >
     <option value="{{ search }}">{{ search }}</option>
   </select>
-  <input type="text" id="searchInput" placeholder="Enter your search here" />
+  <input type="text" id="searchInput" placeholder="Search by keyword or substring of procedure" />
   <button id="searchButton" onclick="performSearch()">Search</button>
 </section>
 <section id="results">

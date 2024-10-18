@@ -28,10 +28,8 @@ async function performSearch() {
     }
 
     const results = await response.json();
-
     console.log("Success:", results);
 
-    // Add result items to the lists
     for (let result of results) {
       console.log(result.text);
       const listItem = document.createElement("li");
@@ -49,7 +47,7 @@ async function performSearch() {
     noResultsMessage.textContent = "No results found.";
     searchResults.appendChild(noResultsMessage);
   }
-  // Handle the response data here
+
 }
 
 async function displayResult() {

@@ -1,8 +1,11 @@
-{% extends "base.html" %} {% block title %}Edit {% endblock %} {% block header
+{% extends "base.html" %} {% block title %}Add Procedure {% endblock %} {% block header
 %}Add a new procedure{% endblock %} {% block content %}
+
+<hr>
+</hr>
 <div>
     <div class="procedure_top">
-        <label for="procedure_name">Procedure Name:</label>
+        <label id = "item_label" for="procedure_name">Procedure Name:</label>
     </div>
     <div class="entry_div">
         <input type="text" id="procedure_name" placeholder="Provide a procedure name that describes the process of the procedure">
@@ -13,7 +16,7 @@
 </hr>
 <label id="item_label" for="item">Item subject to repair</label>
 <div class="entry_div">
-    <input type="text" id="item" placeholder="Input the item being repaired. Terms in item name will be used to reccomend an ancestor. If ancestor selection is empty, will assign to root  ">
+    <input type="text" id="item" placeholder="Provide the name of item being repaired. Terms in item name will be used to recommend an ancestor for the item.">
     <select id="ancestor_dropdown"> </select>
     <button id="ancestor_button" onclick="getPossibleAncestors()" >Search Ancestors</button>
 </div>
@@ -22,7 +25,7 @@
 </hr>
 <label id="part_label" for="part">Part used for repair</label>
 <div class="entry_div">
-    <input type="text" id="part" placeholder="Input the part which is being used within the repair" value="{{ part }}">
+    <input type="text" id="part" placeholder="Provide the name of the part which is being repaired" value="{{ part }}">
 </div>
 
 <hr>

@@ -5,6 +5,8 @@ async function checkConsistency() {
       console.log("Consistency data:", result);
       if (!result.Consistent) {
         alert(result.report);
+      } else {
+        alert("All data is consistent with ontology")
       }
     })
     .catch((error) => {

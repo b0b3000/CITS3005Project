@@ -1,11 +1,41 @@
-{% extends "base.html" %} {% block title %}Search{% endblock %} {% block header
+{% extends "base.html" %} {% block title %}User Guide{% endblock %} {% block header
 %}
 <header class="header_section">User Guide</header>
 {% endblock %} {% block content %}
 
-<div class="content_section">
+<div class="content-section">
+
+</div>
+
+<div class="schema">
+  <section id="into">
+    <h1 class="title_heading">Introduction</h1>
+    <div class="section overview_section">
+      <h2 class="section_heading">Welcome to the iFixit Knowledge Graph App User Manual!</h2>
+      <p class="guide_text">
+        This manual contains three sections to help you make the most out of this application, and harness the full capacity of its accompanying source code.
+        The manual has 3 sections: 
+        <br>The first will explain the ontology and schema of our knowledge graph. 
+        <br>The second will explain our queries, and how to implement your own custom SPARQL queries.
+        <br>The third section will explain how to add, edit and remove procedures from the knowledge graph, or edit the ontology.
+      </p>
+      <h2 class="section_heading">Running our application</h2>
+      <p class="guide_text">
+        In order to run the application, follow the following steps:
+        <br>1: Unzip the project folder
+        <br>2: Open the location of the project folder in an IDE or a terminal window
+        <br>3: Change directory into the flask app's location by executing the following command: 'cd flaskapp'
+        <br>4: Ensure all requirements are fulfilled by running 'pip install -r requirements.txt' (Optional: Use a virtual environment to manage packages)
+        <br>5: Start the flask app by running 'flask run'
+        <br>6: Allow some time for the graph to be built and verified with the ontology. When you see the terminal output: 'Running on http://127.0.0.1:500' or similar, the webpage is ready to access
+        <br>7: Access the web page by navigating to the outputted address above in a browser
+        <br>8: Begin using the features of the page!
+      </p>
+    </div>
+  </section>
+
   <section id="schema">
-    <h1 class="title_heading">Ontology User Guide</h1>
+    <h1 class="title_heading">Part 1: Ontology</h1>
 
     <div class="section overview_section">
       <h2 class="section_heading">Overview</h2>
@@ -147,7 +177,7 @@
     </div>
   </section>
   <section id="Queries">
-    <h2 class="title_heading">SPARQL Queries</h2>
+    <h2 class="title_heading">Part 2: Queries</h2>
     <p class="guide_text">
       You can use the search procedures tab, and the keyword search tab to navigate the knowledge graph
       Within search procedures, you can click a resulting procedure to view the procedure information.
@@ -161,7 +191,7 @@
   </section>
 
   <section id="Adding Procedures">
-    <h2 class="title_heading">Adding Procedures</h2>
+    <h2 class="title_heading">Part 3: Editing Knowledge Graph & Ontology.</h2>
     <p class="guide_text">
       To add a procedure, click the "Add Procedure" button in the navigation bar.
       You will be prompted to enter the procedure name, item, part, and toolbox. 
