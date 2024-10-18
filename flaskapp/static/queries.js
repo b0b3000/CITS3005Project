@@ -1,7 +1,23 @@
 async function runQuery(search_id) {
   // Send a POST request with the search_id and search term
   try {
+    const resultsList = document.getElementById("results_list");
+    resultsList.innerHTML = "";
     console.log("Search ID:", search_id);
+    const loadingPopup = document.createElement("div");
+    loadingPopup.style.position = "fixed";
+    loadingPopup.style.top = "50%";
+    loadingPopup.style.left = "50%";
+    loadingPopup.style.transform = "translate(-50%, -50%)";
+    loadingPopup.style.padding = "10px 20px";
+    loadingPopup.style.backgroundColor = "#fff";
+    loadingPopup.style.border = "1px solid #ccc";
+    loadingPopup.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+    loadingPopup.style.zIndex = "1000";
+    loadingPopup.id = "loadingPopup";
+    loadingPopup.innerHTML = "Loading...";
+    document.body.appendChild(loadingPopup);
+
     const response = await fetch("/get_query", {
       method: "POST",
       headers: {
@@ -11,13 +27,19 @@ async function runQuery(search_id) {
     });
     
 
-    const resultsList = document.getElementById("results_list");
-    resultsList.innerHTML = ""; // Clear previous results
+     // Clear previous results
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || "Network response was not ok");
     }
+
+    
+
+    // Remove the loading popup once the results are fetched
     const results = await response.json();
+
+    console.log("Results:", results);
+    document.body.removeChild(loadingPopup);
     
      // Clear previous results
 

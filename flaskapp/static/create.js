@@ -145,7 +145,8 @@ async function submitProcedure() {
     });
 
     if (result.ok) {
-        console.log('Procedure created successfully!');
+        alert('Procedure created successfully!');
+        window.location.reload();
     } else {
         console.error('Failed to create procedure');
     }
