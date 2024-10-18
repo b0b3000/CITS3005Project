@@ -12,6 +12,16 @@ query_dict = {
                 GROUP BY ?procedure
                 HAVING (COUNT(?step) > 6)
             """,
+    "All procedures with less than 6 steps": """
+            PREFIX ns: <http://ifixit.org/mac.owl#>
+                SELECT ?procedure
+                WHERE {
+                    ?procedure a ns:Procedure .
+                    ?procedure ns:has_step ?step .
+                }
+                GROUP BY ?procedure
+                HAVING (COUNT(?step) < 6)
+            """,
     "All items that have more than 10 procedures written for them ": """PREFIX ns: <http://ifixit.org/mac.owl#>
                 SELECT ?item
                 WHERE {
@@ -66,7 +76,25 @@ query_dict = {
             ?tool ns:in_toolbox ?toolbox2 .
             FILTER(?procedure1 != ?procedure2)
         }
-    """
+    """,
+    """Find all procedures that involve more than 3 tools""": """PREFIX ns: <http://ifixit.org/mac.owl#> 
+        SELECT ?procedureName
+        WHERE {
+        ?procedure ns:has_toolbox ?toolbox .
+        ?toolbox ns:has_tool ?tool .
+        ?procedure ns:has_name ?procedureName .
+        }
+        GROUP BY ?procedureName
+        HAVING (COUNT(?tool) > 3)
+        """,
+    """Find all steps with a description longer than 200 characters""": """PREFIX ns: <http://ifixit.org/mac.owl#>
+        SELECT ?step
+        WHERE {
+        ?step a ns:Step .
+        ?step ns:step_description ?stepDescription .
+        FILTER(STRLEN(?stepDescription) > 200)
+        }
+    """,
     
 }
 

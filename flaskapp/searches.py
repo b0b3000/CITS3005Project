@@ -59,19 +59,6 @@ WHERE {
 
 
 search_dict[
-    "Get the ancestors of a part"
-] = """PREFIX ns: <http://ifixit.org/mac.owl#>
-SELECT ?ancestorName
-WHERE {
-    ?basePart a ns:Part .
-    ?basePart ns:has_name ?name .
-    ?basePart ns:part_of ?ancestor.
-    ?ancestor ns:has_name ?ancestorName .
-    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
-}"""
-
-
-search_dict[
     "Procedures containing a specific part"
 ] = """PREFIX ns: <http://ifixit.org/mac.owl#>
 SELECT ?procedureName
@@ -118,6 +105,21 @@ WHERE {
   ?subProcedure ns:has_name ?subProcedureName .
   FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
 }"""
+
+
+
+search_dict[
+    "Get the ancestors of a part"
+] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?ancestorName
+WHERE {
+    ?basePart a ns:Part .
+    ?basePart ns:has_name ?name .
+    ?basePart ns:part_of ?ancestor.
+    ?ancestor ns:has_name ?ancestorName .
+    FILTER(CONTAINS(LCASE(STR(?name)), LCASE("keyword")))
+}"""
+
 
 
 
