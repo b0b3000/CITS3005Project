@@ -118,7 +118,7 @@ def parse_data_to_owl(json_file_path, onto_file_path, rdfxml_file_path, mac):
                     for p in mac.Procedure.instances():
                         if type(p) != None:
                             if p.has_name == procedure_uri:
-                                print("PROC DUP", procedure_uri)
+                                print("PROCEDURE DUPLICATE", procedure_uri)
                     procedure = mac.Procedure(procedure_uri)
                     procedure.has_name = entry["Title"] #May cause a problem due to duplicates?
 

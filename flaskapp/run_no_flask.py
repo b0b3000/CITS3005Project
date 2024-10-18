@@ -16,5 +16,3 @@ mac = get_ontology(ONTO_FILE_PATH).load()
 
 graph, mac, consistency, report = build.parse_data_to_owl(JSON_FILE_PATH, ONTO_FILE_PATH, RDFXML_FILE_PATH, mac)
 
-#queries.run_queries(graph, mac)
-
