@@ -22,11 +22,12 @@ query_dict = {
                 GROUP BY ?procedure
                 HAVING (COUNT(?step) < 6)
             """,
+            
     "All items that have more than 10 procedures written for them ": """PREFIX ns: <http://ifixit.org/mac.owl#>
                 SELECT ?item
                 WHERE {
                     ?item a ns:Item .
-                    ?item ns:has_procedure ?procedure .
+                    ?procedure ns:has_item ?item .
                 }
                 GROUP BY ?item
                 HAVING (COUNT(?procedure) > 10)""",
@@ -35,19 +36,20 @@ query_dict = {
                 WHERE {
                     ?procedure a ns:Procedure .
                     ?procedure ns:has_toolbox ?toolbox .
-                    ?tool ns:in_toolbox ?toolbox .
+                    ?toolbox ns:has_tool ?tool .
                     MINUS {
                         ?procedure ns:has_step ?step .
                         ?tool ns:used_in ?step .
                     }
                 }""",
-    "All procedures with potential hazards, with steps containing words like 'careful' and 'dangerous'.": """PREFIX ns: <http://ifixit.org/mac.owl#>
+
+    "All procedures with potential hazards, with steps containing words like careful and dangerous.": """PREFIX ns: <http://ifixit.org/mac.owl#>
                 SELECT DISTINCT ?procedure ?step
                 WHERE {
                     ?procedure a ns:Procedure .
                     ?procedure ns:has_step ?step .
                     ?step ns:step_description ?text .
-                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard"))) .
+                    FILTER(CONTAINS(STR(?text), "care") || CONTAINS(STR(?text), "danger") || CONTAINS(STR(?text), "hazard")) .
                 }
             """,
     """ Retrieve all items that are part of another item """: """PREFIX ns: <http://ifixit.org/mac.owl#> 
@@ -65,19 +67,7 @@ query_dict = {
             FILTER NOT EXISTS { ?step ns:has_image ?image }
         }
     """,
-    """ All tools that are used in multiple procedures """: """PREFIX ns: <http://ifixit.org/mac.owl#>
-        SELECT DISTINCT ?tool
-        WHERE {
-            ?procedure1 a ns:Procedure .
-            ?procedure1 ns:has_toolbox ?toolbox1 .
-            ?tool ns:in_toolbox ?toolbox1 .
-            ?procedure2 a ns:Procedure .
-            ?procedure2 ns:has_toolbox ?toolbox2 .
-            ?tool ns:in_toolbox ?toolbox2 .
-            FILTER(?procedure1 != ?procedure2)
-        }
-    """,
-    """Find all procedures that involve more than 3 tools""": """PREFIX ns: <http://ifixit.org/mac.owl#> 
+    """Find all procedures that involve more than 5 tools""": """PREFIX ns: <http://ifixit.org/mac.owl#> 
         SELECT ?procedureName
         WHERE {
         ?procedure ns:has_toolbox ?toolbox .
@@ -85,14 +75,14 @@ query_dict = {
         ?procedure ns:has_name ?procedureName .
         }
         GROUP BY ?procedureName
-        HAVING (COUNT(?tool) > 3)
+        HAVING (COUNT(?tool) > 5)
         """,
-    """Find all steps with a description longer than 200 characters""": """PREFIX ns: <http://ifixit.org/mac.owl#>
+    """Find all steps with a description longer than 250 characters""": """PREFIX ns: <http://ifixit.org/mac.owl#>
         SELECT ?step
         WHERE {
         ?step a ns:Step .
         ?step ns:step_description ?stepDescription .
-        FILTER(STRLEN(?stepDescription) > 200)
+        FILTER(STRLEN(?stepDescription) > 250)
         }
     """,
     
@@ -119,6 +109,7 @@ def run_query(query_name: str, graph: Graph):
         results = graph.query(current_query)
     except:
         return ["Query has no results"]
+    print(len(results))
     for row in results:
         uri = ""
         for item in row:
