@@ -48,6 +48,15 @@ WHERE {
 }"""
 
 
+search_dict["Part Ancestors"] = """PREFIX ns: <http://ifixit.org/mac.owl#>
+SELECT ?ancestor
+WHERE {
+    ?basePart a ns:Part .
+    ?basePart ns:part_of ?ancestor .
+    FILTER(CONTAINS(LCASE(STR(?basePart)), LCASE("keyword")))
+}"""
+
+
 def get_search_functions():
     functions = [func for func in search_dict.keys() if func != "Search procedures"]
     return functions
@@ -57,7 +66,7 @@ def get_procedure_search():
 
 def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology):
     current_search = search_dict.get(search_type)
-    current_query = current_search.replace("keyword", search_input)
+    current_query = current_search.replace("keyword", search_input.replace(" ", "_"))
     print(current_query)
     if current_query == None:
         return ["Query not found"]
@@ -78,7 +87,8 @@ def run_search(search_type: str, search_input: str, graph: Graph, mac: Ontology)
         for item in row:
             item = str(item).removeprefix("http://ifixit.org/mac.owl#")
             text += item + " "
-        results_list.append({"text" : str(text)})
+        if text not in results_list:
+            results_list.append(str(text))
 
     return results_list
 

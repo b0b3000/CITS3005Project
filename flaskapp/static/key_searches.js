@@ -36,7 +36,7 @@ async function performSearch() {
       listItem.classList.add("result-item");
 
       const label = document.createElement("label");
-      label.textContent = result.text.replace(/_/g, ' ').replace(/-/g, ' ')
+      label.textContent = result.replace(/_/g, ' ').replace(/-/g, ' ')
       label.classList.add("result-label");
       listItem.appendChild(label);
       searchResults.appendChild(listItem);

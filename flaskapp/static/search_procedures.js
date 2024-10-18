@@ -38,13 +38,14 @@ async function performSearch() {
       listItem.classList.add("result-item");
 
       const label = document.createElement("label");
-      label.textContent = result.text.replace(/_/g, ' ');
+      label.textContent = result.replace(/_/g, ' ');
       label.addEventListener("click", displayResult);
       label.classList.add("result-label");
       listItem.appendChild(label);
       searchResults.appendChild(listItem);
     }
   } catch (error) {
+    console.error("Error:", error);
     const noResultsMessage = document.createElement("p");
     noResultsMessage.id = "no-results-message";
     noResultsMessage.textContent = "No results found.";
