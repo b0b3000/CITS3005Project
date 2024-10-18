@@ -65,7 +65,7 @@ def consistent():
 
 @app.route("/result_viewer", methods=['GET'])
 def result_viewer():
-    result_uri = request.args.get('data')
+    result_uri = request.args.get('data').replace('"', '')
     print(f"View URI: {result_uri}")
     if not result_uri:
         return jsonify({"error": "No data provided"}), 400
