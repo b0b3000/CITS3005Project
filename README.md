@@ -50,151 +50,64 @@
   </section>
 
   <section id="schema">
-    <h1 class="title_heading">Part 1: Ontology</h1>
+    <h1>Part 1: Ontology</h1>
+<h2>Overview</h2>
+The iFixit Knowledge Graph's ontology models and represents instructional repair guides and associated resources in the 'Mac' category. It captures the relationships between procedures, steps, tools, items, and other entities, allowing users to semantically query, edit, and add to the knowledge graph efficiently. It uses RDFS and OWL to place constraints on the data and SWRL statements to apply deductions. These are enforced using an OWL reasoner.  
 
-    <div class="section overview_section">
-      <h2 class="section_heading">Overview</h2>
-      <p class="guide_text">
-        The iFixit Knowledge Graph's ontology is designed to model and represent the instructional 
-        repair guides and associated resources in the 'Mac' category of the provided data. It captures
-         the relationships between procedures, steps, tools, items, and other entities, allowing users to 
-         semantically query, edit, and add to the knowledge graph efficiently. It harnesses RDFS and OWL to place constraints 
-         on the data to ensure it fits to the ontology, and SWRL statements to apply deductions given existing entities and relations.
-         These are enforced using an owl reasoner
-      </p>
-    </div>
+---
 
-    <div class="section classes_section">
-      <h2 class="guide_heading">Classes (Types of Entities)</h2>
-      <ul class="entity_list">
-        <li class="guide_list_item">
-          <strong>Procedure</strong>: Represents an entire guide for a Mac product fix.
-        </li>
-        <li class="guide_list_item">
-          <strong>Step</strong>: Represents a step within a <strong>Procedure</strong>.
-        </li>
-        <li class="guide_list_item">
-          <strong>Toolbox</strong>: Represents a logical container for <strong>Tools</strong>.
-        </li>
-        <li class="guide_list_item">
-          <strong>Tool</strong>: Represents an individual utility item used to conduct a fix.
-        </li>
-        <li class="guide_list_item">
-          <strong>Item</strong>: Represents the Mac product which is the subject of the article.
-        </li>
-        <li class="guide_list_item">
-          <strong>Part</strong>: Represents the specific component of the <strong>Item</strong> which the fix is about.
-        </li>
-        <li class="guide_list_item">
-          <strong>Image</strong>: Represents a photo used to provide a visualisation of how to complete a <strong>Step</strong>.
-        </li>
-      </ul>
-    </div>
+## Classes (Types of Entities)  
+- **Procedure**: Represents an entire guide for a Mac product fix.  
+- **Step**: Represents a step within a **Procedure**.  
+- **Toolbox**: A logical container for **Tools**.  
+- **Tool**: An individual utility item used to conduct a fix.  
+- **Item**: The Mac product which is the subject of the article.  
+- **Part**: A specific component of the **Item** which the fix is about.  
+- **Image**: A photo used to provide a visualization of how to complete a **Step**.  
 
-    <div class="section properties_section">
-      <h2 class="guide_heading">
-        Object Properties (Relationships Between Entities)
-      </h2>
-      <ul class="relationship_list">
-        <li class="guide_list_item">
-          <strong>has_step</strong> Links a procedure to a step when a step is part of that procedure.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_tool</strong>: Links a toolbox to a tool when a tool is used somewhere in the procedure the toolbox belongs to.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_image</strong>: Links a step to a reference image if it is used in that step.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_part</strong>: Links a procedure to a part if it is the subject of the procedure.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_item</strong>: Links a procedure to an item if it is the item the procedure is about.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_toolbox</strong>: Links a procedure to the toolbox associated with it.
-        </li>
-        <li class="guide_list_item">
-          <strong>part_of</strong>: Indicates that an item (or part) is a component of another item. This relation is transitive.
-        </li>
-        <li class="guide_list_item">
-          <strong>used_in</strong>: Links a tool to a step it is used in.
-        </li>
-        <li class="guide_list_item">
-          <strong>subprocedure</strong>: Indicates that a procedure is for the same item as another procedure.
-          Alternatively, indicates that a procedure is for a part/item which is a <strong>part_of</strong> the other procedure's item.
-          This relation is transitive.
-        </li>
-      </ul>
-    </div>
+---
 
-    <div class="section data_properties_section">
-      <h2 class="guide_heading">Data Properties (Attributes of Entities)</h2>
-      <ul class="attributes_list">
-        <li class="guide_list_item">
-          <strong>step_number</strong>: An integer representing the order of a step in the procedure (begins at 0)
-        </li>
-        <li class="guide_list_item">
-          <strong>step_description</strong>: A string containing the details of how to conduct a step.
-        </li>
-        <li class="guide_list_item">
-          <strong>has_name</strong>: A string containing the user friendly and readable name for an item, part, tool or procedure.
-        </li>
-      </ul>
-    </div>
+## Object Properties (Relationships Between Entities)  
+- **has_step**: Links a procedure to a step when a step is part of that procedure.  
+- **has_tool**: Links a toolbox to a tool used in the procedure the toolbox belongs to.  
+- **has_image**: Links a step to a reference image if it is used in that step.  
+- **has_part**: Links a procedure to a part if it is the subject of the procedure.  
+- **has_item**: Links a procedure to an item it is about.  
+- **has_toolbox**: Links a procedure to the associated toolbox.  
+- **part_of**: Indicates that an item (or part) is a component of another item. This relation is transitive.  
+- **used_in**: Links a tool to a step it is used in.  
+- **subprocedure**: Indicates that a procedure is for the same item as another procedure or for a part/item which is a **part_of** the other procedure's item. This relation is transitive.  
 
-    <div class="section constraints_section">
-      <h2 class="guide_heading">Constraints (OWL & RDFS)</h2>
-      <ul class="constraints_list">
-        <li class="guide_list_item">
-          <strong>Procedure</strong>: Must have exactly one toolbox, one item and one part. These should be of class Toolbox, Item and Part respectively.
-          <br>Must have at least one step (of class Step).
-        </li>
-        <li class="guide_list_item">
-          <strong>Part, Item, Tool, Procedure</strong>: Must have exactly one name of type string.
-        </li>
-        <li class="guide_list_item">
-          <strong>Step</strong>: Must have exactly one integer step number and one string step description.
-        </li>
-      </ul>
-    </div>
+---
 
-    <div class="section swrl_rules_section">
-      <h2 class="guide_heading">SWRL Rules (Logical Implications)</h2>
-      <p class="guide_text">
-        The following rules ensure logical consistency in the ontology. They also help to form new relations and deduce unstated relationships:
-      </p>
-      <ul class="rules_list">
-        <li class="guide_list_item">
-          <strong>Rule 1-9</strong>: Ensure that a procedure has steps,
-          toolboxes, items, and parts, and that tools are used in steps.
-        </li>
-        <li class="guide_list_item">
-          <strong>Rules A1-A4: </strong>Create subprocedure relationships in accordance with ontology rules. Also applies transitivity to this relation to create more instances.
-        </li>
-        <li class="guide_list_item">
-          <strong>Rule A5: </strong>Ensures tools used in a step of procedure appear in toolbox
-        </li>
-        <li class="guide_list_item">
-          <strong>Rules A6-A7: </strong>Ensures the <strong>part_of</strong> relation is transitive
-        </li>
-      </ul>
-    </div>
+## Data Properties (Attributes of Entities)  
+- **step_number**: An integer representing the order of a step in the procedure (begins at 0).  
+- **step_description**: A string containing details of how to conduct a step.  
+- **has_name**: A string containing the user-friendly name for an item, part, tool, or procedure.  
 
-    <div class="section disjoint_section">
-      <h2 class="guide_heading">Disjoint Classes</h2>
-      <p class="guide_text">
-        Disjointness ensures that an entity cannot belong to two specific
-        classes at the same time:
-      </p>
-      <ul class="disjoint_list">
-        <li class="guide_list_item">
-          <strong>Procedure and Step</strong>: Enforces that an entity cannot be
-          both a procedure and a step. This is helpful for differentiating the two.
-        </li>
-      </ul>
-    </div>
-  </section>
+---
+
+## Constraints (OWL & RDFS)  
+- **Procedure**: Must have exactly one toolbox, one item, and one part, of classes **Toolbox**, **Item**, and **Part** respectively.  
+  - Must have at least one step (of class **Step**).  
+- **Part, Item, Tool, Procedure**: Must have exactly one name of type string.  
+- **Step**: Must have exactly one integer step number and one string step description.  
+
+---
+
+## SWRL Rules (Logical Implications)  
+These rules ensure logical consistency in the ontology and help to form new relations and deduce unstated relationships:  
+- **Rule 1-9**: Ensure that a procedure has steps, toolboxes, items, and parts, and that tools are used in steps.  
+- **Rules A1-A4**: Create **subprocedure** relationships and apply transitivity to this relation.  
+- **Rule A5**: Ensures tools used in a step of a procedure appear in the toolbox.  
+- **Rules A6-A7**: Ensures the **part_of** relation is transitive.  
+
+---
+
+## Disjoint Classes  
+Disjointness ensures that an entity cannot belong to two specific classes at the same time:  
+- **Procedure and Step**: An entity cannot be both a procedure and a step, ensuring a clear differentiation between the two.  
+
   <section id="Queries">
     <h2 class="title_heading">Part 2: Queries & Searches</h2>
     <div class="properties_section">
